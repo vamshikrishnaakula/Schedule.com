@@ -392,7 +392,7 @@ export function AdvancedTab(props: AdvancedTabProps) {
           description="To lock the timezone on booking page, useful for in-person events."
           value={props.lockTimezone}
           onValueChange={props.setLockTimezone}
-          learnMoreUrl="https://cal.com/help/event-types/lock-timezone"
+          learnMoreUrl="https://www.leadnest.ai/help/event-types/lock-timezone"
         />
         <SettingRow
           title="Offer seats"
@@ -408,7 +408,7 @@ export function AdvancedTab(props: AdvancedTabProps) {
             }
             props.setSeatsEnabled(value);
           }}
-          learnMoreUrl="https://cal.com/help/event-types/offer-seats"
+          learnMoreUrl="https://www.leadnest.ai/help/event-types/offer-seats"
           isLast
         />
       </SettingsGroup>

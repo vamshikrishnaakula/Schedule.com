@@ -100,14 +100,7 @@ export function WelcomeToCalcomModal() {
         </div>
 
         <div className="bg-muted border-subtle flex shrink-0 items-center justify-between rounded-b-2xl border-t px-8 py-6">
-          <Button
-            color="minimal"
-            href="https://cal.com/docs"
-            target="_blank"
-            EndIcon="external-link"
-            className="pointer-events-none opacity-0">
-            {t("learn_more")}
-          </Button>
+          
           <Button color="primary" onClick={closeModal}>
             {t("continue")}
           </Button>

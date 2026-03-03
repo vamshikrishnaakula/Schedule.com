@@ -40,10 +40,10 @@ export const AdminAPIView = () => {
           buttons={
             <div className="stack-y-2 rtl:space-x-reverse sm:space-x-2">
               <ButtonGroup>
-                <Button color="primary" href="https://cal.com/sales" target="_blank">
+                <Button color="primary" href="https://www.leadnest.ai" target="_blank">
                   {t("contact_sales")}
                 </Button>
-                <Button color="minimal" href="https://cal.com/enterprise" target="_blank">
+                <Button color="minimal" href="https://www.leadnest.ai" target="_blank">
                   {t("learn_more")}
                 </Button>
               </ButtonGroup>

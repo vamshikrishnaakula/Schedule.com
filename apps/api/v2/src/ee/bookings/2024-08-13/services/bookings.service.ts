@@ -1110,7 +1110,7 @@ export class BookingsService_2024_08_13 {
       if (error instanceof Error) {
         if (error.message === "invalid_round_robin_host") {
           throw new BadRequestException(
-            `User with id=${newUserId} is not a valid Round Robin host - the user to which you reassign this booking must be one of the booking hosts. Fetch the booking using following endpoint and select id of one of the hosts: https://cal.com/docs/api-reference/v2/bookings/get-a-booking`
+            `User with id=${newUserId} is not a valid Round Robin host - the user to which you reassign this booking must be one of the booking hosts. Fetch the booking using following endpoint and select id of one of the hosts: https://www.leadnest.ai/docs/api-reference/v2/bookings/get-a-booking`
           );
         }
       }

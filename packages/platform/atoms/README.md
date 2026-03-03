@@ -16,8 +16,8 @@ Currently supports React 18, React 19, Next 14 and Next 15.
 want to use version without any suffix e.g. `1.0.103`.
 
 ### Documentation 
-Documentation on how to get started with platform solution is [here](https://cal.com/docs/platform/quickstart) and list of atoms can be viewed
-[here](https://cal.com/docs/platform/atoms/cal-provider)
+Documentation on how to get started with platform solution is [here](https://www.leadnest.ai/docs/platform/quickstart) and list of atoms can be viewed
+[here](https://www.leadnest.ai/docs/platform/atoms/cal-provider)
 
 ## Contributors guide
 

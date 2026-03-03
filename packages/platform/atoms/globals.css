@@ -2929,6 +2929,7 @@
   }
   .w-auto {
     width: auto;
+    height:65px !important;
   }
   .w-auto\! {
     width: auto !important;

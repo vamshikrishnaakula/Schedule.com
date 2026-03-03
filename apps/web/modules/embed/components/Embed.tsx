@@ -246,7 +246,7 @@ const ChooseEmbedTypesDialogContent = ({
             onClick={() => {
               if (embed.type === "headless") {
                 window.open(
-                  "https://cal.com/help/routing/headless-routing",
+                  "https://www.leadnest.ai",
                   "_blank"
                 );
               } else {

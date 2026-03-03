@@ -32,7 +32,7 @@ describe("CalendarEventBuilder", () => {
   it("should create a basic calendar event", () => {
     const event = new CalendarEventBuilder()
       .withBasicDetails({
-        bookerUrl: "https://cal.com/user/test-slug",
+        bookerUrl: "https://www.leadnest.ai/user/test-slug",
         title: "Test Event",
         startTime: mockStartTime,
         endTime: mockEndTime,
@@ -47,7 +47,7 @@ describe("CalendarEventBuilder", () => {
 
     expect(event).not.toBeNull();
     if (event) {
-      expect(event.bookerUrl).toBe("https://cal.com/user/test-slug");
+      expect(event.bookerUrl).toBe("https://www.leadnest.ai/user/test-slug");
       expect(event.title).toBe("Test Event");
       expect(event.startTime).toBe(mockStartTime);
       expect(event.endTime).toBe(mockEndTime);
@@ -58,7 +58,7 @@ describe("CalendarEventBuilder", () => {
   it("should create an event with event type details", () => {
     const event = new CalendarEventBuilder()
       .withBasicDetails({
-        bookerUrl: "https://cal.com/user/test-slug",
+        bookerUrl: "https://www.leadnest.ai/user/test-slug",
         title: "Test Event",
         startTime: mockStartTime,
         endTime: mockEndTime,
@@ -85,7 +85,7 @@ describe("CalendarEventBuilder", () => {
   it("should create an event with organizer details", () => {
     const event = new CalendarEventBuilder()
       .withBasicDetails({
-        bookerUrl: "https://cal.com/user/test-slug",
+        bookerUrl: "https://www.leadnest.ai/user/test-slug",
         title: "Test Event",
         startTime: mockStartTime,
         endTime: mockEndTime,
@@ -126,7 +126,7 @@ describe("CalendarEventBuilder", () => {
   it("should handle nameless organizer", () => {
     const event = new CalendarEventBuilder()
       .withBasicDetails({
-        bookerUrl: "https://cal.com/user/test-slug",
+        bookerUrl: "https://www.leadnest.ai/user/test-slug",
         title: "Test Event",
         startTime: mockStartTime,
         endTime: mockEndTime,
@@ -177,7 +177,7 @@ describe("CalendarEventBuilder", () => {
 
     const event = new CalendarEventBuilder()
       .withBasicDetails({
-        bookerUrl: "https://cal.com/user",
+        bookerUrl: "https://www.leadnest.ai/user",
         title: "Test Event",
         startTime: mockStartTime,
         endTime: mockEndTime,
@@ -209,7 +209,7 @@ describe("CalendarEventBuilder", () => {
 
     const event = new CalendarEventBuilder()
       .withBasicDetails({
-        bookerUrl: "https://cal.com/user/test-slug",
+        bookerUrl: "https://www.leadnest.ai/user/test-slug",
         title: "Test Event",
         startTime: mockStartTime,
         endTime: mockEndTime,
@@ -238,7 +238,7 @@ describe("CalendarEventBuilder", () => {
   it("should create an event with location", () => {
     const event = new CalendarEventBuilder()
       .withBasicDetails({
-        bookerUrl: "https://cal.com/user/test-slug",
+        bookerUrl: "https://www.leadnest.ai/user/test-slug",
         title: "Test Event",
         startTime: mockStartTime,
         endTime: mockEndTime,
@@ -277,7 +277,7 @@ describe("CalendarEventBuilder", () => {
 
     const event = new CalendarEventBuilder()
       .withBasicDetails({
-        bookerUrl: "https://cal.com/user/test-slug",
+        bookerUrl: "https://www.leadnest.ai/user/test-slug",
         title: "Test Event",
         startTime: mockStartTime,
         endTime: mockEndTime,
@@ -298,7 +298,7 @@ describe("CalendarEventBuilder", () => {
   it("should create an event with identifiers", () => {
     const event = new CalendarEventBuilder()
       .withBasicDetails({
-        bookerUrl: "https://cal.com/user/test-slug",
+        bookerUrl: "https://www.leadnest.ai/user/test-slug",
         title: "Test Event",
         startTime: mockStartTime,
         endTime: mockEndTime,
@@ -323,7 +323,7 @@ describe("CalendarEventBuilder", () => {
   it("should create an event with confirmation settings", () => {
     const event = new CalendarEventBuilder()
       .withBasicDetails({
-        bookerUrl: "https://cal.com/user/test-slug",
+        bookerUrl: "https://www.leadnest.ai/user/test-slug",
         title: "Test Event",
         startTime: mockStartTime,
         endTime: mockEndTime,
@@ -348,7 +348,7 @@ describe("CalendarEventBuilder", () => {
   it("should set oneTimePassword to null when isConfirmedByDefault is true", () => {
     const event = new CalendarEventBuilder()
       .withBasicDetails({
-        bookerUrl: "https://cal.com/user/test-slug",
+        bookerUrl: "https://www.leadnest.ai/user/test-slug",
         title: "Test Event",
         startTime: mockStartTime,
         endTime: mockEndTime,
@@ -373,7 +373,7 @@ describe("CalendarEventBuilder", () => {
   it("should create an event with platform variables", () => {
     const event = new CalendarEventBuilder()
       .withBasicDetails({
-        bookerUrl: "https://cal.com/user/test-slug",
+        bookerUrl: "https://www.leadnest.ai/user/test-slug",
         title: "Test Event",
         startTime: mockStartTime,
         endTime: mockEndTime,
@@ -421,7 +421,7 @@ describe("CalendarEventBuilder", () => {
 
     const event = new CalendarEventBuilder()
       .withBasicDetails({
-        bookerUrl: "https://cal.com/user/test-slug",
+        bookerUrl: "https://www.leadnest.ai/user/test-slug",
         title: "Test Event",
         startTime: mockStartTime,
         endTime: mockEndTime,
@@ -449,7 +449,7 @@ describe("CalendarEventBuilder", () => {
 
     const event = new CalendarEventBuilder()
       .withBasicDetails({
-        bookerUrl: "https://cal.com/user/test-slug",
+        bookerUrl: "https://www.leadnest.ai/user/test-slug",
         title: "Test Event",
         startTime: mockStartTime,
         endTime: mockEndTime,
@@ -486,7 +486,7 @@ describe("CalendarEventBuilder", () => {
 
     const event = new CalendarEventBuilder()
       .withBasicDetails({
-        bookerUrl: "https://cal.com/user/test-slug",
+        bookerUrl: "https://www.leadnest.ai/user/test-slug",
         title: "Test Event",
         startTime: mockStartTime,
         endTime: mockEndTime,
@@ -513,7 +513,7 @@ describe("CalendarEventBuilder", () => {
 
     const event = new CalendarEventBuilder()
       .withBasicDetails({
-        bookerUrl: "https://cal.com/user/test-slug",
+        bookerUrl: "https://www.leadnest.ai/user/test-slug",
         title: "Test Event",
         startTime: mockStartTime,
         endTime: mockEndTime,
@@ -534,7 +534,7 @@ describe("CalendarEventBuilder", () => {
   it("should create an event with attendee seat ID", () => {
     const event = new CalendarEventBuilder()
       .withBasicDetails({
-        bookerUrl: "https://cal.com/user/test-slug",
+        bookerUrl: "https://www.leadnest.ai/user/test-slug",
         title: "Test Event",
         startTime: mockStartTime,
         endTime: mockEndTime,
@@ -555,7 +555,7 @@ describe("CalendarEventBuilder", () => {
   it("should create an event with UID", () => {
     const event = new CalendarEventBuilder()
       .withBasicDetails({
-        bookerUrl: "https://cal.com/user/test-slug",
+        bookerUrl: "https://www.leadnest.ai/user/test-slug",
         title: "Test Event",
         startTime: mockStartTime,
         endTime: mockEndTime,
@@ -576,7 +576,7 @@ describe("CalendarEventBuilder", () => {
   it("should create an event with one-time password", () => {
     const event = new CalendarEventBuilder()
       .withBasicDetails({
-        bookerUrl: "https://cal.com/user/test-slug",
+        bookerUrl: "https://www.leadnest.ai/user/test-slug",
         title: "Test Event",
         startTime: mockStartTime,
         endTime: mockEndTime,
@@ -597,7 +597,7 @@ describe("CalendarEventBuilder", () => {
   it("should create an event with recurring event ID", () => {
     const event = new CalendarEventBuilder()
       .withBasicDetails({
-        bookerUrl: "https://cal.com/user/test-slug",
+        bookerUrl: "https://www.leadnest.ai/user/test-slug",
         title: "Test Event",
         startTime: mockStartTime,
         endTime: mockEndTime,
@@ -620,7 +620,7 @@ describe("CalendarEventBuilder", () => {
   it("should create a complete calendar event with all properties", () => {
     const event = new CalendarEventBuilder()
       .withBasicDetails({
-        bookerUrl: "https://cal.com/user/test-slug",
+        bookerUrl: "https://www.leadnest.ai/user/test-slug",
         title: "Complete Test Event",
         startTime: mockStartTime,
         endTime: mockEndTime,
@@ -758,12 +758,12 @@ describe("CalendarEventBuilder", () => {
       startTime: mockStartTime,
       endTime: mockEndTime,
       type: "existing-type",
-      bookerUrl: "https://cal.com/user/test-slug",
+      bookerUrl: "https://www.leadnest.ai/user/test-slug",
     };
 
     const event = CalendarEventBuilder.fromEvent(existingEvent)
       .withBasicDetails({
-        bookerUrl: "https://cal.com/user/test-slug",
+        bookerUrl: "https://www.leadnest.ai/user/test-slug",
         title: "Updated Event",
         startTime: mockStartTime,
         endTime: mockEndTime,
@@ -780,7 +780,7 @@ describe("CalendarEventBuilder", () => {
   it("should propagate disableCancelling and disableRescheduling", () => {
     const event = new CalendarEventBuilder()
       .withBasicDetails({
-        bookerUrl: "https://cal.com/user/test-slug",
+        bookerUrl: "https://www.leadnest.ai/user/test-slug",
         title: "Test Event",
         startTime: mockStartTime,
         endTime: mockEndTime,

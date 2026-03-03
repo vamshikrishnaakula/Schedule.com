@@ -550,7 +550,7 @@ export class EventTypeOutput_2024_06_14 extends BaseEventTypeOutput_2024_06_14 {
   @IsString()
   @DocsProperty({
     description: "Full URL to the booking page for this event type",
-    example: "https://cal.com/john-doe/30min",
+    example: "https://www.leadnest.ai/john-doe/30min",
     format: "uri",
   })
   bookingUrl!: string;

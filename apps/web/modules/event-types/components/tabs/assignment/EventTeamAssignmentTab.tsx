@@ -129,7 +129,7 @@ const FixedHostHelper = ({ t }: { t: TFunction }) => (
         key="fixed_host_helper"
         className="underline underline-offset-2"
         target="_blank"
-        href="https://cal.com/docs/enterprise-features/teams/round-robin-scheduling#fixed-hosts">
+        href="https://www.leadnest.ai/">
         Learn more
       </Link>,
     ]}
@@ -480,7 +480,7 @@ const RoundRobinHosts = ({
               <LearnMoreLink
                 t={t}
                 i18nKey={hostGroups?.length > 0 ? "round_robin_groups_helper" : "round_robin_helper"}
-                href="https://cal.com/help/event-types/round-robin"
+                href="https://www.leadnest.ai/help/event-types/round-robin"
               />
             </p>
           </div>

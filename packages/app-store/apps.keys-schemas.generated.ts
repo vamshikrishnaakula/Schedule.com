@@ -25,6 +25,7 @@ import { appKeysSchema as jitsivideo_zod_ts } from "./jitsivideo/zod";
 import { appKeysSchema as larkcalendar_zod_ts } from "./larkcalendar/zod";
 import { appKeysSchema as make_zod_ts } from "./make/zod";
 import { appKeysSchema as matomo_zod_ts } from "./matomo/zod";
+import { appKeysSchema as meet_leadnest_zod_ts } from "./meet-leadnest/zod";
 import { appKeysSchema as metapixel_zod_ts } from "./metapixel/zod";
 import { appKeysSchema as mock_payment_app_zod_ts } from "./mock-payment-app/zod";
 import { appKeysSchema as nextcloudtalk_zod_ts } from "./nextcloudtalk/zod";
@@ -76,6 +77,7 @@ export const appKeysSchemas = {
   larkcalendar: larkcalendar_zod_ts,
   make: make_zod_ts,
   matomo: matomo_zod_ts,
+  "meet-leadnest": meet_leadnest_zod_ts,
   metapixel: metapixel_zod_ts,
   "mock-payment-app": mock_payment_app_zod_ts,
   nextcloudtalk: nextcloudtalk_zod_ts,

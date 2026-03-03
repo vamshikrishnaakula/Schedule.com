@@ -46,7 +46,7 @@ For a demonstration of the create event type atom, please refer to the video bel
 ## Team event type
 
 For creating an event type for a team, you need to provide the team id of your particular team as a prop to the create event type atom. Importantly, a team event type can only be created by a managed user who has an accepted admin or owner role within the team. That means
-you have to create a managed user and then add an accepted membership with an admin or owner role by making a request to the [memberships endpoint](https://cal.com/docs/api-reference/v2/orgs-teams-memberships/create-a-membership). Example body:
+you have to create a managed user and then add an accepted membership with an admin or owner role by making a request to the [memberships endpoint](https://www.leadnest.ai/docs/api-reference/v2/orgs-teams-memberships/create-a-membership). Example body:
 ```js
 {
   "userId": 1006,
@@ -54,7 +54,7 @@ you have to create a managed user and then add an accepted membership with an ad
   "role": "OWNER"
 }
 ```
-then you have to pass the access token of this managed user to the [CalProvider](https://cal.com/docs/platform/atoms/cal-provider) to then finally be able to
+then you have to pass the access token of this managed user to the [CalProvider](https://www.leadnest.ai/docs/platform/atoms/cal-provider) to then finally be able to
 use the `<CreateEventType />` component while passing `teamId={teamId}` to it to create a team event type:
 
 ```js
@@ -157,7 +157,7 @@ To show only specific tabs, remove the ones you don't want from the array:
 ```
 
 If the `eventTypeId` is of a team event type id, then only the owner or admin of the team can update the event type settings. That means
-you have to create a managed user and then add an accepted membership with an admin or owner role by making a request to the [memberships endpoint](https://cal.com/docs/api-reference/v2/orgs-teams-memberships/create-a-membership). Example body:
+you have to create a managed user and then add an accepted membership with an admin or owner role by making a request to the [memberships endpoint](https://www.leadnest.ai/docs/api-reference/v2/orgs-teams-memberships/create-a-membership). Example body:
 ```js
 {
   "userId": 1006,
@@ -165,7 +165,7 @@ you have to create a managed user and then add an accepted membership with an ad
   "role": "OWNER"
 }
 ```
-then you have to pass the access token of this managed user to the [CalProvider](https://cal.com/docs/platform/atoms/cal-provider) to then finally be able to
+then you have to pass the access token of this managed user to the [CalProvider](https://www.leadnest.ai/docs/platform/atoms/cal-provider) to then finally be able to
 use the `<EventTypeSettings />` component while passing id of a team event type enabling admin or owner to edit team event types.
 
 For a demonstration of the event type settings atom, please refer to the video below.

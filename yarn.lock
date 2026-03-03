@@ -2900,6 +2900,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@calcom/meet-leadnest@workspace:packages/app-store/meet-leadnest":
+  version: 0.0.0-use.local
+  resolution: "@calcom/meet-leadnest@workspace:packages/app-store/meet-leadnest"
+  dependencies:
+    "@calcom/lib": "workspace:*"
+    "@calcom/types": "workspace:*"
+  languageName: unknown
+  linkType: soft
+
 "@calcom/metapixel@workspace:packages/app-store/metapixel":
   version: 0.0.0-use.local
   resolution: "@calcom/metapixel@workspace:packages/app-store/metapixel"

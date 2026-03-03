@@ -297,15 +297,7 @@ export default function BillingCredits() {
           <ServerTrans
             t={t}
             i18nKey="credit_worth_description"
-            components={[
-              <Link
-                key="Credit System"
-                className="underline underline-offset-2"
-                target="_blank"
-                href="https://cal.com/help/billing-and-usage/messaging-credits">
-                Learn more
-              </Link>,
-            ]}
+          
           />
         </div>
       </div>

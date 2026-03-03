@@ -272,7 +272,7 @@ export const EditWeightsForAllTeamMembers = ({
                       key="weights_description"
                       className="underline underline-offset-2"
                       target="_blank"
-                      href="https://cal.com/docs/enterprise-features/teams/round-robin-scheduling#weights">
+                      href="https://www.leadnest.ai/">
                       Learn more
                     </Link>,
                   ]}

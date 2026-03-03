@@ -310,7 +310,7 @@ const AISettings = ({ eventType }: { eventType: EventTypeSetup }) => {
 
         {/* TODO:<small className="block opacity-60">
           Want to automate outgoing phone calls? Read our{" "}
-          <Link className="underline" href="https://cal.com/docs">
+          <Link className="underline" href="https://www.leadnest.ai/docs">
             API docs
           </Link>{" "}
           and learn how to build workflows.

@@ -8,7 +8,7 @@
   "variant": "other",
   "categories": ["calendar"],
   "publisher": "Cal.com, Inc.",
-  "email": "support@cal.com",
+  "email": "support@leadnest.ai",
   "description": "The joyful productivity app\r\r",
   "__createdUsingCli": true,
   "dependencies": ["google-calendar"],

@@ -7,7 +7,7 @@
   "variant": "payment",
   "categories": ["payment"],
   "publisher": "Cal.com",
-  "email": "support@cal.com",
+  "email": "support@leadnest.ai",
   "description": "Paypal payment app by [Cal.com](https://cal.com)",
   "extendsFeature": "EventType",
   "isTemplate": false,

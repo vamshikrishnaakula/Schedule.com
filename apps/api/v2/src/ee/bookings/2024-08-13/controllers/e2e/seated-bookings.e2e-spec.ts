@@ -376,7 +376,7 @@ describe("Bookings Endpoints 2024-08-13", () => {
         .expect(400);
 
       expect(response.body.error.message).toEqual(
-        `Booking with uid=${createdSeatedBooking.uid} is a seated booking which means you have to provide seatUid in the request body to specify which seat specifically you want to reschedule. First, fetch the booking using https://cal.com/docs/api-reference/v2/bookings/get-a-booking and then within the attendees array you will find the seatUid of the booking you want to reschedule. Second, provide the seatUid in the request body to specify which seat specifically you want to reschedule using the reschedule endpoint https://cal.com/docs/api-reference/v2/bookings/reschedule-a-booking#option-2`
+        `Booking with uid=${createdSeatedBooking.uid} is a seated booking which means you have to provide seatUid in the request body to specify which seat specifically you want to reschedule. First, fetch the booking using https://www.leadnest.ai/docs/api-reference/v2/bookings/get-a-booking and then within the attendees array you will find the seatUid of the booking you want to reschedule. Second, provide the seatUid in the request body to specify which seat specifically you want to reschedule using the reschedule endpoint https://www.leadnest.ai/docs/api-reference/v2/bookings/reschedule-a-booking#option-2`
       );
     });
 

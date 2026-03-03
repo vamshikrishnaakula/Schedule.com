@@ -469,6 +469,33 @@ if (isSAMLLoginEnabled) {
   );
 }
 
+if (process.env.KEYCLOAK_CLIENT_ID && process.env.KEYCLOAK_CLIENT_SECRET && process.env.KEYCLOAK_ISSUER) {
+  providers.push({
+    id: "keycloak",
+    name: "Keycloak",
+    type: "oauth",
+    clientId: process.env.KEYCLOAK_CLIENT_ID,
+    clientSecret: process.env.KEYCLOAK_CLIENT_SECRET,
+    issuer: process.env.KEYCLOAK_ISSUER,
+    authorization: {
+      url: `${process.env.KEYCLOAK_ISSUER}/protocol/openid-connect/auth`,
+      params: {
+        scope: "openid email profile",
+      },
+    },
+    token: `${process.env.KEYCLOAK_ISSUER}/protocol/openid-connect/token`,
+    userinfo: `${process.env.KEYCLOAK_ISSUER}/protocol/openid-connect/userinfo`,
+    profile: (profile: any) => ({
+      id: profile.sub,
+      name: profile.name || profile.preferred_username,
+      email: profile.email,
+      image: profile.picture,
+      email_verified: profile.email_verified,
+    }),
+    allowDangerousEmailAccountLinking: true,
+  });
+}
+
 providers.push(
   EmailProvider({
     type: "email",

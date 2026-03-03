@@ -92,13 +92,7 @@ export default function RecurringEventController({
               descriptionClassName={customClassNames?.recurringToggle?.description}
               title={t("recurring_event")}
               {...recurringLocked}
-              description={
-                <LearnMoreLink
-                  t={t}
-                  i18nKey="recurring_event_description"
-                  href="https://cal.com/help/event-types/recurring-events"
-                />
-              }
+              
               checked={!!recurringEventState}
               data-testid="recurring-event-check"
               disabled={(!recurringEventState && isSeatsOffered) || hasBookingLimitPerBooker}

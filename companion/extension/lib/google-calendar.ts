@@ -267,7 +267,7 @@ function injectStyles(): void {
 
 /**
  * Extract booking UID from event description
- * Looks for patterns like: https://cal.com/booking/{uid} or https://app.cal.com/booking/{uid}
+ * Looks for patterns like: https://www.leadnest.ai/booking/{uid} or https://app.cal.com/booking/{uid}
  */
 function extractBookingUid(text: string): string | null {
   const regex = /https:\/\/(?:app\.)?cal\.com\/booking\/([a-zA-Z0-9]+)/;

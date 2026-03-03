@@ -43,7 +43,7 @@ describe("v2021-10-20/BookingPayloadBuilder", () => {
         language: { locale: "en" },
       },
     ],
-    location: "https://cal.com/video/123",
+    location: "https://www.leadnest.ai/video/123",
     uid: "booking-uid-123",
     customInputs: {},
     responses: {},

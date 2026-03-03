@@ -103,7 +103,7 @@ export default function RequiresConfirmationController({
                 <LearnMoreLink
                   t={t}
                   i18nKey="requires_confirmation_description"
-                  href="https://cal.com/help/event-types/how-to-requires"
+                  href="https://www.leadnest.ai"
                 />
               }
               checked={requiresConfirmation}

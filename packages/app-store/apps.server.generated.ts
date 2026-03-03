@@ -56,6 +56,7 @@ export const apiHandlers = {
   linear: import("./linear/api"),
   make: import("./make/api"),
   matomo: import("./matomo/api"),
+  "meet-leadnest": import("./meet-leadnest/api"),
   metapixel: import("./metapixel/api"),
   "millis-ai": import("./millis-ai/api"),
   mirotalk: import("./mirotalk/api"),

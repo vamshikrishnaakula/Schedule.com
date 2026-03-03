@@ -13,7 +13,7 @@ export const _SBApps: App[] = [
     logo: "/api/app-store/googlecalendar/icon.svg",
     publisher: "Cal.com",
     slug: "google-calendar",
-    url: "https://cal.com/",
+    url: "https://www.leadnest.ai/",
     email: "help@cal.com",
     dirName: "googlecalendar",
   },

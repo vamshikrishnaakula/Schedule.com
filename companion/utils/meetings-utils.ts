@@ -79,11 +79,11 @@ export const getMeetingInfo = (
   }
 
   // Jitsi
-  if (lowerLocation.includes("meet.jit.si") || lowerLocation.includes("jitsi")) {
+  if (lowerLocation.includes("meet.leadnest.ai") || lowerLocation.includes("leadnestvideo")) {
     return {
-      appId: "jitsi",
-      label: "Join Jitsi",
-      iconUrl: getAppIconUrl("jitsi_video", "jitsi"),
+      appId: "leadnestvideo",
+      label: "Join leadnestvideo",
+      iconUrl: getAppIconUrl("leadnest_video", "leadnestvideo"),
       cleanUrl,
     };
   }

@@ -1,0 +1,67 @@
+# ========= CORE URLS =========
+NEXT_PUBLIC_WEBAPP_URL=https://schedule.leadnest.ai
+NEXTAUTH_URL=https://schedule.leadnest.ai/api/auth
+WEB_APP_URL=https://schedule.leadnest.ai
+
+# ========= AUTH =========
+NEXTAUTH_SECRET=1RJYFZVkhZswlzxHjkh+ZCdHBU8TxLze1tMVw0bPix4=
+JWT_SECRET=zJ7IYdAcnO29+r89Iqsxrr+zQcalzpLdofJR0kvkqWc=
+NEXTAUTH_TRUST_HOST=true
+
+# ========= ENCRYPTION =========
+CALENDSO_ENCRYPTION_KEY=31z+fPQJIgj5DaWIQZGAuplGPuQWuAVW
+
+# ========= DATABASE (DOCKER) =========
+POSTGRES_USER=unicorn_user
+POSTGRES_PASSWORD=magical_password
+POSTGRES_DB=calendso
+DATABASE_HOST=database
+DATABASE_URL=postgresql://unicorn_user:magical_password@database:5432/calendso
+
+# ========= REDIS =========
+REDIS_URL=redis://redis:6379
+
+# ========= ENV =========
+NODE_ENV=production
+TZ=UTC
+
+#======google calander====
+
+GOOGLE_API_CREDENTIALS={"web":{"client_id":"778638370742-rtc4oro1k5m8htlvsjc9otq8qnisri7e.apps.googleusercontent.com","project_id":"scheduley-484607","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"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","redirect_uris":["https://schedule.leadnest.ai/api/auth/callback/google","https://schedule.leadnest.ai/api/integrations/google/callback","https://schedule.leadnest.ai/api/integrations/googlecalendar/callback"]}}
+
+
+
+# Email sender
+EMAIL_FROM='support@leadnest.ai'
+EMAIL_FROM_NAME='Leadnest'
+
+# Enable SMTP
+SMTP_ENABLE=true
+
+# Office 365 SMTP configuration
+EMAIL_SERVER_HOST='smtp.office365.com'
+EMAIL_SERVER_PORT=587
+EMAIL_SERVER_SECURE=false
+
+EMAIL_SERVER_USER='support@leadnest.ai'
+EMAIL_SERVER_PASSWORD='BizTech@2025'
+
+# Enable SMTP debugging
+SMTP_DEBUG=true
+# Stripe Configuration (required for API)
+STRIPE_API_KEY=sk_test_your_stripe_test_key_here
+STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret_here
+ 
+# JWT Secret (also required)
+JWT_SECRET=your_jwt_secret_here_at_least_32_characters
+ 
+# Web App URL
+WEB_APP_URL=https://schedule.leadnest.ai
+# add to .env
+CALCOM_JITSI_HOST=https://meet.leadnest.ai
+
+# With meeting title (still unique per booking)
+CALCOM_JITSI_PATH_PATTERN={Title}-{uuid}
+ 
+# With organizer name (still unique per booking)  
+CALCOM_JITSI_PATH_PATTERN={Organizer}-{uuid}

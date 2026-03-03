@@ -14,7 +14,7 @@ export const metadata = {
   slug: "wipe-my-cal",
   title: "Wipe my cal",
   type: "wipemycal_other",
-  url: "https://cal.com/apps/wipe-my-cal",
+  url: "https://www.leadnest.ai/apps/wipe-my-cal",
   variant: "other",
   email: "help@cal.com",
   dirName: "wipemycalother",

@@ -74,14 +74,7 @@ function Tips() {
       description: "Easily go out-of-office",
       href: "https://go.cal.com/ooo-video",
     },
-    {
-      id: 12,
-      thumbnailUrl: "https://cal.com/og-image-cal-ai.jpg",
-      mediaLink: "https://go.cal.com/cal-ai",
-      title: "Cal.ai",
-      description: "Your personal AI scheduling assistant",
-      href: "https://go.cal.com/cal-ai",
-    },
+   
     {
       id: 11,
       thumbnailUrl: "https://img.youtube.com/vi/KTg_qzA9NEc/0.jpg",
@@ -144,7 +137,7 @@ function Tips() {
       mediaLink: "https://go.cal.com/confirmation-video",
       title: "Requires Confirmation",
       description: "Learn how to be in charge of your bookings",
-      href: "https://cal.com/resources/feature/opt-in",
+      href: "https://www.leadnest.ai/resources/feature/opt-in",
     },
     {
       id: 3,
@@ -160,7 +153,7 @@ function Tips() {
       mediaLink: "https://go.cal.com/teams-video",
       title: "How to set up Teams",
       description: "Learn how to use round-robin and collective events.",
-      href: "https://cal.com/teams",
+      href: "https://www.leadnest.ai/teams",
     },
     {
       id: 1,

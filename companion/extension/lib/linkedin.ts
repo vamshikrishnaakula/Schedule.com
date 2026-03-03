@@ -667,7 +667,7 @@ export function initLinkedInIntegration() {
   function buildBookingUrl(eventType: EventType): string {
     return (
       eventType.bookingUrl ||
-      `https://cal.com/${eventType.users?.[0]?.username || "user"}/${eventType.slug}`
+      `https://www.leadnest.ai/${eventType.users?.[0]?.username || "user"}/${eventType.slug}`
     );
   }
 

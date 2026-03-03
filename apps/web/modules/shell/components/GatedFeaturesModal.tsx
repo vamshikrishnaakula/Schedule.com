@@ -26,7 +26,7 @@ const content: Record<GatedFeatures, FeatureContent> = {
       "compliance_check",
       "and_more_features",
     ],
-    learnMoreUrl: "https://cal.com/enterprise",
+    learnMoreUrl: "https://www.leadnest.ai/enterprise",
     ctaUrl: "/settings/organizations/new",
   },
 };

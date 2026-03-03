@@ -17,7 +17,7 @@ export const metadata = {
   publisher: "Cal.com",
   title: "Stripe",
   type: "stripe_payment",
-  url: "https://cal.com/",
+  url: "https://www.leadnest.ai/",
   docsUrl: "https://stripe.com/docs",
   variant: "payment",
   extendsFeature: "EventType",

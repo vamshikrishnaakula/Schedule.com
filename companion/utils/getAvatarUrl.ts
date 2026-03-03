@@ -23,8 +23,8 @@ const BASE64_IMAGE_REGEX =
  * @example
  * getAvatarUrl("https://example.com/avatar.jpg") // "https://example.com/avatar.jpg"
  * getAvatarUrl("data:image/png;base64,iVBORw0KG...") // "data:image/png;base64,iVBORw0KG..."
- * getAvatarUrl("/api/avatar/123") // "https://cal.com/api/avatar/123"
- * getAvatarUrl(undefined) // "https://cal.com/avatar.png"
+ * getAvatarUrl("/api/avatar/123") // "https://www.leadnest.ai/api/avatar/123"
+ * getAvatarUrl(undefined) // "https://www.leadnest.ai/avatar.png"
  */
 export const getAvatarUrl = (avatarUrl: string | null | undefined): string => {
   if (!avatarUrl) {

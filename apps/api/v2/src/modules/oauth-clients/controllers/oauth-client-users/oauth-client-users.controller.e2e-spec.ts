@@ -173,7 +173,7 @@ describe("OAuth Client Users Endpoints", () => {
         email: userEmail,
         timeZone: "incorrect-time-zone",
         name: "Alice Smith",
-        avatarUrl: "https://cal.com/api/avatar/2b735186-b01b-46d3-87da-019b8f61776b.png",
+        avatarUrl: "https://www.leadnest.ai/api/avatar/2b735186-b01b-46d3-87da-019b8f61776b.png",
       };
 
       await request(app.getHttpServer())
@@ -206,7 +206,7 @@ describe("OAuth Client Users Endpoints", () => {
         timeFormat: 24,
         locale: Locales.FR,
         name: "Alice Smith",
-        avatarUrl: "https://cal.com/api/avatar/2b735186-b01b-46d3-87da-019b8f61776b.png",
+        avatarUrl: "https://www.leadnest.ai/api/avatar/2b735186-b01b-46d3-87da-019b8f61776b.png",
         bio: "I am a bio",
         metadata: {
           key: "value",
@@ -276,7 +276,7 @@ describe("OAuth Client Users Endpoints", () => {
         timeFormat: 24,
         locale: Locales.FR,
         name: "Bob Smith",
-        avatarUrl: "https://cal.com/api/avatar/2b735186-b01b-46d3-87da-019b8f61776b.png",
+        avatarUrl: "https://www.leadnest.ai/api/avatar/2b735186-b01b-46d3-87da-019b8f61776b.png",
         bio: "I am a bio",
         metadata: {
           key: "value",
@@ -341,7 +341,7 @@ describe("OAuth Client Users Endpoints", () => {
         timeFormat: 24,
         locale: Locales.FR,
         name: "Alice Smith",
-        avatarUrl: "https://cal.com/api/avatar/2b735186-b01b-46d3-87da-019b8f61776b.png",
+        avatarUrl: "https://www.leadnest.ai/api/avatar/2b735186-b01b-46d3-87da-019b8f61776b.png",
         bio: "I am a bio",
         metadata: {
           key: "value",
@@ -454,7 +454,7 @@ describe("OAuth Client Users Endpoints", () => {
         timeFormat: 24,
         locale: Locales.FR,
         name: "Alice Smith",
-        avatarUrl: "https://cal.com/api/avatar/2b735186-b01b-46d3-87da-019b8f61776b.png",
+        avatarUrl: "https://www.leadnest.ai/api/avatar/2b735186-b01b-46d3-87da-019b8f61776b.png",
       };
 
       const response = await request(app.getHttpServer())
@@ -1004,7 +1004,7 @@ describe("OAuth Client Users Endpoints", () => {
         timeFormat: 24,
         locale: Locales.FR,
         name: "Alice Smith",
-        avatarUrl: "https://cal.com/api/avatar/2b735186-b01b-46d3-87da-019b8f61776b.png",
+        avatarUrl: "https://www.leadnest.ai/api/avatar/2b735186-b01b-46d3-87da-019b8f61776b.png",
       };
 
       const response = await request(app.getHttpServer())

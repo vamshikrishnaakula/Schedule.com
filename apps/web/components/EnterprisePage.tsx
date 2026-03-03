@@ -58,7 +58,7 @@ export default function EnterprisePage() {
                 <Button color="primary" href="https://go.cal.com/quote" target="_blank">
                   {t("contact_sales")}
                 </Button>
-                <Button color="minimal" href="https://cal.com/enterprise" target="_blank">
+                <Button color="minimal" href="https://www.leadnest.ai" target="_blank">
                   {t("learn_more")}
                 </Button>
               </ButtonGroup>

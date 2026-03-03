@@ -50,7 +50,7 @@ describe("OutputEventTypesService_2024_06_14", () => {
 
       const result = service.buildBookingUrl(user, slug);
 
-      expect(result).toBe("https://cal.com/john-doe/30min");
+      expect(result).toBe("https://www.leadnest.ai/john-doe/30min");
     });
 
     it("should use profile username for org users", () => {
@@ -109,7 +109,7 @@ describe("OutputEventTypesService_2024_06_14", () => {
       const result = service.buildBookingUrl(user, slug);
 
       // Should use user.username (platform-user), not profile.username (platform-user-generated-id)
-      expect(result).toBe("https://cal.com/platform-user/secret");
+      expect(result).toBe("https://www.leadnest.ai/platform-user/secret");
     });
 
     it("should return empty string for managed users", () => {
@@ -199,7 +199,7 @@ describe("OutputEventTypesService_2024_06_14", () => {
 
       const result = service.buildBookingUrl(user, slug);
 
-      expect(result).toBe("https://cal.com/user/consultation");
+      expect(result).toBe("https://www.leadnest.ai/user/consultation");
     });
 
     it("should handle base URL with trailing slash", () => {

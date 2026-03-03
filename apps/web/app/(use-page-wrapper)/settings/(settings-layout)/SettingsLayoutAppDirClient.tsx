@@ -119,43 +119,6 @@ const getTabs = (orgBranding: OrganizationBranding | null) => {
       ],
     },
     {
-      name: "billing",
-      href: "/settings/billing",
-      icon: "credit-card",
-      children: [
-        {
-          name: "manage_billing",
-          href: "/settings/billing",
-          trackingMetadata: { section: "billing", page: "manage_billing" },
-        },
-      ],
-    },
-    {
-      name: "developer",
-      href: "/settings/developer",
-      icon: "terminal",
-      children: [
-        //
-        {
-          name: "webhooks",
-          href: "/settings/developer/webhooks",
-          trackingMetadata: { section: "developer", page: "webhooks" },
-        },
-        {
-          name: "api_keys",
-          href: "/settings/developer/api-keys",
-          trackingMetadata: { section: "developer", page: "api_keys" },
-        },
-        {
-          name: "admin_api",
-          href: "/settings/organizations/admin-api",
-          trackingMetadata: { section: "developer", page: "admin_api" },
-        },
-        // TODO: Add profile level for embeds
-        // { name: "embeds", href: "/v2/settings/developer/embeds" },
-      ],
-    },
-    {
       name: "organization",
       href: "/settings/organizations",
       children: [
@@ -200,7 +163,7 @@ const getTabs = (orgBranding: OrganizationBranding | null) => {
         },
         {
           name: "admin_api",
-          href: "https://cal.com/docs/enterprise-features/api/api-reference/bookings#admin-access",
+          href: "https://www.leadnest.ai/docs/enterprise-features/api/api-reference/bookings#admin-access",
           isExternalLink: true,
           trackingMetadata: { section: "organization", page: "admin_api" },
         },

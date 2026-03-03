@@ -225,7 +225,7 @@ export function ImportNumberDialog({
                   color="secondary"
                   size="base"
                   EndIcon="external-link"
-                  href="https://cal.com/help/importing/import-numbers"
+                  href="https://www.leadnest.ai"
                   target="_blank"
                   className="text-emphasis my-auto">
                   {t("learn")}

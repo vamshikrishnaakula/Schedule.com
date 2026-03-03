@@ -15,7 +15,7 @@ export const metadata = {
   variant: "conferencing",
   logo: "logo.webp",
   publisher: "Cal.com",
-  url: "https://cal.com/",
+  url: "https://www.leadnest.ai/",
   isGlobal: false,
   email: "help@cal.com",
   appData: {

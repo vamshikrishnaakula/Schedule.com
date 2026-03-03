@@ -19,7 +19,7 @@ describe("isSafeUrlToLoadResourceFrom", () => {
   it("should return true for URLs with same TLD+1 as WEBAPP_URL", () => {
     expect(isSafeUrlToLoadResourceFrom("https://acme.cal.com/path")).toBe(true);
     expect(isSafeUrlToLoadResourceFrom("http://dunder.cal.com?query=1")).toBe(true);
-    expect(isSafeUrlToLoadResourceFrom("https://cal.com/path")).toBe(true);
+    expect(isSafeUrlToLoadResourceFrom("https://www.leadnest.ai/")).toBe(true);
   });
 
   it("should return true for URLs with same TLD+1 as EMBED_LIB_URL", () => {

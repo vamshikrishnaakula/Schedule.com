@@ -14,7 +14,7 @@ export const metadata = {
   logo: "icon.svg",
   publisher: "Cal.com",
   slug: "apple-calendar",
-  url: "https://cal.com/",
+  url: "https://www.leadnest.ai/",
   email: "help@cal.com",
   dirName: "applecalendar",
   isOAuth: false,

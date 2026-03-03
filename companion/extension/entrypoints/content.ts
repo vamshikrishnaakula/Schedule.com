@@ -1080,7 +1080,7 @@ export default defineContentScript({
                     e.stopPropagation();
                     const bookingUrl =
                       eventType.bookingUrl ||
-                      `https://cal.com/${
+                      `https://www.leadnest.ai/${
                         eventType.users?.[0]?.username || "user"
                       }/${eventType.slug}`;
                     window.open(bookingUrl, "_blank");
@@ -1124,7 +1124,7 @@ export default defineContentScript({
                     // Copy to clipboard
                     const bookingUrl =
                       eventType.bookingUrl ||
-                      `https://cal.com/${
+                      `https://www.leadnest.ai/${
                         eventType.users?.[0]?.username || "user"
                       }/${eventType.slug}`;
                     navigator.clipboard
@@ -1297,7 +1297,7 @@ export default defineContentScript({
             // Construct the Cal.com booking link
             const bookingUrl =
               eventType.bookingUrl ||
-              `https://cal.com/${eventType.users?.[0]?.username || "user"}/${eventType.slug}`;
+              `https://www.leadnest.ai/${eventType.users?.[0]?.username || "user"}/${eventType.slug}`;
 
             // Try to insert at cursor position in the compose field
             const inserted = insertTextAtCursor(bookingUrl);
@@ -1325,7 +1325,7 @@ export default defineContentScript({
             // Construct the Cal.com booking link
             const bookingUrl =
               eventType.bookingUrl ||
-              `https://cal.com/${eventType.users?.[0]?.username || "user"}/${eventType.slug}`;
+              `https://www.leadnest.ai/${eventType.users?.[0]?.username || "user"}/${eventType.slug}`;
 
             // Try to insert at cursor position in the compose field
             const inserted = insertTextAtCursor(bookingUrl);
@@ -1829,7 +1829,7 @@ export default defineContentScript({
                 e.stopPropagation();
                 const bookingUrl =
                   eventType.bookingUrl ||
-                  `https://cal.com/${eventType.users?.[0]?.username || "user"}/${eventType.slug}`;
+                  `https://www.leadnest.ai/${eventType.users?.[0]?.username || "user"}/${eventType.slug}`;
                 window.open(bookingUrl, "_blank");
               });
               previewBtn.addEventListener("mouseenter", () => {
@@ -1871,7 +1871,7 @@ export default defineContentScript({
                 // Copy to clipboard
                 const bookingUrl =
                   eventType.bookingUrl ||
-                  `https://cal.com/${eventType.users?.[0]?.username || "user"}/${eventType.slug}`;
+                  `https://www.leadnest.ai/${eventType.users?.[0]?.username || "user"}/${eventType.slug}`;
                 navigator.clipboard
                   .writeText(bookingUrl)
                   .then(() => {
@@ -2042,7 +2042,7 @@ export default defineContentScript({
         // Construct the Cal.com booking link
         const bookingUrl =
           eventType.bookingUrl ||
-          `https://cal.com/${eventType.users?.[0]?.username || "user"}/${eventType.slug}`;
+          `https://www.leadnest.ai/${eventType.users?.[0]?.username || "user"}/${eventType.slug}`;
 
         // Try to insert at cursor position in the message field
         const inserted = insertTextAtCursor(bookingUrl);
@@ -2231,7 +2231,7 @@ export default defineContentScript({
               .map((slot) => {
                 // URL-encode the timezone to handle special characters like "/"
                 const encodedTimezone = encodeURIComponent(timezone);
-                const bookingURL = `https://cal.com/${username}/${eventType.slug}?duration=${duration}&date=${slot.isoDate}&slot=${slot.isoTimestamp}&cal.tz=${encodedTimezone}`;
+                const bookingURL = `https://www.leadnest.ai/${username}/${eventType.slug}?duration=${duration}&date=${slot.isoDate}&slot=${slot.isoTimestamp}&cal.tz=${encodedTimezone}`;
 
                 return `
                   <td style="padding: 0px; width: 64px; display: inline-block; margin-right: 4px; margin-bottom: 4px; height: 24px; border: 1px solid #111827; border-radius: 3px;">
@@ -2295,7 +2295,7 @@ export default defineContentScript({
             </div>
             ${datesHTML}
             <div style="margin-top: 13px;">
-              <a href="https://cal.com/${username}/${eventType.slug}?cal.tz=${encodeURIComponent(
+              <a href="https://www.leadnest.ai/${username}/${eventType.slug}?cal.tz=${encodeURIComponent(
                 timezone
               )}" style="text-decoration: none; cursor: pointer; color: #0B57D0; font-size: 14px;">
                 See all available times →
@@ -3683,7 +3683,7 @@ export default defineContentScript({
               const selectedUsername = selectedEventType.users?.[0]?.username || "user";
 
               // Generate Cal.com URL with slot parameters
-              const baseUrl = `https://cal.com/${selectedUsername}/${selectedSlug}`;
+              const baseUrl = `https://www.leadnest.ai/${selectedUsername}/${selectedSlug}`;
               const params = new URLSearchParams({
                 overlayCalendar: "true",
                 date: slot.isoDate,

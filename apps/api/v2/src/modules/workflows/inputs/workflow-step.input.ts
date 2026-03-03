@@ -180,7 +180,7 @@ export class WorkflowEmailAddressStepDto extends BaseWorkflowStepDto {
     description: "Email address if recipient is EMAIL, required for action EMAIL_ADDRESS",
     example: "31214",
     externalDocs: {
-      url: "https://cal.com/docs/api-reference/v2/organization-team-verified-resources/verify-an-email-for-an-org-team",
+      url: "https://www.leadnest.ai/docs/api-reference/v2/organization-team-verified-resources/verify-an-email-for-an-org-team",
     },
   })
   @IsNumber()
@@ -236,7 +236,7 @@ export class WorkflowPhoneWhatsAppNumberStepDto extends BaseWorkflowStepDto {
       "Phone number if recipient is PHONE_NUMBER, required for actions SMS_NUMBER and WHATSAPP_NUMBER",
     example: "3243434",
     externalDocs: {
-      url: "https://cal.com/docs/api-reference/v2/organization-team-verified-resources/verify-a-phone-number-for-an-org-team",
+      url: "https://www.leadnest.ai/docs/api-reference/v2/organization-team-verified-resources/verify-a-phone-number-for-an-org-team",
     },
   })
   @IsNumber()
@@ -262,7 +262,7 @@ export class WorkflowPhoneAttendeeStepDto extends BaseWorkflowStepDto {
       "Phone number if recipient is PHONE_NUMBER, required for actions SMS_NUMBER and WHATSAPP_NUMBER",
     example: "3243434",
     externalDocs: {
-      url: "https://cal.com/docs/api-reference/v2/organization-team-verified-resources/verify-a-phone-number-for-an-org-team",
+      url: "https://www.leadnest.ai/docs/api-reference/v2/organization-team-verified-resources/verify-a-phone-number-for-an-org-team",
     },
   })
   @ApiProperty({ description: "Message content for this step", type: TextWorkflowMessageDto })
@@ -294,7 +294,7 @@ export class WorkflowPhoneNumberStepDto extends BaseWorkflowStepDto {
       "Phone number if recipient is PHONE_NUMBER, required for actions SMS_NUMBER and WHATSAPP_NUMBER",
     example: "3243434",
     externalDocs: {
-      url: "https://cal.com/docs/api-reference/v2/organization-team-verified-resources/verify-a-phone-number-for-an-org-team",
+      url: "https://www.leadnest.ai/docs/api-reference/v2/organization-team-verified-resources/verify-a-phone-number-for-an-org-team",
     },
   })
   @IsNumber()

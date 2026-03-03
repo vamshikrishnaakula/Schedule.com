@@ -12,7 +12,7 @@ export const metadata = {
   slug: "giphy",
   title: "Giphy",
   type: "giphy_other",
-  url: "https://cal.com/apps/giphy",
+  url: "https://www.leadnest.ai/apps/giphy",
   variant: "other",
   extendsFeature: "EventType",
   email: "help@cal.com",

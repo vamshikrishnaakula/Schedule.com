@@ -11,7 +11,7 @@ If you want all of your managed users or a subset of managed users to have the s
 
 ## Prerequisites
 
-1. You need to have an OAuth client set up, since we'll need the client id and client secret from the OAuth client to be included in the API requests. Here is the link for the [OAuth client setup guide](https://cal.com/docs/platform/quickstart)
+1. You need to have an OAuth client set up, since we'll need the client id and client secret from the OAuth client to be included in the API requests. Here is the link for the [OAuth client setup guide](https://www.leadnest.ai/docs/platform/quickstart)
 2. You need to have an ESSENTIALS plan or higher
 
 ## Steps
@@ -29,7 +29,7 @@ and the user will have the event type created. If you then update the parent man
 <Steps>
 
 <Step>
- Create a team by sending a POST request to the [create a team](https://cal.com/docs/api-reference/v2/orgs-teams/create-a-team) endpoint. Example request body:
+ Create a team by sending a POST request to the [create a team](https://www.leadnest.ai/docs/api-reference/v2/orgs-teams/create-a-team) endpoint. Example request body:
 
 ```
 {
@@ -53,7 +53,7 @@ You will need to note down the "id" of the created team from the response:
 </Step>
 
 <Step>
-Now we will create the managed team event type. Make a POST request to the [create an organization team event type](https://cal.com/docs/api-reference/v2/orgs-teams-event-types/create-an-event-type) endpoint. Example request body:
+Now we will create the managed team event type. Make a POST request to the [create an organization team event type](https://www.leadnest.ai/docs/api-reference/v2/orgs-teams-event-types/create-an-event-type) endpoint. Example request body:
 ```
 {
   "lengthInMinutes": 60,
@@ -86,7 +86,7 @@ You will need to note down the "id" of the created event type from the response:
 </Step>
 
 <Step>
-The team created in the previous step has no members, so we need to create managed users and later their membership in the team. To create a managed user here is the [create managed user](https://cal.com/docs/api-reference/v2/platform-managed-users/create-a-managed-user) endpoint. Example request body:
+The team created in the previous step has no members, so we need to create managed users and later their membership in the team. To create a managed user here is the [create managed user](https://www.leadnest.ai/docs/api-reference/v2/platform-managed-users/create-a-managed-user) endpoint. Example request body:
 ```
 {
     "email": "charlie@gmail.com",
@@ -118,7 +118,7 @@ After creating managed user you have to save its "id", "accessToken" and "refres
 
 <Step>
 
-Now we will create a membership for this user within the team by making a POST request to the [create membership](https://cal.com/docs/api-reference/v2/orgs-teams-memberships/create-a-membership) endpoint. Example body:
+Now we will create a membership for this user within the team by making a POST request to the [create membership](https://www.leadnest.ai/docs/api-reference/v2/orgs-teams-memberships/create-a-membership) endpoint. Example body:
 
 ```
 {
@@ -132,7 +132,7 @@ Note that `"accepted"` has to be `"true"` and `"userId"` has to be the id of the
 
 </Steps>
 
-Now, if we fetch managed user event types using the [get event types](https://cal.com/docs/api-reference/v2/event-types/get-all-event-types) endpoint and given our example
+Now, if we fetch managed user event types using the [get event types](https://www.leadnest.ai/docs/api-reference/v2/event-types/get-all-event-types) endpoint and given our example
 query params `eventSlug` and `username` (`?eventSlug=coffee-tasting&username=charlie-clxyyy21o0003sbk7yw5z6tzg-gmail-com`), the response will contain the "global" event type:
 
 ```
@@ -154,8 +154,8 @@ query params `eventSlug` and `username` (`?eventSlug=coffee-tasting&username=cha
 Note, that when we create the "parent" managed event type in step 2 it has an id `3672` but the child managed event type belonging to managed user has `3673`, so they are separate entities
 and the "child" managed event type is the same as having individually created event type just for that managed user.
 
-Now, if we update the "parent" managed team event type via [update an organization team event type](https://cal.com/docs/api-reference/v2/orgs-teams-event-types/update-a-team-event-type) endpoint, and fetch
-again managed user event type using the [get event types](https://cal.com/docs/api-reference/v2/event-types/get-all-event-types) endpoint with same query parameters `eventSlug` and `username` as above,
+Now, if we update the "parent" managed team event type via [update an organization team event type](https://www.leadnest.ai/docs/api-reference/v2/orgs-teams-event-types/update-a-team-event-type) endpoint, and fetch
+again managed user event type using the [get event types](https://www.leadnest.ai/docs/api-reference/v2/event-types/get-all-event-types) endpoint with same query parameters `eventSlug` and `username` as above,
 the child managed event type will also be updated automatically.
 
 Now with this setup you can:

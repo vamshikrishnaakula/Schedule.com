@@ -38,10 +38,12 @@ function detectTransport(): SendmailTransport.Options | SMTPConnection.Options |
       host: process.env.EMAIL_SERVER_HOST,
       port,
       auth,
-      secure: port === 465,
+      secure: process.env.EMAIL_SERVER_SECURE === 'true' || port === 465,
       tls: {
         rejectUnauthorized: !isENVDev,
       },
+      debug: process.env.SMTP_DEBUG === 'true',
+      logger: process.env.SMTP_DEBUG === 'true',
     };
 
     return transport;

@@ -1,10 +1,10 @@
 <!-- PROJECT LOGO -->
 <div align="center">
-  <a href="https://cal.com/docs/enterprise-features/api#api-server-specifications">
+  <a href="https://www.leadnest.ai/docs/enterprise-features/api#api-server-specifications">
     <img src="https://user-images.githubusercontent.com/8019099/133430653-24422d2a-3c8d-4052-9ad6-0580597151ee.png" alt="Logo">
   </a>
   
-  <a href="https://cal.com/docs/enterprise-features/api#api-server-specifications">Read the API docs</a>
+  <a href="https://www.leadnest.ai/docs/enterprise-features/api#api-server-specifications">Read the API docs</a>
 </div>
 
 # Commercial Cal.com Public API

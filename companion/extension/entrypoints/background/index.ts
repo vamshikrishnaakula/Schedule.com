@@ -321,7 +321,7 @@ function isRestrictedUrl(url: string | undefined): boolean {
 function openAppPage(): void {
   const tabsAPI = getTabsAPI();
   if (tabsAPI) {
-    tabsAPI.create({ url: "https://cal.com/app?openExtension=true" });
+    tabsAPI.create({ url: "https://www.leadnest.ai/app?openExtension=true" });
   }
 }
 

@@ -8,7 +8,7 @@
   "variant": "analytics",
   "categories": ["analytics"],
   "publisher": "Cal.com, Inc.",
-  "email": "support@cal.com",
+  "email": "support@leadnest.ai",
   "description": "Google Analytics is a web analytics service offered by Google that tracks and reports website traffic, currently as a platform inside the Google Marketing Platform brand.",
   "extendsFeature": "EventType",
   "appData": {

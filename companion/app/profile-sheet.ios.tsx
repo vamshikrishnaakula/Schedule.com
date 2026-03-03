@@ -36,7 +36,7 @@ export default function ProfileSheet() {
   const insets = useSafeAreaInsets();
   const { data: userProfile, isLoading } = useUserProfile();
 
-  const publicPageUrl = userProfile?.username ? `https://cal.com/${userProfile.username}` : null;
+  const publicPageUrl = userProfile?.username ? `https://www.leadnest.ai/${userProfile.username}` : null;
 
   const menuItems: ProfileMenuItem[] = [
     {
@@ -92,14 +92,14 @@ export default function ProfileSheet() {
       id: "roadmap",
       label: "Roadmap",
       icon: "map-outline",
-      onPress: () => openInAppBrowser("https://cal.com/roadmap", "Roadmap page"),
+      onPress: () => openInAppBrowser("https://www.leadnest.ai/roadmap", "Roadmap page"),
       external: true,
     },
     {
       id: "help",
       label: "Help",
       icon: "help-circle-outline",
-      onPress: () => openInAppBrowser("https://cal.com/help", "Help page"),
+      onPress: () => openInAppBrowser("https://www.leadnest.ai/help", "Help page"),
       external: true,
     },
   ];

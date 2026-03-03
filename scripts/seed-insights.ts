@@ -139,7 +139,7 @@ const shuffle = (
 	} else if (random < 0.4) {
 		// 5% Cal Video
 		booking.metadata = {
-			videoCallUrl: `https://cal.com/video/${uuidv4()}`,
+			videoCallUrl: `https://www.leadnest.ai/video/${uuidv4()}`,
 		};
 		booking.location = "integrations:daily";
 	}

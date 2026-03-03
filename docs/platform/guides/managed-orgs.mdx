@@ -63,7 +63,7 @@ Make POST request to `https://api.cal.com/v2/oauth-clients` by:
 1. Setting `Authorization: Bearer <apiKey>` header where `<apiKey>` is api key returned when creating a managed organization.
 2. Setting request body:
    1. name is name of the OAuth client
-   2. permissions - an array that can receive following permissions: `"EVENT_TYPE_READ", "EVENT_TYPE_WRITE", "BOOKING_READ", "BOOKING_WRITE", "SCHEDULE_READ", "SCHEDULE_WRITE", "APPS_READ", "APPS_WRITE", "PROFILE_READ", "PROFILE_WRITE"` or if you want all of them enabled set `*` . You most probably want to use `*` . See docs here [https://cal.com/docs/platform/quickstart#2-setting-up-an-oauth-client](https://cal.com/docs/platform/quickstart#2-setting-up-an-oauth-client)
+   2. permissions - an array that can receive following permissions: `"EVENT_TYPE_READ", "EVENT_TYPE_WRITE", "BOOKING_READ", "BOOKING_WRITE", "SCHEDULE_READ", "SCHEDULE_WRITE", "APPS_READ", "APPS_WRITE", "PROFILE_READ", "PROFILE_WRITE"` or if you want all of them enabled set `*` . You most probably want to use `*` . See docs here [https://www.leadnest.ai/docs/platform/quickstart#2-setting-up-an-oauth-client](https://www.leadnest.ai/docs/platform/quickstart#2-setting-up-an-oauth-client)
    3. redirectUris - point to (as example) `your-domain.com*` where users end up when connecting google calendar etc and what is the origin of the requests aka what origins are allowed to make requests to our endpoints. Having `your-domain.com*` would mean that we will accept requests from cal UI components that make requests from `your-domain.com, your-domain.com/page` etc.
 
 ```json

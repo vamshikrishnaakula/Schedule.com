@@ -14,7 +14,7 @@ self.addEventListener("push", async (event) => {
   }
 
   const title = notificationData.title || "New Cal.com Notification";
-  const image = notificationData.icon || "https://cal.com/api/logo?type=icon";
+  const image = notificationData.icon || "https://www.leadnest.ai/api/logo?type=icon";
 
    event.waitUntil(
     (async () => {

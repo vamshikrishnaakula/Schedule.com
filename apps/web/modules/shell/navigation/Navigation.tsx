@@ -92,19 +92,6 @@ const getNavigationItems = (
     icon: "ellipsis",
   },
   {
-    name: "routing",
-    href: "/routing",
-    icon: "split",
-    isCurrent: ({ pathname }) => pathname?.startsWith("/routing") ?? false,
-    moreOnMobile: true,
-  },
-  {
-    name: "workflows",
-    href: "/workflows",
-    icon: "zap",
-    moreOnMobile: true,
-  },
-  {
     name: "insights",
     href: "/insights",
     icon: "chart-bar",
@@ -116,11 +103,6 @@ const getNavigationItems = (
             name: "bookings",
             href: "/insights",
             isCurrent: ({ pathname: path }) => path === "/insights",
-          },
-          {
-            name: "routing",
-            href: "/insights/routing",
-            isCurrent: ({ pathname: path }) => path?.startsWith("/insights/routing") ?? false,
           },
           {
             name: "router_position",

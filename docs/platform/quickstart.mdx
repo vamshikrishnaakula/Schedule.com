@@ -109,8 +109,8 @@ Shortly:
 2. Your endpoint will receive a request from atoms.
 3. Make it a GET endpoint to which “Authorization: Bearer accessToken” header can be sent to.
 4. Assuming you have stored the access and refresh tokens in your database and connected them to a specific user, fetch the user based on the received access token.
-5. Provide the OAuth client ID, client secret and managed user refresh token to the [`/refresh`](https://cal.com/docs/api-reference/v2/platform-managed-users/refresh-managed-user-tokens) endpoint.
-6. Store in your database access and refresh tokens returned by the [`/refresh`](https://cal.com/docs/api-reference/v2/platform-managed-users/refresh-managed-user-tokens) endpoint.
+5. Provide the OAuth client ID, client secret and managed user refresh token to the [`/refresh`](https://www.leadnest.ai/docs/api-reference/v2/platform-managed-users/refresh-managed-user-tokens) endpoint.
+6. Store in your database access and refresh tokens returned by the [`/refresh`](https://www.leadnest.ai/docs/api-reference/v2/platform-managed-users/refresh-managed-user-tokens) endpoint.
 7. Return access token to the request. It should be in the format of:
   ```js
   { accessToken: "fresh access token" }
@@ -124,9 +124,9 @@ then will make a request to your refresh token endpoint to get a new access toke
 Each refresh token is valid for 1 year. When a managed user's access token is refreshed, the refresh token is refreshed too.
 However, to make sure that refresh tokens do not expire for less active users you have 2 options:
 1. If you decode the refresh token there is `expiresAt` date (it is a jwt token so you can decode it using some library from npm). You could have a cron job that checks all of your users refresh tokens and sees if the refresh token
-is about to expire, then refresh tokens using the [`/refresh`](https://cal.com/docs/api-reference/v2/platform-managed-users/refresh-managed-user-tokens) endpoint.
-2. In the refresh endpoint you built in the [previous step](https://cal.com/docs/platform/quickstart#4-backend%3A-setting-up-a-refresh-token-endpoint) you could have a check that if the call to [`/refresh`](https://cal.com/docs/api-reference/v2/platform-managed-users/refresh-managed-user-tokens) fails meaning that the
-refresh token has expired, call the [`/force-refresh`](https://cal.com/docs/api-reference/v2/platform-managed-users/force-refresh-tokens) endpoint - it allows you to refresh managed user tokens
+is about to expire, then refresh tokens using the [`/refresh`](https://www.leadnest.ai/docs/api-reference/v2/platform-managed-users/refresh-managed-user-tokens) endpoint.
+2. In the refresh endpoint you built in the [previous step](https://www.leadnest.ai/docs/platform/quickstart#4-backend%3A-setting-up-a-refresh-token-endpoint) you could have a check that if the call to [`/refresh`](https://www.leadnest.ai/docs/api-reference/v2/platform-managed-users/refresh-managed-user-tokens) fails meaning that the
+refresh token has expired, call the [`/force-refresh`](https://www.leadnest.ai/docs/api-reference/v2/platform-managed-users/force-refresh-tokens) endpoint - it allows you to refresh managed user tokens
 using only the OAuth client ID and client secret and is intended to be used in cases when one of the tokens is lost or the refresh token is expired.
 
 ## 5. Frontend: setting up atoms

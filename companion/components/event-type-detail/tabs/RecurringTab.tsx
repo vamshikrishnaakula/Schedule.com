@@ -137,7 +137,7 @@ export function RecurringTab({
           description="People can subscribe for recurring events. When enabled, you can set how often the event repeats and for how many occurrences."
           value={recurringEnabled}
           onValueChange={setRecurringEnabled}
-          learnMoreUrl="https://cal.com/docs/core-features/event-types/recurring-events"
+          learnMoreUrl="https://www.leadnest.ai/docs/core-features/event-types/recurring-events"
           isLast
         />
       </SettingsGroup>

@@ -56,6 +56,7 @@ import lindy_config_json from "./lindy/config.json";
 import linear_config_json from "./linear/config.json";
 import make_config_json from "./make/config.json";
 import matomo_config_json from "./matomo/config.json";
+import { metadata as meet_leadnest__metadata_ts } from "./meet-leadnest/_metadata";
 import metapixel_config_json from "./metapixel/config.json";
 import millis_ai_config_json from "./millis-ai/config.json";
 import mirotalk_config_json from "./mirotalk/config.json";
@@ -166,6 +167,7 @@ export const appStoreMetadata = {
   linear: linear_config_json,
   make: make_config_json,
   matomo: matomo_config_json,
+  "meet-leadnest": meet_leadnest__metadata_ts,
   metapixel: metapixel_config_json,
   "millis-ai": millis_ai_config_json,
   mirotalk: mirotalk_config_json,

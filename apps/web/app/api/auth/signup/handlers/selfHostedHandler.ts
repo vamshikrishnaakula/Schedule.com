@@ -179,7 +179,7 @@ export default async function handler(body: Record<string, string>) {
       const checkUsername = await checkPremiumUsername(correctedUsername);
       if (checkUsername.premium) {
         return NextResponse.json(
-          { message: "Sign up from https://cal.com/signup to claim your premium username" },
+          { message: "Sign up from https://www.leadnest.ai/signup to claim your premium username" },
           { status: 422 }
         );
       }

@@ -7,7 +7,7 @@ This page guides you through the steps to set up teams via the API v2. An organi
 
 ## Prerequisites
 
-1. You need to have an OAuth client set up, since we'll need the client id and client secret from the OAuth client to be included in the API requests. Here is the link for the [OAuth client setup guide](https://cal.com/docs/platform/quickstart)
+1. You need to have an OAuth client set up, since we'll need the client id and client secret from the OAuth client to be included in the API requests. Here is the link for the [OAuth client setup guide](https://www.leadnest.ai/docs/platform/quickstart)
 2. You need to have an ESSENTIALS plan or above
 3. In order to create a team and access team info you need to be an organization admin/owner
 4. In order to create and access a team event type you need to be a team admin/owner
@@ -18,7 +18,7 @@ This page guides you through the steps to set up teams via the API v2. An organi
 <Steps>
 
 <Step>
- Create a team by sending a POST request to the [create a team](https://cal.com/docs/api-reference/v2/orgs-teams/create-a-team) endpoint. The request body would looks something like this:
+ Create a team by sending a POST request to the [create a team](https://www.leadnest.ai/docs/api-reference/v2/orgs-teams/create-a-team) endpoint. The request body would looks something like this:
 
 ```
 {
@@ -61,7 +61,7 @@ We recommend storing the team id being returned back in the API response. This w
 </Step>
 
 <Step>
-The team created in the previous step has no members, hence we need to add managed users (members) to the team . To create a managed user here is the [managed user](https://cal.com/docs/api-reference/v2/platform-managed-users/create-a-managed-user) endpoint . After we're done creating a managed user, we need to create membership for the team which can be done by sending a POST request to the [add a member](https://cal.com/docs/api-reference/v2/orgs-teams-memberships/create-a-membership) endpoint. The API response returned will look like below.
+The team created in the previous step has no members, hence we need to add managed users (members) to the team . To create a managed user here is the [managed user](https://www.leadnest.ai/docs/api-reference/v2/platform-managed-users/create-a-managed-user) endpoint . After we're done creating a managed user, we need to create membership for the team which can be done by sending a POST request to the [add a member](https://www.leadnest.ai/docs/api-reference/v2/orgs-teams-memberships/create-a-membership) endpoint. The API response returned will look like below.
 ```
 {
   "status": "success",
@@ -84,7 +84,7 @@ The team created in the previous step has no members, hence we need to add manag
 </Step>
 
 <Step>
-Now that we have a team set up and it has members, we can create an event type for the team. To create an event type here is the [create an event type](https://cal.com/docs/api-reference/v2/orgs-event-types/create-an-event-type) endpoint. The request body would looks something like this:
+Now that we have a team set up and it has members, we can create an event type for the team. To create an event type here is the [create an event type](https://www.leadnest.ai/docs/api-reference/v2/orgs-event-types/create-an-event-type) endpoint. The request body would looks something like this:
 ```
 {
   "lengthInMinutes": 60,

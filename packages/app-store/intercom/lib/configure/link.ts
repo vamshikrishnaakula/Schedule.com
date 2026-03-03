@@ -25,7 +25,7 @@ export async function handleLinkStep(req: NextApiRequest): Promise<NewCanvas | s
     type: "input",
     id: "submit_booking_url",
     label: "Enter your Cal.com link",
-    placeholder: "https://cal.com/valentinchmara/30min",
+    placeholder: "https://www.leadnest.ai/valentinchmara/30min",
     save_state: "unsaved",
     action: {
       type: "submit",

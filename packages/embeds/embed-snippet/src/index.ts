@@ -69,7 +69,7 @@ export default function EmbedSnippet(url = EMBED_LIB_URL) {
       // Make 'ns' and 'q' optional as they are set through the snippet above
       Cal: Optional<GlobalCal, "ns" | "q">;
     },
-    //! Replace it with "https://cal.com/embed.js" or the URL where you have embed.js installed
+    //! Replace it with "https://www.leadnest.ai/embed.js" or the URL where you have embed.js installed
     url,
     "init"
   );

@@ -206,7 +206,7 @@ describe("Managed user bookings 2024-08-13", () => {
       timeFormat: 24,
       locale: Locales.FR,
       name: "Bob Smith",
-      avatarUrl: "https://cal.com/api/avatar/2b735186-b01b-46d3-87da-019b8f61776b.png",
+      avatarUrl: "https://www.leadnest.ai/api/avatar/2b735186-b01b-46d3-87da-019b8f61776b.png",
     };
 
     const response = await request(app.getHttpServer())
@@ -235,7 +235,7 @@ describe("Managed user bookings 2024-08-13", () => {
       timeFormat: 24,
       locale: Locales.FR,
       name: "Charlie Smith",
-      avatarUrl: "https://cal.com/api/avatar/2b735186-b01b-46d3-87da-019b8f61776b.png",
+      avatarUrl: "https://www.leadnest.ai/api/avatar/2b735186-b01b-46d3-87da-019b8f61776b.png",
     };
 
     const response = await request(app.getHttpServer())
@@ -264,7 +264,7 @@ describe("Managed user bookings 2024-08-13", () => {
       timeFormat: 24,
       locale: Locales.FR,
       name: "Org Admin Smith",
-      avatarUrl: "https://cal.com/api/avatar/2b735186-b01b-46d3-87da-019b8f61776b.png",
+      avatarUrl: "https://www.leadnest.ai/api/avatar/2b735186-b01b-46d3-87da-019b8f61776b.png",
     };
 
     const response = await request(app.getHttpServer())

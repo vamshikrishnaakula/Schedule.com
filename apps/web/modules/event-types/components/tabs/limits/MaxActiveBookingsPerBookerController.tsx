@@ -49,13 +49,7 @@ export default function MaxActiveBookingsPerBookerController({
             )}
             childrenClassName={classNames("lg:ml-0")}
             title={t("booker_upcoming_limit")}
-            description={
-              <LearnMoreLink
-                t={t}
-                i18nKey="booker_booking_limit_description"
-                href="https://cal.com/help/event-types/booker-active-booking-limit"
-              />
-            }
+            
             checked={isChecked}
             onCheckedChange={(active) => {
               if (active) {

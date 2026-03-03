@@ -595,13 +595,7 @@ export const EventLimitsTab = ({ eventType, customClassNames }: EventLimitsTabPr
               labelClassName={classNames("text-sm", customClassNames?.bookingFrequencyLimit?.label)}
               title={t("limit_booking_frequency")}
               {...bookingLimitsLocked}
-              description={
-                <LearnMoreLink
-                  t={t}
-                  i18nKey="limit_booking_frequency_description"
-                  href="https://cal.com/help/event-types/booking-frequency"
-                />
-              }
+              
               checked={isChecked}
               onCheckedChange={(active) => {
                 if (active) {
@@ -736,7 +730,7 @@ export const EventLimitsTab = ({ eventType, customClassNames }: EventLimitsTabPr
                 <LearnMoreLink
                   t={t}
                   i18nKey="limit_future_bookings_description"
-                  href="https://cal.com/help/event-types/limit-future-bookings"
+                  href="https://www.leadnest.ai/help/event-types/limit-future-bookings"
                 />
               }
               {...periodTypeLocked}

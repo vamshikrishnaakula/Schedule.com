@@ -33,7 +33,7 @@ async function getHandler(req: NextApiRequest, res: NextApiResponse) {
     throw new HttpError({
       statusCode: 404,
       message:
-        "Stripe customer not found or deleted.  Please contact support@cal.com and mention your premium username",
+        "Stripe customer not found or deleted.  Please contact support@leadnest.ai and mention your premium username",
       url: req.url,
       method: req.method,
     });
@@ -111,7 +111,7 @@ async function getHandler(req: NextApiRequest, res: NextApiResponse) {
         url: req.url,
         method: req.method,
         message:
-          "We have received your payment. Your premium username could still not be reserved. Please contact support@cal.com and mention your premium username",
+          "We have received your payment. Your premium username could still not be reserved. Please contact support@leadnest.ai and mention your premium username",
       });
     }
   }

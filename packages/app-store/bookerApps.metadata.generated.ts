@@ -21,6 +21,7 @@ import insihts_config_json from "./insihts/config.json";
 import jelly_config_json from "./jelly/config.json";
 import { metadata as jitsivideo__metadata_ts } from "./jitsivideo/_metadata";
 import matomo_config_json from "./matomo/config.json";
+import { metadata as meet_leadnest__metadata_ts } from "./meet-leadnest/_metadata";
 import metapixel_config_json from "./metapixel/config.json";
 import mirotalk_config_json from "./mirotalk/config.json";
 import nextcloudtalk_config_json from "./nextcloudtalk/config.json";
@@ -66,6 +67,7 @@ export const appStoreMetadata = {
   jelly: jelly_config_json,
   jitsivideo: jitsivideo__metadata_ts,
   matomo: matomo_config_json,
+  "meet-leadnest": meet_leadnest__metadata_ts,
   metapixel: metapixel_config_json,
   mirotalk: mirotalk_config_json,
   nextcloudtalk: nextcloudtalk_config_json,

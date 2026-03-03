@@ -3,29 +3,30 @@ import type { AppMeta } from "@calcom/types/App";
 import _package from "./package.json";
 
 export const metadata = {
-  name: "Jitsi Video",
+  name: "Leadnest Video",
   description: _package.description,
   installed: true,
-  type: "jitsi_video",
+  type: "leadnest_video",
   variant: "conferencing",
   categories: ["conferencing"],
-  logo: "icon.svg",
-  publisher: "Cal.com",
-  url: "https://jitsi.org/",
+  logo: "https://meet.leadnest.ai/custom/favicon.svg",
+  publisher: "leadnest.ai",
+  url: "https://meet.leadnest.ai/",
   slug: "jitsi",
-  title: "Jitsi Meet",
+  title: "Leadnest Meet",
   isGlobal: false,
-  email: "help@cal.com",
+  email: "support@leadnest.ai",
   appData: {
     location: {
       linkType: "dynamic",
-      type: "integrations:jitsi",
-      label: "Jitsi Video",
+      type: "integrations:leadnestvideo",
+      label: "Leadnest Video",
     },
   },
-  dirName: "jitsivideo",
+  dirName: "leadnestvideo",
   concurrentMeetings: true,
   isOAuth: false,
+  defaultVideo: true,
 } as AppMeta;
 
 export default metadata;

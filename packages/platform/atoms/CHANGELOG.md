@@ -219,7 +219,7 @@
 ```
 
 It is important to note that `useBooking` can return one booking, one individual recurrence of recurring booking or if id of recurring booking is passed then array
-of all recurrences within recurring booking. Response schema can be viewed in api docs https://cal.com/docs/api-reference/v2/bookings/get-a-booking and switching
+of all recurrences within recurring booking. Response schema can be viewed in api docs https://www.leadnest.ai/docs/api-reference/v2/bookings/get-a-booking and switching
 between data response objects in the dropdown. This means that in your frontend you need to handle case if its an individual object or an array of bookings:
 
 ```
