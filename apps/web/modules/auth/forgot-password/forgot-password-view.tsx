@@ -122,7 +122,7 @@ export default function ForgotPassword(props: PageProps) {
               id="email"
               name="email"
               label={t("email_address")}
-              placeholder="john.doe@example.com"
+              placeholder="john.doe1@example.com"
               required
             />
             <div className="stack-y-2">

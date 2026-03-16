@@ -86,6 +86,34 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       },
     };
   }
+  // construct callbackUrl (re-using logic from above)
+  let callbackUrl = (query.callbackUrl as string) || "";
+  if (/"\//.test(callbackUrl)) callbackUrl = callbackUrl.substring(1);
+  if (!/^https?:\/\//.test(callbackUrl)) {
+    callbackUrl = `${WEBSITE_URL}/${callbackUrl}`;
+  }
+  const safeCallbackUrl = getSafeRedirectUrl(callbackUrl) || "";
+
+  const keycloakEnabled =
+    !!process.env.KEYCLOAK_CLIENT_ID &&
+    !!process.env.KEYCLOAK_CLIENT_SECRET &&
+    !!process.env.KEYCLOAK_ISSUER;
+
+  // If NextAuth redirected here with an error (eg. unable to complete the
+  // Keycloak flow), don't immediately redirect again to avoid a redirect loop.
+  // This matches the behavior we want for other errors (show error page / form).
+  if (userExists && keycloakEnabled && !query.error) {
+    const dest = `/api/auth/signin/keycloak?callbackUrl=${encodeURIComponent(
+      safeCallbackUrl || WEBSITE_URL
+    )}`;
+    return {
+      redirect: {
+        destination: dest,
+        permanent: false,
+      },
+    };
+  }
+
   return {
     props: {
       csrfToken: await getCsrfToken(context),
@@ -94,6 +122,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       samlTenantID,
       samlProductID,
       totpEmail,
+      isKeycloakLoginEnabled: keycloakEnabled,
     },
   };
 }

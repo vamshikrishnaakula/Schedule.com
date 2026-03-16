@@ -44,7 +44,7 @@ const createTestBooking = (overrides?: {
     endTime: overrides?.endTime !== undefined ? overrides.endTime : defaultEndTime,
   responses: overrides?.responses || {
     name: "John Doe",
-    email: "john.doe@example.com",
+    email: "john.doe1@example.com",
   },
   userId: overrides?.userId !== undefined ? overrides.userId : 1,
   eventType:
@@ -293,7 +293,7 @@ describe("determineReschedulePreventionRedirect", () => {
           endTime: daysAgo(5),
           responses: {
             name: "John Doe",
-            email: "john.doe@example.com",
+            email: "john.doe1@example.com",
           },
           eventType: {
             allowReschedulingPastBookings: false,
@@ -307,7 +307,7 @@ describe("determineReschedulePreventionRedirect", () => {
         eventUrl: "https://example.com/event",
         params: {
           name: "John Doe",
-          email: "john.doe@example.com",
+          email: "john.doe1@example.com",
         },
       });
     });
@@ -372,7 +372,7 @@ describe("determineReschedulePreventionRedirect", () => {
         eventUrl: "https://example.com/event",
         params: {
           name: "John Doe",
-          email: "john.doe@example.com",
+          email: "john.doe1@example.com",
         },
       });
     });
@@ -399,7 +399,7 @@ describe("determineReschedulePreventionRedirect", () => {
         eventUrl: "https://example.com/event",
         params: {
           name: "John Doe",
-          email: "john.doe@example.com",
+          email: "john.doe1@example.com",
         },
       });
     });
@@ -523,7 +523,7 @@ describe("determineReschedulePreventionRedirect", () => {
         eventUrl: "https://example.com/event",
         params: {
           name: "John Doe",
-          email: "john.doe@example.com",
+          email: "john.doe1@example.com",
         },
       });
     });

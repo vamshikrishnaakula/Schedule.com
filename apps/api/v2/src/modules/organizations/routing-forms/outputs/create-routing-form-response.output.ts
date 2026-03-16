@@ -41,7 +41,7 @@ class Routing {
   @ApiPropertyOptional({
     type: String,
     description: "The email of the team member assigned to handle this booking.",
-    example: "john.doe@example.com",
+    example: "john.doe1@example.com",
   })
   @IsString()
   @IsOptional()
@@ -95,7 +95,7 @@ export class CreateRoutingFormResponseOutputData {
       eventTypeId: 123,
       routing: {
         teamMemberIds: [101, 102],
-        teamMemberEmail: "john.doe@example.com",
+        teamMemberEmail: "john.doe1@example.com",
         skipContactOwner: true,
       },
     },

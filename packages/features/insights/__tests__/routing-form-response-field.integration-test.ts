@@ -150,7 +150,7 @@ describe("RoutingFormResponseField", () => {
             },
             "email-field-id": {
               label: "Email",
-              value: "john.doe@example.com",
+              value: "john.doe1@example.com",
             },
           },
           routedToBookingUid: null,
@@ -191,7 +191,7 @@ describe("RoutingFormResponseField", () => {
 
       const emailField = denormalizedResponse?.fields.find((field) => field.fieldId === "email-field-id");
       expect(emailField).toBeDefined();
-      expect(emailField?.valueString).toBe("john.doe@example.com");
+      expect(emailField?.valueString).toBe("john.doe1@example.com");
       expect(emailField?.valueNumber).toBeNull();
       expect(emailField?.valueStringArray).toEqual([]);
     });

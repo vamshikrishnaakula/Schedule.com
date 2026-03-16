@@ -30597,7 +30597,7 @@
           "teamMemberEmail": {
             "type": "string",
             "description": "The email of the team member assigned to handle this booking.",
-            "example": "john.doe@example.com"
+            "example": "john.doe1@example.com"
           },
           "skipContactOwner": {
             "type": "boolean",
@@ -30636,7 +30636,7 @@
                   101,
                   102
                 ],
-                "teamMemberEmail": "john.doe@example.com",
+                "teamMemberEmail": "john.doe1@example.com",
                 "skipContactOwner": true
               }
             },
@@ -31274,7 +31274,7 @@
           "email": {
             "type": "string",
             "description": "The email of the attendee.",
-            "example": "john.doe@example.com"
+            "example": "john.doe1@example.com"
           },
           "timeZone": {
             "type": "string",
@@ -33404,11 +33404,11 @@
           },
           "email": {
             "type": "string",
-            "example": "john.doe@example.com"
+            "example": "john.doe1@example.com"
           },
           "displayEmail": {
             "type": "string",
-            "example": "john.doe@example.com",
+            "example": "john.doe1@example.com",
             "description": "Clean email for display purposes"
           }
         },
@@ -33661,7 +33661,7 @@
           "email": {
             "type": "string",
             "description": "The email of the guest.",
-            "example": "john.doe@example.com"
+            "example": "john.doe1@example.com"
           },
           "name": {
             "type": "string",
@@ -33741,7 +33741,7 @@
             "description": "Array of guests to add to the booking",
             "example": [
               {
-                "email": "john.doe@example.com",
+                "email": "john.doe1@example.com",
                 "name": "John Doe",
                 "timeZone": "America/New_York"
               },

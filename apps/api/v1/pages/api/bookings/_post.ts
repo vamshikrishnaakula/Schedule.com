@@ -153,7 +153,7 @@ import { getAccessibleUsers } from "~/lib/utils/retrieveScopedAccessibleUsers";
  *                       "endTime": "2023-05-25T10:30:00.000Z",
  *                       "attendees": [
  *                         {
- *                           "email": "john.doe@example.com",
+ *                           "email": "john.doe1@example.com",
  *                           "name": "John Doe",
  *                           "timeZone": "Asia/Kolkata",
  *                           "locale": "en"
@@ -175,7 +175,7 @@ import { getAccessibleUsers } from "~/lib/utils/retrieveScopedAccessibleUsers";
  *                       "metadata": {},
  *                       "status": "ACCEPTED",
  *                       "responses": {
- *                         "email": "john.doe@example.com",
+ *                         "email": "john.doe1@example.com",
  *                         "name": "John Doe",
  *                         "location": {
  *                           "optionValue": "",

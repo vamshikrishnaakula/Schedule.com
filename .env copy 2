@@ -1,0 +1,140 @@
+# ==================================
+
+# CORE URL CONFIGURATION
+
+# ==================================
+
+NEXT_PUBLIC_WEBAPP_URL=https://schedule.leadnest.ai
+WEB_APP_URL=https://schedule.leadnest.ai
+NEXTAUTH_URL=https://schedule.leadnest.ai/api/auth
+
+API_URL=https://schedule.leadnest.ai/api
+NEXT_PUBLIC_API_V2_URL=https://schedule.leadnest.ai/api/v2
+
+NEXT_PUBLIC_LICENSE_CONSENT=true
+NEXT_PUBLIC_WEBSITE_TERMS_URL=https://schedule.leadnest.ai/terms
+NEXT_PUBLIC_WEBSITE_PRIVACY_POLICY_URL=https://schedule.leadnest.ai/privacy
+
+NEXT_PUBLIC_SINGLE_ORG_SLUG=leadnest
+ORGANIZATIONS_ENABLED=true
+
+CALCOM_TELEMETRY_DISABLED=1
+
+# ==================================
+
+# AUTHENTICATION
+
+# ==================================
+
+NEXTAUTH_SECRET=1RJYFZVkhZswlzxHjkh+ZCdHBU8TxLze1tMVw0bPix4=
+JWT_SECRET=zJ7IYdAcnO29+r89Iqsxrr+zQcalzpLdofJR0kvkqWc=
+NEXTAUTH_TRUST_HOST=true
+
+# ==================================
+
+# ENCRYPTION
+
+# ==================================
+
+CALENDSO_ENCRYPTION_KEY=31z+fPQJIgj5DaWIQZGAuplGPuQWuAVW
+
+# ==================================
+
+# DATABASE (AWS RDS PostgreSQL)
+
+# ==================================
+
+POSTGRES_USER=schedule_user
+POSTGRES_PASSWORD=HBuxheui3ebx@sv3xS
+POSTGRES_DB=schedule_db
+DATABASE_HOST=medeasy-postgresql.cveeg8m4s958.us-west-2.rds.amazonaws.com
+
+DATABASE_URL=postgresql://schedule_user:HBuxheui3ebx%40sv3xS@medeasy-postgresql.cveeg8m4s958.us-west-2.rds.amazonaws.com:5432/schedule_db
+
+# ==================================
+
+# REDIS
+
+# ==================================
+
+REDIS_URL=redis://redis:6379
+
+# ==================================
+
+# ENVIRONMENT
+
+# ==================================
+
+NODE_ENV=production
+TZ=UTC
+
+# ==================================
+
+# GOOGLE CALENDAR
+
+# ==================================
+
+GOOGLE_API_CREDENTIALS={"web":{"client_id":"778638370742-rtc4oro1k5m8htlvsjc9otq8qnisri7e.apps.googleusercontent.com","project_id":"scheduley-484607","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"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","redirect_uris":["https://schedule.leadnest.ai/api/auth/callback/google","https://schedule.leadnest.ai/api/integrations/google/callback","https://schedule.leadnest.ai/api/integrations/googlecalendar/callback"]}}
+
+# ==================================
+
+# EMAIL CONFIGURATION (SMTP Office365)
+
+# ==================================
+
+EMAIL_FROM=[support@leadnest.ai](mailto:support@leadnest.ai)
+EMAIL_FROM_NAME=Leadnest
+
+SMTP_ENABLE=true
+SMTP_DEBUG=true
+
+EMAIL_SERVER_HOST=smtp.office365.com
+EMAIL_SERVER_PORT=587
+EMAIL_SERVER_SECURE=false
+
+EMAIL_SERVER_USER=[support@leadnest.ai](mailto:support@leadnest.ai)
+EMAIL_SERVER_PASSWORD=MohdA@2025
+
+# ==================================
+
+# STRIPE (OPTIONAL)
+
+# ==================================
+
+STRIPE_API_KEY=sk_test_your_stripe_test_key_here
+STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret_here
+
+# ==================================
+
+# JITSI MEET INTEGRATION
+
+# ==================================
+
+CALCOM_JITSI_HOST=https://meet.leadnest.ai
+CALCOM_JITSI_PATH_PATTERN={Organizer}-{uuid}
+
+# ==================================
+
+# SSO DATABASE
+
+# ==================================
+
+SAML_DATABASE_URL=postgresql://schedule_user:HBuxheui3ebx%[40sv3xS@medeasy-postgresql.cveeg8m4s958.us-west-2.rds.amazonaws.com](mailto:40sv3xS@medeasy-postgresql.cveeg8m4s958.us-west-2.rds.amazonaws.com):5432/keycloak_sso
+SAML_ADMINS=[support@leadnest.ai](mailto:support@leadnest.ai)
+
+# ==================================
+
+# KEYCLOAK SSO
+
+# ==================================
+
+KEYCLOAK_CLIENT_ID=Schedule.leadnest
+KEYCLOAK_CLIENT_SECRET=oY6w5c4uvCj1KhBKQgO1y5WFy8Nkjpg2
+
+KEYCLOAK_ISSUER=https://auth.leadnest.ai/realms/prod-leadnest-realm
+KEYCLOAK_WELL_KNOWN_URL=https://auth.leadnest.ai/realms/prod-leadnest-realm/.well-known/openid_configuration
+
+SAML_ADFS_ENABLED=false
+SAML_ONELOGIN_ENABLED=false
+SAML_OKTA_ENABLED=false
+SAML_KEYCLOAK_ENABLED=true

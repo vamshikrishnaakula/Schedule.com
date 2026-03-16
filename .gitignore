@@ -5,10 +5,17 @@
 !packages/prisma/.env
 
 # dependencies
-node_modules
 .pnp
 .pnp.js
-
+node_modules
+.git
+.gitignore
+.turbo
+dist
+build
+*.log
+docker-compose*.save
+.env
 # testing
 coverage
 /test-results/

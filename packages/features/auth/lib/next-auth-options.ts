@@ -469,19 +469,23 @@ if (isSAMLLoginEnabled) {
   );
 }
 
-if (process.env.KEYCLOAK_CLIENT_ID && process.env.KEYCLOAK_CLIENT_SECRET && process.env.KEYCLOAK_ISSUER) {
+// Keycloak Provider - for instance-wide Keycloak SSO login
+if (process.env.KEYCLOAK_CLIENT_ID &&
+    process.env.KEYCLOAK_CLIENT_SECRET &&
+    process.env.KEYCLOAK_ISSUER) {
   providers.push({
     id: "keycloak",
     name: "Keycloak",
-    type: "oauth",
+    type: "oauth" as const,
     clientId: process.env.KEYCLOAK_CLIENT_ID,
     clientSecret: process.env.KEYCLOAK_CLIENT_SECRET,
-    issuer: process.env.KEYCLOAK_ISSUER,
+    // Use wellKnown URL for proper OIDC discovery
+    wellKnown: `${process.env.KEYCLOAK_ISSUER}/.well-known/openid-configuration`,
+    // Explicitly set JWKS URL to avoid discovery issues
+    jwks_uri: `${process.env.KEYCLOAK_ISSUER}/protocol/openid-connect/certs`,
     authorization: {
       url: `${process.env.KEYCLOAK_ISSUER}/protocol/openid-connect/auth`,
-      params: {
-        scope: "openid email profile",
-      },
+      params: { scope: "openid email profile" },
     },
     token: `${process.env.KEYCLOAK_ISSUER}/protocol/openid-connect/token`,
     userinfo: `${process.env.KEYCLOAK_ISSUER}/protocol/openid-connect/userinfo`,
@@ -493,6 +497,11 @@ if (process.env.KEYCLOAK_CLIENT_ID && process.env.KEYCLOAK_CLIENT_SECRET && proc
       email_verified: profile.email_verified,
     }),
     allowDangerousEmailAccountLinking: true,
+    checks: ["pkce", "state"],
+    // Allow insecure connections if needed for testing
+    httpOptions: {
+      timeout: 10000,
+    },
   });
 }
 

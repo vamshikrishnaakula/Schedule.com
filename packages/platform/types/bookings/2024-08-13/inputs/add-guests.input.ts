@@ -20,7 +20,7 @@ class Guest {
   @ApiProperty({
     type: String,
     description: "The email of the guest.",
-    example: "john.doe@example.com",
+    example: "john.doe1@example.com",
   })
   @IsEmail()
   email!: string;
@@ -75,7 +75,7 @@ export class AddGuestsInput_2024_08_13 {
     description: "Array of guests to add to the booking",
     example: [
       {
-        email: "john.doe@example.com",
+        email: "john.doe1@example.com",
         name: "John Doe",
         timeZone: "America/New_York",
       },

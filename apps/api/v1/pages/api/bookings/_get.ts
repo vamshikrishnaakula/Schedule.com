@@ -47,12 +47,12 @@ import { schemaQuerySingleOrMultipleUserIds } from "~/lib/validations/shared/que
  *           oneOf:
  *            - type: string
  *              format: email
- *              example: john.doe@example.com
+ *              example: john.doe1@example.com
  *            - type: array
  *              items:
  *                type: string
  *                format: email
- *              example: [john.doe@example.com, jane.doe@example.com]
+ *              example: [john.doe1@example.com, jane.doe@example.com]
  *        - in: query
  *          name: order
  *          required: false
@@ -109,7 +109,7 @@ import { schemaQuerySingleOrMultipleUserIds } from "~/lib/validations/shared/que
  *                       "endTime": "2023-05-25T10:30:00.000Z",
  *                       "attendees": [
  *                         {
- *                           "email": "john.doe@example.com",
+ *                           "email": "john.doe1@example.com",
  *                           "name": "John Doe",
  *                           "timeZone": "Asia/Kolkata",
  *                           "locale": "en"
@@ -131,7 +131,7 @@ import { schemaQuerySingleOrMultipleUserIds } from "~/lib/validations/shared/que
  *                       "metadata": {},
  *                       "status": "ACCEPTED",
  *                       "responses": {
- *                         "email": "john.doe@example.com",
+ *                         "email": "john.doe1@example.com",
  *                         "name": "John Doe",
  *                         "location": {
  *                           "optionValue": "",

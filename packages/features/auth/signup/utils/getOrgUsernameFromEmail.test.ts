@@ -4,14 +4,14 @@ import { getOrgUsernameFromEmail, deriveNameFromOrgUsername } from "./getOrgUser
 
 describe("getOrgUsernameFromEmail", () => {
   it("should generate username with only email user part when domain matches autoAcceptEmailDomain", () => {
-    const email = "john.doe@example.com";
+    const email = "john.doe1@example.com";
     const autoAcceptEmailDomain = "example.com";
     const result = getOrgUsernameFromEmail(email, autoAcceptEmailDomain);
     expect(result).toBe("john.doe");
   });
 
   it("should generate username with email user and domain when domain doesn't match autoAcceptEmailDomain", () => {
-    const email = "john.doe@example.com";
+    const email = "john.doe1@example.com";
     const autoAcceptEmailDomain = "different.com";
     const result = getOrgUsernameFromEmail(email, autoAcceptEmailDomain);
     expect(result).toBe("john.doe-example");

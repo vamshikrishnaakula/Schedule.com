@@ -401,12 +401,12 @@ class ReassignedToDto {
   @Expose()
   name!: string;
 
-  @ApiProperty({ type: String, example: "john.doe@example.com" })
+  @ApiProperty({ type: String, example: "john.doe1@example.com" })
   @IsEmail()
   @Expose()
   email!: string;
 
-  @ApiProperty({ type: String, example: "john.doe@example.com", description: "Clean email for display purposes" })
+  @ApiProperty({ type: String, example: "john.doe1@example.com", description: "Clean email for display purposes" })
   @IsString()
   @Expose()
   displayEmail!: string;

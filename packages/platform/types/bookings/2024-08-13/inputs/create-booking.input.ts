@@ -113,7 +113,7 @@ class CreateBookingAttendee {
   @ApiPropertyOptional({
     type: String,
     description: "The email of the attendee.",
-    example: "john.doe@example.com",
+    example: "john.doe1@example.com",
   })
   @IsOptional()
   @Validate((value: string) => !value || isEmail(value), {
@@ -172,7 +172,7 @@ class Routing {
   @ApiPropertyOptional({
     type: String,
     description: "The email of the team member assigned to handle this booking.",
-    example: "john.doe@example.com",
+    example: "john.doe1@example.com",
   })
   @IsString()
   @IsOptional()

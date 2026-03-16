@@ -111,7 +111,7 @@ export default function ExchangeSetup() {
                       required
                       {...form.register("username")}
                       label={t("email_address")}
-                      placeholder="john.doe@example.com"
+                      placeholder="john.doe1@example.com"
                     />
                     <PasswordField
                       required

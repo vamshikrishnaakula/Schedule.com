@@ -46,7 +46,7 @@ const user: User & { credentials: CredentialPayload[] } = {
   schedules: [],
   defaultScheduleId: null,
   locale: "en",
-  email: "john.doe@example.com",
+  email: "john.doe1@example.com",
   name: "John doe",
   destinationCalendar: null,
   hideBranding: true,

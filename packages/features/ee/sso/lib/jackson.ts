@@ -11,26 +11,28 @@ import type {
 
 import { WEBAPP_URL } from "@calcom/lib/constants";
 
-import { clientSecretVerifier, oidcPath, samlAudience, samlDatabaseUrl, samlPath } from "./saml";
+import { clientSecretVerifier, oidcPath, samlAudience, samlDatabaseUrl, samlPath, isSAMLLoginEnabled } from "./saml";
 
 export type { OAuthTokenReq, OAuthReq, SAMLResponsePayload };
 
 // Set the required options. Refer to https://github.com/boxyhq/jackson#configuration for the full list
-const opts: JacksonOption = {
-  externalUrl: WEBAPP_URL,
-  samlPath,
-  samlAudience,
-  oidcPath,
-  scimPath: "/api/scim/v2.0",
-  db: {
-    engine: "sql",
-    type: "postgres",
-    url: samlDatabaseUrl,
-    encryptionKey: process.env.CALENDSO_ENCRYPTION_KEY,
-  },
-  idpEnabled: true,
-  clientSecretVerifier,
-};
+const opts: JacksonOption | null = isSAMLLoginEnabled
+  ? {
+      externalUrl: WEBAPP_URL,
+      samlPath,
+      samlAudience,
+      oidcPath,
+      scimPath: "/api/scim/v2.0",
+      db: {
+        engine: "sql",
+        type: "postgres",
+        url: samlDatabaseUrl,
+        encryptionKey: process.env.CALENDSO_ENCRYPTION_KEY,
+      },
+      idpEnabled: true,
+      clientSecretVerifier,
+    }
+  : null;
 
 declare global {
   /* eslint-disable no-var */
@@ -42,6 +44,16 @@ declare global {
 }
 
 export default async function init() {
+  // Skip initialization if SAML is not enabled
+  if (!isSAMLLoginEnabled || !opts) {
+    return {
+      connectionController: null as any,
+      oauthController: null as any,
+      samlSPConfig: null as any,
+      dsyncController: null as any,
+    };
+  }
+
   if (
     !globalThis.connectionController ||
     !globalThis.oauthController ||

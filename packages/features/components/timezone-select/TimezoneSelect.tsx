@@ -116,12 +116,12 @@ export function TimezoneSelectComponent({
         ...(isWebTimezoneSelect ? addTimezonesToDropdown(additionalTimezones) : {}),
       }}
       styles={{
-        control: (base) =>
+        control: (base: any) =>
           Object.assign({}, base, {
             minHeight: size === "sm" ? "28px" : "36px",
             height: grow ? "h-auto " : size === "sm" ? "28px" : "36px",
           }),
-        menuList: (base) =>
+        menuList: (base: any) =>
           Object.assign({}, base, {
             height: grow ? "h-auto " : size === "sm" ? "200px" : "180px",
           }),

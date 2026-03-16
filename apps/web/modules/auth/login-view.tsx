@@ -39,10 +39,12 @@ interface LoginValues {
   csrfToken: string;
 }
 
+export type PageProps = inferSSRProps<typeof getServerSideProps>;
+
 const GoogleIcon = () => (
   <img className="text-subtle mr-2 h-4 w-4" src="/google-icon-colored.svg" alt="Continue with Google Icon" />
 );
-export type PageProps = inferSSRProps<typeof getServerSideProps>;
+
 export default function Login({
   csrfToken,
   isGoogleLoginEnabled,
@@ -50,6 +52,7 @@ export default function Login({
   samlTenantID,
   samlProductID,
   totpEmail,
+  isKeycloakLoginEnabled,
 }: PageProps) {
   const searchParams = useCompatSearchParams();
   const { t } = useLocale();
@@ -69,6 +72,7 @@ export default function Login({
   const [twoFactorRequired, setTwoFactorRequired] = useState(!!totpEmail || false);
   const [twoFactorLostAccess, setTwoFactorLostAccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [lastUsed, setLastUsed] = useLastUsed();
 
   const errorMessages: { [key: string]: string } = {
@@ -81,6 +85,19 @@ export default function Login({
   };
 
   let callbackUrl = searchParams?.get("callbackUrl") || "";
+
+  // if there is an error query param from NextAuth redirect, surface it as
+  // a user-facing message here instead of sending the user to /auth/error
+  useEffect(() => {
+    const err = searchParams?.get("error");
+    if (err) {
+      setErrorMessage(errorMessages[err] || t("something_went_wrong"));
+    }
+    const success = searchParams?.get("success");
+    if (success) {
+      setToastMessage(t("login_successful"));
+    }
+  }, [searchParams]);
 
   if (/"\//.test(callbackUrl)) callbackUrl = callbackUrl.substring(1);
 
@@ -179,6 +196,7 @@ export default function Login({
   return (
     <div className="text-emphasis min-h-screen [--cal-brand-emphasis:#101010] [--cal-brand-subtle:#9CA3AF] [--cal-brand-text:white] [--cal-brand:#111827] dark:[--cal-brand-emphasis:#e1e1e1] dark:[--cal-brand-text:black] dark:[--cal-brand:white]">
       <AuthContainer
+        toastMessage={toastMessage}
         showLogo
         heading={twoFactorRequired ? t("2fa_code") : t("welcome_back")}
         footerText={
@@ -194,7 +212,24 @@ export default function Login({
           {!twoFactorRequired && (
             <>
               <div className="stack-y-3">
-                {isGoogleLoginEnabled && (
+                {isKeycloakLoginEnabled && (
+                <Button
+                  color="secondary"
+                  className="w-full justify-center"
+                  disabled={formState.isSubmitting}
+                  data-testid="keycloak"
+                  onClick={async (e) => {
+                    e.preventDefault();
+                    setLastUsed("keycloak");
+                    await signIn("keycloak", {
+                      callbackUrl,
+                    });
+                  }}>
+                  <span>{t("signin_with_keycloak")}</span>
+                  {lastUsed === "keycloak" && <LastUsed />}
+                </Button>
+              )}
+              {isGoogleLoginEnabled && (
                   <Button
                     color="primary"
                     className="w-full justify-center"

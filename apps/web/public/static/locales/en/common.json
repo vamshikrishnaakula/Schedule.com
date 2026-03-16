@@ -1242,6 +1242,8 @@
   "signin_with_google": "Sign in with Google",
   "signin_with_saml": "Sign in with SAML",
   "signin_with_saml_oidc": "Sign in with SAML/OIDC",
+  "signin_with_keycloak": "Sign in with Keycloak",
+  "login_successful": "Login successful",
   "continue_with_email": "Continue with Email",
   "continue_with_google": "Continue with Google",
   "last_used": "Last used",

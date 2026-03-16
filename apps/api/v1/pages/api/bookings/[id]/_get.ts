@@ -52,7 +52,7 @@ import { schemaQueryIdParseInt } from "~/lib/validations/shared/queryIdTransform
  *                       "endTime": "2023-05-25T10:30:00.000Z",
  *                       "attendees": [
  *                         {
- *                           "email": "john.doe@example.com",
+ *                           "email": "john.doe1@example.com",
  *                           "name": "John Doe",
  *                           "timeZone": "Asia/Kolkata",
  *                           "locale": "en"
@@ -74,7 +74,7 @@ import { schemaQueryIdParseInt } from "~/lib/validations/shared/queryIdTransform
  *                       "metadata": {},
  *                       "status": "ACCEPTED",
  *                       "responses": {
- *                         "email": "john.doe@example.com",
+ *                         "email": "john.doe1@example.com",
  *                         "name": "John Doe",
  *                         "location": {
  *                           "optionValue": "",

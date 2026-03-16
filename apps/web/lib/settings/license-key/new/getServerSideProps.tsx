@@ -12,6 +12,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
       getTrackingData: () => getTrackingFromCookies(context.req.cookies),
     }),
   });
+
   // Disable this check if we ever make this self serve.
   if (session?.user.role !== "ADMIN") {
     return {
@@ -23,3 +24,8 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     props: {},
   };
 };
+
+// This is the code block that represents the suggested code change:
+// "scripts": {
+//   "build": "NODE_OPTIONS=\"--max-old-space-size=8192\" turbo run build --filter=@calcom/web...",
+// }

@@ -31,7 +31,7 @@ export const apiToInternalintegrationsMapping = {
   "riverside-video": "integrations:riverside_video",
   "ping-video": "integrations:ping_video",
   "mirotalk-video": "integrations:mirotalk_video",
-  jitsi: "integrations:jitsi",
+  jitsi: "integrations:",
   "jelly-video": "integrations:jelly_video",
   "jelly-conferencing": "integrations:jelly_conferencing",
   huddle: "integrations:huddle01",

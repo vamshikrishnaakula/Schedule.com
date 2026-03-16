@@ -415,7 +415,7 @@
                           "id": 251,
                           "bookingId": 313,
                           "name": "John Doe",
-                          "email": "john.doe@example.com",
+                          "email": "john.doe1@example.com",
                           "timeZone": "Asia/Jerusalem"
                         },
                         {
@@ -1443,7 +1443,7 @@
                         "endTime": "2023-05-25T10:30:00.000Z",
                         "attendees": [
                           {
-                            "email": "john.doe@example.com",
+                            "email": "john.doe1@example.com",
                             "name": "John Doe",
                             "timeZone": "Asia/Kolkata",
                             "locale": "en"
@@ -1465,7 +1465,7 @@
                         "metadata": {},
                         "status": "ACCEPTED",
                         "responses": {
-                          "email": "john.doe@example.com",
+                          "email": "john.doe1@example.com",
                           "name": "John Doe",
                           "location": {
                             "optionValue": "",
@@ -1684,7 +1684,7 @@
                         "endTime": "2023-05-25T10:30:00.000Z",
                         "attendees": [
                           {
-                            "email": "john.doe@example.com",
+                            "email": "john.doe1@example.com",
                             "name": "John Doe",
                             "timeZone": "Asia/Kolkata",
                             "locale": "en"
@@ -1706,7 +1706,7 @@
                         "metadata": {},
                         "status": "ACCEPTED",
                         "responses": {
-                          "email": "john.doe@example.com",
+                          "email": "john.doe1@example.com",
                           "name": "John Doe",
                           "location": {
                             "optionValue": "",
@@ -1817,7 +1817,7 @@
                         "metadata": {},
                         "status": "CANCELLED",
                         "responses": {
-                          "email": "john.doe@example.com",
+                          "email": "john.doe1@example.com",
                           "name": "John Doe",
                           "location": {
                             "optionValue": "",

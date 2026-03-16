@@ -238,7 +238,7 @@ test.describe("Insights > Routing Filters", () => {
         attendees: {
           create: [
             {
-              email: "john.doe@example.com",
+              email: "john.doe1@example.com",
               name: "John Doe",
               timeZone: "UTC",
             },
