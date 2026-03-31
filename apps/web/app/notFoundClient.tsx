@@ -1,9 +1,5 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useLayoutEffect } from "react";
-
 import {
   getOrgDomainConfigFromHostname,
   subdomainSuffix,
@@ -11,6 +7,9 @@ import {
 import { DOCS_URL, IS_CALCOM, WEBSITE_URL } from "@calcom/lib/constants";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { Icon } from "@calcom/ui/components/icon";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useLayoutEffect } from "react";
 
 enum PageType {
   ORG = "ORG",
@@ -41,8 +40,9 @@ function getPageInfo(pathname: string, host: string) {
     return {
       username: currentOrgDomain ?? "",
       pageType: PageType.ORG,
-      url: `${WEBSITE_URL}/signup?callbackUrl=settings/organizations/new%3Fslug%3D${currentOrgDomain?.replace("/", "") ?? ""
-        }`,
+      url: `${WEBSITE_URL}/signup?callbackUrl=settings/organizations/new%3Fslug%3D${
+        currentOrgDomain?.replace("/", "") ?? ""
+      }`,
     };
   }
 }
@@ -162,8 +162,9 @@ export function NotFound({ host }: { host: string }) {
                         <span className="focus:outline-none">
                           <span className="absolute inset-0" aria-hidden="true" />
                           {t("register")}{" "}
-                          <strong className="text-green-500">{`${pageType === PageType.TEAM ? `${new URL(WEBSITE_URL).host}/team/` : ""
-                            }${username}${pageType === PageType.ORG ? `.${subdomainSuffix()}` : ""}`}</strong>
+                          <strong className="text-green-500">{`${
+                            pageType === PageType.TEAM ? `${new URL(WEBSITE_URL).host}/team/` : ""
+                          }${username}${pageType === PageType.ORG ? `.${subdomainSuffix()}` : ""}`}</strong>
                         </span>
                       </span>
                     </h3>

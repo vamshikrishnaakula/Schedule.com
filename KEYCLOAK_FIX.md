@@ -38,7 +38,7 @@ httpOptions: {
 1. Go to: https://schedule.leadnest.ai/auth/login
 2. Click "Sign in with Keycloak"
 3. Enter Keycloak credentials
-4. Should redirect to: https://schedule.leadnest.ai/ (logged in)
+4. Should redirect to: https://schedule.leadnest.ai/event-types(logged in)
 
 ## Keycloak Configuration Checklist
 

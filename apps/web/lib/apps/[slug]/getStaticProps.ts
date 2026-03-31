@@ -1,14 +1,14 @@
 import fs from "node:fs";
 import path from "node:path";
-
-import yaml from "js-yaml";
-import { z } from "zod";
-
+import process from "node:process";
 import { getAppWithMetadata } from "@calcom/app-store/_appRegistry";
 import { getAppAssetFullPath } from "@calcom/app-store/getAppAssetFullPath";
+import { getAppIdentifiers } from "@calcom/app-store/utils";
 import { IS_PRODUCTION } from "@calcom/lib/constants";
-import { prisma } from "@calcom/prisma";
 import logger from "@calcom/lib/logger";
+import { prisma } from "@calcom/prisma";
+import yaml from "js-yaml";
+import { z } from "zod";
 
 const log = logger.getSubLogger({ prefix: ["lib", "parseFrontmatter"] });
 
@@ -67,16 +67,23 @@ export const sourceSchema = z.object({
 export type AppDataProps = NonNullable<Awaited<ReturnType<typeof getStaticProps>>>;
 
 export const getStaticProps = async (slug: string) => {
-  const appMeta = await getAppWithMetadata({
-    slug,
-  });
+  const appMeta = (await getAppWithMetadata({ slug })) ?? (await getAppWithMetadata({ dirName: slug }));
 
-  const appFromDb = await prisma.app.findUnique({
-    where: { slug: slug.toLowerCase() },
+  if (!appMeta) return null;
+
+  const appIdentifiers = [...new Set([slug.toLowerCase(), ...getAppIdentifiers(appMeta)])];
+
+  const appFromDb = await prisma.app.findFirst({
+    where: {
+      OR: [
+        ...appIdentifiers.map((identifier) => ({ slug: identifier })),
+        ...appIdentifiers.map((identifier) => ({ dirName: identifier })),
+      ],
+    },
   });
 
   const isAppAvailableInFileSystem = appMeta;
-  const isAppDisabled = isAppAvailableInFileSystem && (!appFromDb || !appFromDb.enabled);
+  const isAppDisabled = isAppAvailableInFileSystem && Boolean(appFromDb) && !appFromDb.enabled;
 
   if (!IS_PRODUCTION && isAppDisabled) {
     return {
@@ -87,10 +94,11 @@ export const getStaticProps = async (slug: string) => {
     };
   }
 
-  if (!appFromDb || !appMeta || isAppDisabled) return null;
+  if (isAppDisabled) return null;
 
   const isTemplate = appMeta.isTemplate;
-  const appDirname = path.join(isTemplate ? "templates" : "", appFromDb.dirName);
+  const resolvedDirName = appFromDb?.dirName ?? appMeta.dirName ?? appMeta.slug;
+  const appDirname = path.join(isTemplate ? "templates" : "", resolvedDirName);
   const README_PATH = path.join(process.cwd(), "..", "..", `packages/app-store/${appDirname}/DESCRIPTION.md`);
   const postFilePath = path.join(README_PATH);
   let source = "";

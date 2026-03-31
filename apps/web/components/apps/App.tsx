@@ -1,5 +1,5 @@
-import LicenseRequired from "~/ee/common/components/LicenseRequired";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
+import LicenseRequired from "~/ee/common/components/LicenseRequired";
 
 import Shell from "~/shell/Shell";
 

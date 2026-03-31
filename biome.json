@@ -62,6 +62,13 @@
     }
   },
   "linter": {
+    "rules": {
+      "nursery": {
+        "useExplicitType": "off"
+      }
+    }
+  },
+  "linter": {
     "enabled": true,
     "domains": {
       "next": "recommended",

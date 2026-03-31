@@ -1,13 +1,12 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import { usePathname } from "next/navigation";
-import { useMemo } from "react";
-
-import { DataTableProvider, type SystemFilterSegment, ColumnFilterType } from "@calcom/features/data-table";
+import { ColumnFilterType, DataTableProvider, type SystemFilterSegment } from "@calcom/features/data-table";
 import { useSegments } from "@calcom/features/data-table/hooks/useSegments";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import classNames from "@calcom/ui/classNames";
+import dynamic from "next/dynamic";
+import { usePathname } from "next/navigation";
+import { useMemo } from "react";
 
 import { BookingListContainer } from "../components/BookingListContainer";
 import { useBookingsShellHeadingVisibility } from "../hooks/useBookingsShellHeadingVisibility";

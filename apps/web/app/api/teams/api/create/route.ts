@@ -1,11 +1,7 @@
-import { defaultResponderForAppDir } from "app/api/defaultResponderForAppDir";
-import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
-import type Stripe from "stripe";
-import { z } from "zod";
-
-import { getBillingProviderService } from "@calcom/ee/billing/di/containers/Billing";
-import { getTeamBillingServiceFactory } from "@calcom/ee/billing/di/containers/Billing";
+import {
+  getBillingProviderService,
+  getTeamBillingServiceFactory,
+} from "@calcom/ee/billing/di/containers/Billing";
 import { Plan, SubscriptionStatus } from "@calcom/features/ee/billing/repository/billing/IBillingRepository";
 import stripe from "@calcom/features/ee/payments/server/stripe";
 import { HttpError } from "@calcom/lib/http-error";
@@ -13,6 +9,11 @@ import { prisma } from "@calcom/prisma";
 import { MembershipRole } from "@calcom/prisma/enums";
 import { MembershipSchema } from "@calcom/prisma/zod/modelSchema/MembershipSchema";
 import { TeamSchema } from "@calcom/prisma/zod/modelSchema/TeamSchema";
+import { defaultResponderForAppDir } from "app/api/defaultResponderForAppDir";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+import type Stripe from "stripe";
+import { z } from "zod";
 
 const querySchema = z.object({
   session_id: z.string().min(1),

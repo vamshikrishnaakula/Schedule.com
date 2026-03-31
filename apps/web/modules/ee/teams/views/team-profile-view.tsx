@@ -1,13 +1,5 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useSession } from "next-auth/react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useLayoutEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { z } from "zod";
-
 import { checkAdminOrOwner } from "@calcom/features/auth/lib/checkAdminOrOwner";
 import { Dialog } from "@calcom/features/components/controlled-dialog";
 import { getTeamUrlSync } from "@calcom/features/ee/organizations/lib/getTeamUrlSync";
@@ -27,28 +19,31 @@ import type { RouterOutputs } from "@calcom/trpc/react";
 import { trpc } from "@calcom/trpc/react";
 import { Avatar } from "@calcom/ui/components/avatar";
 import { Button, LinkIconButton } from "@calcom/ui/components/button";
-import { DialogTrigger, ConfirmationDialogContent } from "@calcom/ui/components/dialog";
+import { ConfirmationDialogContent, DialogTrigger } from "@calcom/ui/components/dialog";
 import { Editor } from "@calcom/ui/components/editor";
-import { Form } from "@calcom/ui/components/form";
-import { Label } from "@calcom/ui/components/form";
-import { TextField } from "@calcom/ui/components/form";
+import { Form, Label, TextField } from "@calcom/ui/components/form";
 import { Icon } from "@calcom/ui/components/icon";
 import { ImageUploader } from "@calcom/ui/components/image-uploader";
 import {
+  SkeletonAvatar,
   SkeletonButton,
   SkeletonContainer,
   SkeletonText,
-  SkeletonAvatar,
 } from "@calcom/ui/components/skeleton";
 import { showToast } from "@calcom/ui/components/toast";
 import { Tooltip } from "@calcom/ui/components/tooltip";
 import { revalidateTeamDataCache } from "@calcom/web/app/(booking-page-wrapper)/team/[slug]/[type]/actions";
 import { revalidateEventTypesList } from "@calcom/web/app/(use-page-wrapper)/(main-nav)/event-types/actions";
 import { revalidateTeamsList } from "@calcom/web/app/(use-page-wrapper)/(main-nav)/teams/actions";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { useEffect, useLayoutEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { z } from "zod";
 
-const regex = new RegExp("^[a-zA-Z0-9-]*$");
-
-
+const regex = /^[a-zA-Z0-9-]*$/;
 
 const SkeletonLoader = () => {
   return (
@@ -255,22 +250,19 @@ const TeamProfileForm = ({ team, teamId }: TeamProfileFormProps) => {
   const router = useRouter();
 
   const teamProfileFormSchema = z.object({
-  id: z.number(),
-  name: z
-    .string()
-    .trim()
-    .min(1,t("must_enter_team_name")),
-  slug: z
-    .string()
-    .regex(regex, {
-      message: "Url can only have alphanumeric characters(a-z, 0-9) and hyphen(-) symbol.",
-    })
-    .min(1, t("team_url_required")),
-  logo: z.string().nullable(),
-  bio: z.string(),
-});
+    id: z.number(),
+    name: z.string().trim().min(1, t("must_enter_team_name")),
+    slug: z
+      .string()
+      .regex(regex, {
+        message: "Url can only have alphanumeric characters(a-z, 0-9) and hyphen(-) symbol.",
+      })
+      .min(1, t("team_url_required")),
+    logo: z.string().nullable(),
+    bio: z.string(),
+  });
 
-type FormValues = z.infer<typeof teamProfileFormSchema>;
+  type FormValues = z.infer<typeof teamProfileFormSchema>;
 
   const mutation = trpc.viewer.teams.update.useMutation({
     onError: (err) => {

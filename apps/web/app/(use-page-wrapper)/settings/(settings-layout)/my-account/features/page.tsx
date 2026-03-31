@@ -1,7 +1,6 @@
+import { _generateMetadata } from "app/_utils";
 import type { Metadata } from "next";
 import type { ReactElement } from "react";
-
-import { _generateMetadata } from "app/_utils";
 
 import FeaturesView from "~/settings/my-account/features-view";
 

@@ -10,6 +10,13 @@ import { useJoinableLocation } from "./useJoinableLocation";
 interface JoinMeetingButtonProps {
   location: string | null;
   metadata?: unknown;
+  references?:
+    | {
+        type?: string | null;
+        meetingId?: string | null;
+        meetingUrl?: string | null;
+      }[]
+    | null;
   bookingStatus: BookingStatus;
   size?: "sm" | "base" | "lg";
   color?: "primary" | "secondary" | "minimal" | "destructive";
@@ -20,6 +27,7 @@ interface JoinMeetingButtonProps {
 export function JoinMeetingButton({
   location,
   metadata,
+  references,
   bookingStatus,
   size = "base",
   color = "secondary",
@@ -30,6 +38,7 @@ export function JoinMeetingButton({
   const { isJoinable, locationToDisplay, provider } = useJoinableLocation({
     location,
     metadata,
+    references,
     bookingStatus,
     t,
   });

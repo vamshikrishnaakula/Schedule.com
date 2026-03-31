@@ -4,12 +4,12 @@ import type { Options } from "@glidejs/glide";
 import Glide from "@glidejs/glide";
 import "@glidejs/glide/dist/css/glide.core.min.css";
 import "@glidejs/glide/dist/css/glide.theme.min.css";
-import type { ComponentProps, FC } from "react";
-import { useEffect, useRef } from "react";
 
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { Icon } from "@calcom/ui/components/icon";
 import { SkeletonText } from "@calcom/ui/components/skeleton";
+import type { ComponentProps, FC } from "react";
+import { useEffect, useRef } from "react";
 
 const SliderButton: FC<ComponentProps<"button">> = (props) => {
   const { children, ...rest } = props;
@@ -38,16 +38,21 @@ export const Slider = <T extends string | unknown>({
   const glide = useRef(null);
   const slider = useRef<Glide.Properties | null>(null);
   const { isLocaleReady } = useLocale();
+
+  const requestedPerView = typeof options.perView === "number" ? options.perView : 1;
+  const shouldUseCarousel = items.length > requestedPerView;
+
   useEffect(() => {
     if (glide.current) {
       slider.current = new Glide(glide.current, {
-        type: "carousel",
+        type: shouldUseCarousel ? "carousel" : "slider",
+        rewind: shouldUseCarousel,
         ...options,
       }).mount();
     }
 
     return () => slider.current?.destroy();
-  }, [options]);
+  }, [options, shouldUseCarousel]);
 
   return (
     <div className={`mb-2 ${className}`}>
@@ -62,14 +67,16 @@ export const Slider = <T extends string | unknown>({
           ) : (
             <SkeletonText className="h-4 w-24" />
           )}
-          <div className="glide__arrows ml-auto flex items-center gap-x-1" data-glide-el="controls">
-            <SliderButton data-glide-dir="<">
-              <Icon name="arrow-left" className="h-5 w-5" />
-            </SliderButton>
-            <SliderButton data-glide-dir=">">
-              <Icon name="arrow-right" className="h-5 w-5" />
-            </SliderButton>
-          </div>
+          {shouldUseCarousel ? (
+            <div className="glide__arrows ml-auto flex items-center gap-x-1" data-glide-el="controls">
+              <SliderButton data-glide-dir="<">
+                <Icon name="arrow-left" className="h-5 w-5" />
+              </SliderButton>
+              <SliderButton data-glide-dir=">">
+                <Icon name="arrow-right" className="h-5 w-5" />
+              </SliderButton>
+            </div>
+          ) : null}
         </div>
         <div className="glide__track" data-glide-el="track">
           <ul className="glide__slides">

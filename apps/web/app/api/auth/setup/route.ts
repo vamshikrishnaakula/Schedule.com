@@ -1,62 +1,38 @@
 import { defaultResponderForAppDir } from "app/api/defaultResponderForAppDir";
-import { parseRequestData } from "app/api/parseRequestData";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import z from "zod";
 
-import { hashPassword } from "@calcom/lib/auth/hashPassword";
-import { isPasswordValid } from "@calcom/lib/auth/isPasswordValid";
-import { emailRegex } from "@calcom/lib/emailSchema";
-import { HttpError } from "@calcom/lib/http-error";
-import slugify from "@calcom/lib/slugify";
-import prisma from "@calcom/prisma";
-import { IdentityProvider } from "@calcom/prisma/enums";
-import { CreationSource } from "@calcom/prisma/enums";
+import selfHostedHandler from "../signup/handlers/selfHostedHandler";
 
-const querySchema = z.object({
-  username: z
-    .string()
-    .refine((val) => val.trim().length >= 1, { message: "Please enter at least one character" }),
-  full_name: z.string().min(3, "Please enter at least 3 characters"),
-  email_address: z.string().regex(emailRegex, { message: "Please enter a valid email" }),
-  password: z.string().refine((val) => isPasswordValid(val.trim(), false, true), {
-    message:
-      "The password must be a minimum of 15 characters long containing at least one number and have a mixture of uppercase and lowercase letters",
-  }),
+// /api/auth/setup is used by the first-time setup UI to create an initial user.
+// Delegate to self-hosted signup logic underneath.
+export const GET = defaultResponderForAppDir(() => {
+  return NextResponse.json({ message: "Method Not Allowed" }, { status: 405 });
 });
 
-async function handler(req: NextRequest) {
-  const userCount = await prisma.user.count();
-  if (userCount !== 0) {
-    throw new HttpError({ statusCode: 400, message: "No setup needed." });
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json();
+
+    const mappedBody = {
+      username: body.username,
+      email: body.email_address ?? body.email,
+      password: body.password,
+      full_name: body.full_name,
+      language: body.language,
+      token: body.token,
+    };
+
+    const response = await selfHostedHandler(mappedBody);
+
+    if (response.status === 409) {
+      // Existing user on setup should be treated as already-setup in self-hosted flow.
+      return NextResponse.json({ message: "User already exists" }, { status: 200 });
+    }
+
+    return response;
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Internal server error";
+    return NextResponse.json({ message }, { status: 500 });
   }
-  const body = await parseRequestData(req);
-
-  const parsedQuery = querySchema.safeParse(body);
-  if (!parsedQuery.success) {
-    throw new HttpError({ statusCode: 422, message: parsedQuery.error.message });
-  }
-
-  const username = slugify(parsedQuery.data.username.trim());
-  const userEmail = parsedQuery.data.email_address.toLowerCase();
-
-  const hashedPassword = await hashPassword(parsedQuery.data.password);
-
-  await prisma.user.create({
-    data: {
-      username,
-      email: userEmail,
-      password: { create: { hash: hashedPassword } },
-      role: "ADMIN",
-      name: parsedQuery.data.full_name,
-      emailVerified: new Date(),
-      locale: "en", // TODO: We should revisit this
-      identityProvider: IdentityProvider.CAL,
-      creationSource: CreationSource.WEBAPP,
-    },
-  });
-
-  return NextResponse.json({ message: "First admin user created successfully." });
 }
-
-export const POST = defaultResponderForAppDir(handler);

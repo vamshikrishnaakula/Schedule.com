@@ -1,11 +1,9 @@
 "use client";
 
-import superjson from "superjson";
-
+import process from "node:process";
 import { ENDPOINTS } from "@calcom/trpc/react/shared";
-
 import { httpBatchLink, httpLink, loggerLink, splitLink } from "@trpc/client";
-
+import superjson from "superjson";
 import { trpc } from "./trpc";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -35,8 +33,8 @@ const url =
   typeof window !== "undefined"
     ? "/api/trpc"
     : process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}/api/trpc`
-    : `${process.env.NEXT_PUBLIC_WEBAPP_URL}/api/trpc`;
+      ? `https://${process.env.VERCEL_URL}/api/trpc`
+      : `${process.env.NEXT_PUBLIC_WEBAPP_URL}/api/trpc`;
 
 export const trpcClient = trpc.createClient({
   links: [

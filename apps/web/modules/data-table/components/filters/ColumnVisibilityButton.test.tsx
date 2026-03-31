@@ -1,7 +1,7 @@
+import { type Column, getCoreRowModel, type Table, useReactTable } from "@tanstack/react-table";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { useEffect, useMemo } from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { vi } from "vitest";
-import { useReactTable, getCoreRowModel, type Table, type Column } from "@tanstack/react-table";
 
 import { ColumnVisibilityButton } from "./ColumnVisibilityButton";
 
@@ -30,7 +30,7 @@ const TestWrapper = () => {
   }, [table]);
 
   return <ColumnVisibilityButton table={table} />;
-}
+};
 
 describe("ColumnVisibilityButton", () => {
   beforeEach(() => {
@@ -48,7 +48,9 @@ describe("ColumnVisibilityButton", () => {
 
     await waitFor(() => {
       expect(tableRef).not.toBeNull();
-      const allVisible = tableRef!.getAllLeafColumns().every((col: Column<{ a: number; b: number; c: number }, unknown>) => col.getIsVisible());
+      const allVisible = tableRef!
+        .getAllLeafColumns()
+        .every((col: Column<{ a: number; b: number; c: number }, unknown>) => col.getIsVisible());
       expect(allVisible).toBe(true);
     });
   });

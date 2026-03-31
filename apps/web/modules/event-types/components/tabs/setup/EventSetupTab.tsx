@@ -1,18 +1,13 @@
-import { useState } from "react";
-import { Controller, useFormContext } from "react-hook-form";
-import type { UseFormGetValues, UseFormSetValue, Control, FormState } from "react-hook-form";
-import type { MultiValue } from "react-select";
-
 import { useIsPlatform } from "@calcom/atoms/hooks/useIsPlatform";
 import useLockedFieldsManager from "@calcom/features/ee/managed-event-types/hooks/useLockedFieldsManager";
-import type { LocationCustomClassNames } from "../../locations/types";
 import type {
   EventTypeSetupProps,
+  FormValues,
   InputClassNames,
+  LocationFormValues,
   SelectClassNames,
   SettingsToggleClassNames,
 } from "@calcom/features/eventtypes/lib/types";
-import type { FormValues, LocationFormValues } from "@calcom/features/eventtypes/lib/types";
 import { MAX_EVENT_DURATION_MINUTES, MIN_EVENT_DURATION_MINUTES } from "@calcom/lib/constants";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { md } from "@calcom/lib/markdownIt";
@@ -20,14 +15,14 @@ import { slugify } from "@calcom/lib/slugify";
 import turndown from "@calcom/lib/turndownService";
 import classNames from "@calcom/ui/classNames";
 import { Editor } from "@calcom/ui/components/editor";
-import { TextAreaField } from "@calcom/ui/components/form";
-import { Label } from "@calcom/ui/components/form";
-import { TextField } from "@calcom/ui/components/form";
-import { Select } from "@calcom/ui/components/form";
-import { SettingsToggle } from "@calcom/ui/components/form";
+import { Label, Select, SettingsToggle, TextAreaField, TextField } from "@calcom/ui/components/form";
 import { Skeleton } from "@calcom/ui/components/skeleton";
-
 import Locations from "@calcom/web/modules/event-types/components/locations/Locations";
+import { useState } from "react";
+import type { Control, FormState, UseFormGetValues, UseFormSetValue } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
+import type { MultiValue } from "react-select";
+import type { LocationCustomClassNames } from "../../locations/types";
 
 export type EventSetupTabCustomClassNames = {
   wrapper?: string;

@@ -1,10 +1,9 @@
 "use client";
 
-import { useParams } from "next/navigation";
-
 import dayjs from "@calcom/dayjs";
-import { DecoyBookingSuccessCard } from "~/bookings/components/DecoyBookingSuccessCard";
 import { useDecoyBooking } from "@calcom/features/bookings/Booker/components/hooks/useDecoyBooking";
+import { useParams } from "next/navigation";
+import { DecoyBookingSuccessCard } from "~/bookings/components/DecoyBookingSuccessCard";
 
 export default function BookingSuccessful() {
   const params = useParams();

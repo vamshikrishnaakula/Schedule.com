@@ -1,23 +1,12 @@
-import { calendar_v3 } from "@googleapis/calendar";
-import { waitUntil } from "@vercel/functions";
-import { OAuth2Client } from "googleapis-common";
-import type { AuthOptions, Account, Session, User } from "next-auth";
-import type { JWT } from "next-auth/jwt";
-import { encode } from "next-auth/jwt";
-import type { Provider } from "next-auth/providers";
-import CredentialsProvider from "next-auth/providers/credentials";
-import EmailProvider from "next-auth/providers/email";
-import GoogleProvider from "next-auth/providers/google";
-
+import process from "node:process";
 import { updateProfilePhotoGoogle } from "@calcom/app-store/_utils/oauth/updateProfilePhotoGoogle";
 import {
   createGoogleCalendarServiceWithGoogleType,
   type GoogleCalendar,
 } from "@calcom/app-store/googlecalendar/lib/CalendarService";
 import { LicenseKeySingleton } from "@calcom/ee/common/server/LicenseKeyService";
-import { getBillingProviderService } from "@calcom/features/ee/billing/di/containers/Billing";
 import { CredentialRepository } from "@calcom/features/credentials/repositories/CredentialRepository";
-import type { TrackingData } from "@calcom/lib/tracking";
+import { getBillingProviderService } from "@calcom/features/ee/billing/di/containers/Billing";
 import { DeploymentRepository } from "@calcom/features/ee/deployment/repositories/DeploymentRepository";
 import createUsersAndConnectToOrg from "@calcom/features/ee/dsync/lib/users/createUsersAndConnectToOrg";
 import ImpersonationProvider from "@calcom/features/ee/impersonation/lib/ImpersonationProvider";
@@ -29,33 +18,46 @@ import { UserRepository } from "@calcom/features/users/repositories/UserReposito
 import { isPasswordValid } from "@calcom/lib/auth/isPasswordValid";
 import { checkRateLimitAndThrowError } from "@calcom/lib/checkRateLimitAndThrowError";
 import {
+  ENABLE_PROFILE_SWITCHER,
   GOOGLE_CALENDAR_SCOPES,
   GOOGLE_OAUTH_SCOPES,
   HOSTED_CAL_FEATURES,
   IS_CALCOM,
+  IS_TEAM_BILLING_ENABLED,
+  WEBAPP_URL,
 } from "@calcom/lib/constants";
-import { ENABLE_PROFILE_SWITCHER, IS_TEAM_BILLING_ENABLED, WEBAPP_URL } from "@calcom/lib/constants";
 import { symmetricDecrypt, symmetricEncrypt } from "@calcom/lib/crypto";
 import { defaultCookies } from "@calcom/lib/default-cookies";
 import { isENVDev } from "@calcom/lib/env";
+import { getSafeRedirectUrl } from "@calcom/lib/getSafeRedirectUrl";
 import logger from "@calcom/lib/logger";
 import { randomString } from "@calcom/lib/random";
 import { safeStringify } from "@calcom/lib/safeStringify";
 import { hashEmail } from "@calcom/lib/server/PiiHasher";
 import slugify from "@calcom/lib/slugify";
+import type { TrackingData } from "@calcom/lib/tracking";
 import prisma from "@calcom/prisma";
 import type { Membership, Team } from "@calcom/prisma/client";
-import { CreationSource } from "@calcom/prisma/enums";
-import { IdentityProvider, MembershipRole, UserPermissionRole } from "@calcom/prisma/enums";
+import { CreationSource, IdentityProvider, MembershipRole, UserPermissionRole } from "@calcom/prisma/enums";
 import { teamMetadataSchema, userMetadata } from "@calcom/prisma/zod-utils";
-
+import type { UserProfile } from "@calcom/types/UserProfile";
+import { calendar_v3 } from "@googleapis/calendar";
+import { waitUntil } from "@vercel/functions";
+import { OAuth2Client } from "googleapis-common";
+import type { Account, AuthOptions, Session, User } from "next-auth";
+import type { JWT } from "next-auth/jwt";
+import { encode } from "next-auth/jwt";
+import type { Provider } from "next-auth/providers";
+import CredentialsProvider from "next-auth/providers/credentials";
+import EmailProvider from "next-auth/providers/email";
+import GoogleProvider from "next-auth/providers/google";
+import KeycloakProvider from "next-auth/providers/keycloak";
 import { getOrgUsernameFromEmail } from "../signup/utils/getOrgUsernameFromEmail";
-import { ErrorCode } from "./ErrorCode";
 import { dub } from "./dub";
-import { validateSamlAccountConversion } from "./samlAccountLinking";
+import { ErrorCode } from "./ErrorCode";
 import CalComAdapter from "./next-auth-custom-adapter";
+import { validateSamlAccountConversion } from "./samlAccountLinking";
 import { verifyPassword } from "./verifyPassword";
-import { UserProfile } from "@calcom/types/UserProfile";
 
 type UserWithProfiles = NonNullable<
   Awaited<ReturnType<UserRepository["findByEmailAndIncludeProfilesAndPassword"]>>
@@ -470,39 +472,43 @@ if (isSAMLLoginEnabled) {
 }
 
 // Keycloak Provider - for instance-wide Keycloak SSO login
-if (process.env.KEYCLOAK_CLIENT_ID &&
-    process.env.KEYCLOAK_CLIENT_SECRET &&
-    process.env.KEYCLOAK_ISSUER) {
-  providers.push({
-    id: "keycloak",
-    name: "Keycloak",
-    type: "oauth" as const,
-    clientId: process.env.KEYCLOAK_CLIENT_ID,
-    clientSecret: process.env.KEYCLOAK_CLIENT_SECRET,
-    // Use wellKnown URL for proper OIDC discovery
-    wellKnown: `${process.env.KEYCLOAK_ISSUER}/.well-known/openid-configuration`,
-    // Explicitly set JWKS URL to avoid discovery issues
-    jwks_uri: `${process.env.KEYCLOAK_ISSUER}/protocol/openid-connect/certs`,
-    authorization: {
-      url: `${process.env.KEYCLOAK_ISSUER}/protocol/openid-connect/auth`,
-      params: { scope: "openid email profile" },
-    },
-    token: `${process.env.KEYCLOAK_ISSUER}/protocol/openid-connect/token`,
-    userinfo: `${process.env.KEYCLOAK_ISSUER}/protocol/openid-connect/userinfo`,
-    profile: (profile: any) => ({
-      id: profile.sub,
-      name: profile.name || profile.preferred_username,
-      email: profile.email,
-      image: profile.picture,
-      email_verified: profile.email_verified,
-    }),
-    allowDangerousEmailAccountLinking: true,
-    checks: ["pkce", "state"],
-    // Allow insecure connections if needed for testing
-    httpOptions: {
-      timeout: 10000,
-    },
-  });
+if (process.env.KEYCLOAK_CLIENT_ID && process.env.KEYCLOAK_CLIENT_SECRET && process.env.KEYCLOAK_ISSUER) {
+  const keycloakIssuer = process.env.KEYCLOAK_ISSUER.replace(/\/+$/, "");
+  const keycloakWellKnown =
+    process.env.KEYCLOAK_WELLKNOWN_URL || `${keycloakIssuer}/.well-known/openid-configuration`;
+
+  providers.push(
+    KeycloakProvider({
+      id: "keycloak",
+      name: "Keycloak",
+      clientId: process.env.KEYCLOAK_CLIENT_ID,
+      clientSecret: process.env.KEYCLOAK_CLIENT_SECRET,
+      issuer: keycloakIssuer,
+      wellKnown: keycloakWellKnown,
+      authorization: {
+        params: {
+          scope: "openid email profile",
+          response_type: "code",
+        },
+      },
+      allowDangerousEmailAccountLinking: true,
+      checks: ["pkce", "state"],
+      httpOptions: {
+        timeout: 10000,
+      },
+      profile: (profile: any) => {
+        log.debug("Keycloak profile callback", { profile });
+        if (!profile.email) throw new Error("Email is required from Keycloak but was not provided");
+        return {
+          id: profile.sub || profile.preferred_username || profile.email,
+          name: profile.name || profile.preferred_username || profile.email,
+          email: profile.email,
+          image: profile.picture,
+          email_verified: profile.email_verified,
+        };
+      },
+    })
+  );
 }
 
 providers.push(
@@ -530,6 +536,15 @@ const mapIdentityProvider = (providerName: string) => {
   }
 };
 
+const isAuthRedirectLoop = (value: string): boolean => {
+  return (
+    value.includes("/auth/login") ||
+    value.includes("/api/auth/signin") ||
+    value.includes("/api/auth/callback") ||
+    value.endsWith("/api/auth")
+  );
+};
+
 export const getOptions = ({
   getDubId,
   getTrackingData,
@@ -540,7 +555,7 @@ export const getOptions = ({
   getTrackingData: () => TrackingData;
 }): AuthOptions => ({
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+  // @ts-expect-error
   adapter: calcomAdapter,
   session: {
     strategy: "jwt",
@@ -566,7 +581,34 @@ export const getOptions = ({
       return encode({ secret, token, maxAge });
     },
   },
-  cookies: defaultCookies(WEBAPP_URL?.startsWith("https://")),
+  cookies: {
+  sessionToken: {
+    name: `__Secure-next-auth.session-token`,
+    options: {
+      domain: ".leadnest.ai",
+      httpOnly: true,
+      sameSite: "none",   // 🔥 IMPORTANT
+      path: "/",
+      secure: true,
+    },
+  },
+  callbackUrl: {
+    name: `__Secure-next-auth.callback-url`,
+    options: {
+      sameSite: "none",
+      path: "/",
+      secure: true,
+    },
+  },
+  csrfToken: {
+    name: `__Host-next-auth.csrf-token`,
+    options: {
+      sameSite: "none",
+      path: "/",
+      secure: true,
+    },
+  },
+},
   pages: {
     signIn: "/auth/login",
     signOut: "/auth/logout",
@@ -675,14 +717,14 @@ export const getOptions = ({
           org:
             profileOrg && !profileOrg.isPlatform
               ? {
-                id: profileOrg.id,
-                name: profileOrg.name,
-                slug: profileOrg.slug ?? profileOrg.requestedSlug ?? "",
-                logoUrl: profileOrg.logoUrl,
-                fullDomain: getOrgFullOrigin(profileOrg.slug ?? profileOrg.requestedSlug ?? ""),
-                domainSuffix: subdomainSuffix(),
-                role: orgRole as MembershipRole, // It can't be undefined if we have a profileOrg
-              }
+                  id: profileOrg.id,
+                  name: profileOrg.name,
+                  slug: profileOrg.slug ?? profileOrg.requestedSlug ?? "",
+                  logoUrl: profileOrg.logoUrl,
+                  fullDomain: getOrgFullOrigin(profileOrg.slug ?? profileOrg.requestedSlug ?? ""),
+                  domainSuffix: subdomainSuffix(),
+                  role: orgRole as MembershipRole, // It can't be undefined if we have a profileOrg
+                }
               : null,
         } as JWT;
       };
@@ -914,13 +956,16 @@ export const getOptions = ({
       }
 
       if (!user.name) {
-        log.warn("callbacks:signIn - user name is missing", { emailDomain: user.email.split("@")[1], provider: account?.provider });
+        log.warn("callbacks:signIn - user name is missing", {
+          emailDomain: user.email.split("@")[1],
+          provider: account?.provider,
+        });
         return false;
       }
       if (account?.provider) {
         const idP: IdentityProvider = mapIdentityProvider(account.provider);
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore-error TODO validate email_verified key on profile
+        // @ts-expect-error-error TODO validate email_verified key on profile
         user.email_verified = user.email_verified || !!user.emailVerified || profile.email_verified;
 
         if (!user.email_verified) {
@@ -1055,9 +1100,14 @@ export const getOptions = ({
             existingUserWithEmail.identityProvider !== IdentityProvider.CAL
           ) {
             // Verify SAML IdP is authoritative before auto-merge
-            if (idP === IdentityProvider.SAML) {
+            // Default Keycloak is instance-wide SSO so it is inherently authoritative
+            if (idP === IdentityProvider.SAML && account?.provider !== "keycloak") {
               const samlTenant = getSamlTenant();
-              const validation = await validateSamlAccountConversion(samlTenant, user.email, "SelfHosted→SAML");
+              const validation = await validateSamlAccountConversion(
+                samlTenant,
+                user.email,
+                "SelfHosted→SAML"
+              );
               if (!validation.allowed) {
                 return validation.errorUrl;
               }
@@ -1077,7 +1127,8 @@ export const getOptions = ({
             !existingUserWithEmail.username
           ) {
             // Verify SAML IdP is authoritative before claiming invited user
-            if (idP === IdentityProvider.SAML) {
+            // Default Keycloak is instance-wide SSO so it is inherently authoritative
+            if (idP === IdentityProvider.SAML && account?.provider !== "keycloak") {
               const samlTenant = getSamlTenant();
               const validation = await validateSamlAccountConversion(samlTenant, user.email, "Invite→SAML");
               if (!validation.allowed) {
@@ -1120,7 +1171,8 @@ export const getOptions = ({
             }
 
             // Verify SAML IdP is authoritative before converting account
-            if (idP === IdentityProvider.SAML) {
+            // Default Keycloak is instance-wide SSO so it is inherently authoritative
+            if (idP === IdentityProvider.SAML && account?.provider !== "keycloak") {
               const samlTenant = getSamlTenant();
               const validation = await validateSamlAccountConversion(samlTenant, user.email, "CAL→SAML");
               if (!validation.allowed) {
@@ -1142,22 +1194,21 @@ export const getOptions = ({
             } else {
               return true;
             }
-          } else if (
-            existingUserWithEmail.identityProvider === IdentityProvider.CAL
-          ) {
-            log.error(
-              `Userid ${user.id} already exists with CAL identity provider`
-            );
+          } else if (existingUserWithEmail.identityProvider === IdentityProvider.CAL) {
+            log.error(`Userid ${user.id} already exists with CAL identity provider`);
             return `/auth/error?error=wrong-provider&provider=${existingUserWithEmail.identityProvider}`;
           } else if (
             existingUserWithEmail.identityProvider === IdentityProvider.GOOGLE &&
             idP === IdentityProvider.SAML
           ) {
             // Verify SAML IdP is authoritative before converting account
-            const samlTenant = getSamlTenant();
-            const validation = await validateSamlAccountConversion(samlTenant, user.email, "Google→SAML");
-            if (!validation.allowed) {
-              return validation.errorUrl;
+            // Default Keycloak is instance-wide SSO so it is inherently authoritative
+            if (account?.provider !== "keycloak") {
+              const samlTenant = getSamlTenant();
+              const validation = await validateSamlAccountConversion(samlTenant, user.email, "Google→SAML");
+              if (!validation.allowed) {
+                return validation.errorUrl;
+              }
             }
 
             await prisma.user.update({
@@ -1176,17 +1227,14 @@ export const getOptions = ({
               return true;
             }
           }
-          log.error(
-            `Userid ${user.id} trying to login with the wrong provider`,
-            {
-              userId: user.id,
-              account: {
-                providerAccountId: account?.providerAccountId,
-                type: account?.type,
-                provider: account?.provider,
-              },
-            }
-          );
+          log.error(`Userid ${user.id} trying to login with the wrong provider`, {
+            userId: user.id,
+            account: {
+              providerAccountId: account?.providerAccountId,
+              type: account?.type,
+              provider: account?.provider,
+            },
+          });
           return `/auth/error?error=wrong-provider&provider=${existingUserWithEmail.identityProvider}`;
         }
 
@@ -1277,16 +1325,70 @@ export const getOptions = ({
     /**
      * Used to handle the navigation right after successful login or logout
      */
+    // async redirect({ url, baseUrl }) {
+    //   const appBaseUrl = new URL(baseUrl).origin;
+    //   const destination = `${appBaseUrl}/event-types`;
+
+    //   if (url.startsWith("/auth/error")) {
+    //     return new URL(url, appBaseUrl).toString();
+    //   }
+
+    //   try {
+    //     const absoluteUrl = new URL(url, appBaseUrl).toString();
+    //     const safeUrl = getSafeRedirectUrl(absoluteUrl);
+
+    //     if (!safeUrl) {
+    //       return destination;
+    //     }
+
+    //     if (isAuthRedirectLoop(safeUrl)) {
+    //       return destination;
+    //     }
+
+    //     return safeUrl;
+    //   } catch {
+    //     return destination;
+    //   }
+    // },
     async redirect({ url, baseUrl }) {
-      // Allows relative callback URLs
-      if (url.startsWith("/")) return `${baseUrl}${url}`;
-      // Allows callback URLs on the same domain
-      else if (new URL(url).hostname === new URL(WEBAPP_URL).hostname) return url;
-      return baseUrl;
-    },
+      const appBaseUrl = new URL(baseUrl).origin;
+      const destination = `${appBaseUrl}/event-types`;
+
+      // 🔥 FIX: allow cookie to be available
+      await new Promise((resolve) => setTimeout(resolve, 250));
+
+      if (url.startsWith("/auth/error")) {
+        return new URL(url, appBaseUrl).toString();
+      }
+
+      try {
+        const absoluteUrl = new URL(url, appBaseUrl).toString();
+        const safeUrl = getSafeRedirectUrl(absoluteUrl);
+
+        if (!safeUrl) return destination;
+
+        if (isAuthRedirectLoop(safeUrl)) return destination;
+
+        return safeUrl;
+      } catch {
+        return destination;
+      }
+    }
   },
   events: {
     async signIn(message) {
+      // Keycloak SSO users typically skip initial onboarding flows
+      if (message.account?.provider === "keycloak" && message.user?.email) {
+        try {
+          await prisma.user.update({
+            where: { email: message.user.email },
+            data: { completedOnboarding: true },
+          });
+        } catch (e) {
+          log.error("Failed to automatically complete onboarding for Keycloak user", e);
+        }
+      }
+
       /* only run this code if:
          - it's a hosted cal account
          - DUB_API_KEY is configured

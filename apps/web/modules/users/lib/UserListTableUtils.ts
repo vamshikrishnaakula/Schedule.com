@@ -1,7 +1,6 @@
-import type { Table } from "@tanstack/react-table";
-
 import { sanitizeValue } from "@calcom/lib/csvUtils";
 import type { UserTableUser } from "@calcom/web/modules/users/components/UserTable/types";
+import type { Table } from "@tanstack/react-table";
 
 export const generateHeaderFromReactTable = (table: Table<UserTableUser>): string[] | null => {
   const headerGroups = table.getHeaderGroups();
@@ -58,16 +57,19 @@ export const generateCsvRawForMembersTable = (
     const { email, role, teams, username, attributes } = row;
 
     // Create a map of attributeId to array of values
-    const attributeMap = (attributes ?? []).reduce((acc, attr) => {
-      if (!acc[attr.attributeId]) {
-        acc[attr.attributeId] = [];
-      }
-      acc[attr.attributeId].push({
-        value: attr.value,
-        weight: attr.weight ?? undefined,
-      });
-      return acc;
-    }, {} as Record<string, { value: string; weight: number | undefined }[]>);
+    const attributeMap = (attributes ?? []).reduce(
+      (acc, attr) => {
+        if (!acc[attr.attributeId]) {
+          acc[attr.attributeId] = [];
+        }
+        acc[attr.attributeId].push({
+          value: attr.value,
+          weight: attr.weight ?? undefined,
+        });
+        return acc;
+      },
+      {} as Record<string, { value: string; weight: number | undefined }[]>
+    );
 
     const requiredColumns = [
       email, // Members column

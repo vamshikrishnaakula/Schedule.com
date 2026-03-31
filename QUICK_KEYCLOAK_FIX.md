@@ -51,7 +51,7 @@ curl http://localhost:3000/auth/login | grep -o "Sign in with Keycloak"
 
 ### 3. Test Keycloak Login
 
-Open: https://schedule.leadnest.ai/auth/login
+Open: https://schedule.leadnest.ai/
 
 Click "Sign in with Keycloak" - it should redirect to Keycloak now!
 

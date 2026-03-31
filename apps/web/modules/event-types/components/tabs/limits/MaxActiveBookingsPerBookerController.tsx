@@ -1,12 +1,10 @@
-import { useState } from "react";
-import { Controller, useFormContext } from "react-hook-form";
-
-import { LearnMoreLink } from "@calcom/web/modules/event-types/components/LearnMoreLink";
 import type { FormValues } from "@calcom/features/eventtypes/lib/types";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import classNames from "@calcom/ui/classNames";
-import { SettingsToggle } from "@calcom/ui/components/form";
-import { TextField, CheckboxField } from "@calcom/ui/components/form";
+import { CheckboxField, SettingsToggle, TextField } from "@calcom/ui/components/form";
+import { LearnMoreLink } from "@calcom/web/modules/event-types/components/LearnMoreLink";
+import { useState } from "react";
+import { Controller, useFormContext } from "react-hook-form";
 
 type maxActiveBookingsPerBookerLockedProps = {
   disabled: boolean;
@@ -49,7 +47,6 @@ export default function MaxActiveBookingsPerBookerController({
             )}
             childrenClassName={classNames("lg:ml-0")}
             title={t("booker_upcoming_limit")}
-            
             checked={isChecked}
             onCheckedChange={(active) => {
               if (active) {

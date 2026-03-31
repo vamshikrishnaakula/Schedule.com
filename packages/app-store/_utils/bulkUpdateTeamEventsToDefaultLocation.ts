@@ -2,7 +2,7 @@ import type { PrismaClient } from "@calcom/prisma";
 import { teamMetadataSchema } from "@calcom/prisma/zod-utils";
 
 import type { LocationObject } from "../locations";
-import { getAppFromSlug } from "../utils";
+import { getAppFromSlug, getAppIdentifiers } from "../utils";
 
 export const bulkUpdateTeamEventsToDefaultLocation = async ({
   eventTypeIds,
@@ -32,8 +32,10 @@ export const bulkUpdateTeamEventsToDefaultLocation = async ({
 
   const credential = await prisma.credential.findFirst({
     where: {
+      appId: {
+        in: getAppIdentifiers(foundApp),
+      },
       teamId,
-      appId: foundApp.slug,
     },
     select: {
       id: true,

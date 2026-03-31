@@ -1,6 +1,3 @@
-import MarkdownIt from "markdown-it";
-import type { GetServerSidePropsContext } from "next";
-
 import {
   generateGuestMeetingTokenFromOwnerMeetingToken,
   setEnableRecordingUIAndUserIdForOrganizer,
@@ -15,6 +12,8 @@ import { UserRepository } from "@calcom/features/users/repositories/UserReposito
 import { CAL_VIDEO_MEETING_LINK_FOR_TESTING } from "@calcom/lib/constants";
 import { isENVDev } from "@calcom/lib/env";
 import prisma from "@calcom/prisma";
+import MarkdownIt from "markdown-it";
+import type { GetServerSidePropsContext } from "next";
 
 const md = new MarkdownIt("default", { html: true, breaks: true, linkify: true });
 
@@ -223,9 +222,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   });
 
   const isAttendee = sessionUserEmail
-    ? bookingObj.attendees?.some(
+    ? (bookingObj.attendees?.some(
         (attendee) => attendee.email.toLowerCase() === sessionUserEmail.toLowerCase()
-      ) ?? false
+      ) ?? false)
     : false;
 
   // set meetingPassword for guests

@@ -1,14 +1,23 @@
+import process from "node:process";
+import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
+import { isSAMLLoginEnabled, samlProductID, samlTenantID } from "@calcom/features/ee/sso/lib/saml";
+import { WEBAPP_URL } from "@calcom/lib/constants";
+import { getSafeRedirectUrl } from "@calcom/lib/getSafeRedirectUrl";
+import prisma from "@calcom/prisma";
+import { IS_GOOGLE_LOGIN_ENABLED } from "@server/lib/constants";
 import { jwtVerify } from "jose";
 import type { GetServerSidePropsContext } from "next";
 import { getCsrfToken } from "next-auth/react";
 
-import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
-import { isSAMLLoginEnabled, samlProductID, samlTenantID } from "@calcom/features/ee/sso/lib/saml";
-import { WEBSITE_URL } from "@calcom/lib/constants";
-import { getSafeRedirectUrl } from "@calcom/lib/getSafeRedirectUrl";
-import prisma from "@calcom/prisma";
-
-import { IS_GOOGLE_LOGIN_ENABLED } from "@server/lib/constants";
+const isInvalidLoginCallbackUrl = (value: string): boolean => {
+  return (
+    value.includes("/auth/login") ||
+    value.includes("/api/auth/signin") ||
+    value.includes("/api/auth/callback") ||
+    value.endsWith("/api/auth") ||
+    value.includes("/auth/error")
+  );
+};
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { req, query } = context;
@@ -19,8 +28,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     const secret = new TextEncoder().encode(process.env.CALENDSO_ENCRYPTION_KEY);
 
     return jwtVerify(jwt, secret, {
-      issuer: WEBSITE_URL,
-      audience: `${WEBSITE_URL}/auth/login`,
+      issuer: WEBAPP_URL,
+      audience: `${WEBAPP_URL}/auth/login`,
       algorithms: ["HS256"],
     });
   };
@@ -54,8 +63,11 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
     if (callbackUrl) {
       try {
-        const destination = getSafeRedirectUrl(callbackUrl as string);
-        if (destination) {
+        const normalizedCallbackUrl = /^https?:\/\//.test(callbackUrl as string)
+          ? (callbackUrl as string)
+          : `${WEBAPP_URL.replace(/\/+$/, "")}/${(callbackUrl as string).replace(/^\/+/, "")}`;
+        const destination = getSafeRedirectUrl(normalizedCallbackUrl);
+        if (destination && !isInvalidLoginCallbackUrl(destination)) {
           return {
             redirect: {
               destination,
@@ -70,7 +82,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
     return {
       redirect: {
-        destination: "/",
+        destination: "/event-types",
         permanent: false,
       },
     };
@@ -88,31 +100,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
   // construct callbackUrl (re-using logic from above)
   let callbackUrl = (query.callbackUrl as string) || "";
-  if (/"\//.test(callbackUrl)) callbackUrl = callbackUrl.substring(1);
+  if (/^\//.test(callbackUrl)) callbackUrl = callbackUrl.substring(1);
   if (!/^https?:\/\//.test(callbackUrl)) {
-    callbackUrl = `${WEBSITE_URL}/${callbackUrl}`;
+    callbackUrl = `${WEBAPP_URL}/${callbackUrl}`;
   }
   const safeCallbackUrl = getSafeRedirectUrl(callbackUrl) || "";
 
   const keycloakEnabled =
-    !!process.env.KEYCLOAK_CLIENT_ID &&
-    !!process.env.KEYCLOAK_CLIENT_SECRET &&
-    !!process.env.KEYCLOAK_ISSUER;
-
-  // If NextAuth redirected here with an error (eg. unable to complete the
-  // Keycloak flow), don't immediately redirect again to avoid a redirect loop.
-  // This matches the behavior we want for other errors (show error page / form).
-  if (userExists && keycloakEnabled && !query.error) {
-    const dest = `/api/auth/signin/keycloak?callbackUrl=${encodeURIComponent(
-      safeCallbackUrl || WEBSITE_URL
-    )}`;
-    return {
-      redirect: {
-        destination: dest,
-        permanent: false,
-      },
-    };
-  }
+    !!process.env.KEYCLOAK_CLIENT_ID && !!process.env.KEYCLOAK_CLIENT_SECRET && !!process.env.KEYCLOAK_ISSUER;
 
   return {
     props: {
@@ -123,6 +118,10 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       samlProductID,
       totpEmail,
       isKeycloakLoginEnabled: keycloakEnabled,
+      safeCallbackUrl:
+        !safeCallbackUrl || isInvalidLoginCallbackUrl(safeCallbackUrl)
+          ? `${WEBAPP_URL}/event-types`
+          : safeCallbackUrl,
     },
   };
 }

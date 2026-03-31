@@ -1,20 +1,14 @@
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import type { IframeHTMLAttributes } from "react";
-import React, { useEffect, useState } from "react";
-
-import { AppDependencyComponent } from "@calcom/app-store/AppDependencyComponent";
-import { InstallAppButton } from "@calcom/app-store/InstallAppButton";
 import { isRedirectApp } from "@calcom/app-store/_utils/redirectApps";
 import useAddAppMutation from "@calcom/app-store/_utils/useAddAppMutation";
+import { AppDependencyComponent } from "@calcom/app-store/AppDependencyComponent";
+import { InstallAppButton } from "@calcom/app-store/InstallAppButton";
 import { doesAppSupportTeamInstall, isConferencing } from "@calcom/app-store/utils";
-import DisconnectIntegration from "@calcom/web/modules/apps/components/DisconnectIntegration";
 import { AppOnboardingSteps } from "@calcom/lib/apps/appOnboardingSteps";
 import { getAppOnboardingUrl } from "@calcom/lib/apps/getAppOnboardingUrl";
 import { APP_NAME, COMPANY_NAME, SUPPORT_MAIL_ADDRESS, WEBAPP_URL } from "@calcom/lib/constants";
 import { useCompatSearchParams } from "@calcom/lib/hooks/useCompatSearchParams";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
-import { trpc, type RouterOutputs } from "@calcom/trpc/react";
+import { type RouterOutputs, trpc } from "@calcom/trpc/react";
 import type { App as AppType } from "@calcom/types/App";
 import classNames from "@calcom/ui/classNames";
 import { Badge } from "@calcom/ui/components/badge";
@@ -22,6 +16,12 @@ import { Button } from "@calcom/ui/components/button";
 import { Icon } from "@calcom/ui/components/icon";
 import { SkeletonButton, SkeletonText } from "@calcom/ui/components/skeleton";
 import { showToast } from "@calcom/ui/components/toast";
+import DisconnectIntegration from "@calcom/web/modules/apps/components/DisconnectIntegration";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import type React from "react";
+import type { IframeHTMLAttributes } from "react";
+import { useEffect, useState } from "react";
 
 import { InstallAppButtonChild } from "./InstallAppButtonChild";
 import { MultiDisconnectIntegration } from "./MultiDisconnectIntegration";
@@ -30,6 +30,7 @@ export type AppPageProps = {
   name: string;
   description: AppType["description"];
   type: AppType["type"];
+  dirName: AppType["dirName"];
   isGlobal?: AppType["isGlobal"];
   logo: string;
   slug: string;
@@ -59,6 +60,7 @@ export type AppPageProps = {
 export const AppPage = ({
   name,
   type,
+  dirName,
   logo,
   slug,
   variant,
@@ -125,6 +127,7 @@ export const AppPage = ({
         type,
         variant,
         slug,
+        appDirName: dirName,
         returnTo:
           WEBAPP_URL +
           getAppOnboardingUrl({
@@ -133,7 +136,7 @@ export const AppPage = ({
           }),
       });
     } else if (!availableForTeams) {
-      mutation.mutate({ type });
+      mutation.mutate({ type, appDirName: dirName });
     } else {
       router.push(getAppOnboardingUrl({ slug, step: AppOnboardingSteps.ACCOUNTS_STEP }));
     }
@@ -184,7 +187,9 @@ export const AppPage = ({
     enabled: !!dependencies,
   });
 
-  const disableInstall = dependencyData.data ? dependencyData.data.some((dependency) => !dependency.installed) : false;
+  const disableInstall = dependencyData.data
+    ? dependencyData.data.some((dependency) => !dependency.installed)
+    : false;
 
   // const disableInstall = requiresGCal && !gCalInstalled.data;
 
@@ -194,7 +199,7 @@ export const AppPage = ({
   const allowedMultipleInstalls = categories.indexOf("calendar") > -1 && variant !== "other";
   useEffect(() => {
     if (searchParams?.get("defaultInstall") === "true") {
-      mutation.mutate({ type, variant, slug, defaultInstall: true });
+      mutation.mutate({ type, variant, slug, appDirName: dirName, defaultInstall: true });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentionally run only once on mount
   }, []);

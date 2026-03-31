@@ -1,28 +1,25 @@
 "use client";
 
-import { useReducer } from "react";
-
 import getAppCategoryTitle from "@calcom/app-store/_utils/getAppCategoryTitle";
-import { AppList, type HandleDisconnect } from "@calcom/web/modules/apps/components/AppList";
-import type { UpdateUsersDefaultConferencingAppParams } from "@calcom/web/modules/apps/components/AppSetDefaultLinkDialog";
-import DisconnectIntegrationModal from "@calcom/web/modules/apps/components/DisconnectIntegrationModal";
-import type { RemoveAppParams } from "@calcom/web/modules/apps/components/DisconnectIntegrationModal";
-import { SkeletonLoader } from "@calcom/web/modules/apps/components/SkeletonLoader";
-import type { BulkUpdatParams } from "@calcom/web/modules/event-types/components/BulkEditDefaultForEventsModal";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { AppCategories } from "@calcom/prisma/enums";
-import { trpc } from "@calcom/trpc/react";
 import type { RouterOutputs } from "@calcom/trpc/react";
+import { trpc } from "@calcom/trpc/react";
 import { Button } from "@calcom/ui/components/button";
 import { EmptyScreen } from "@calcom/ui/components/empty-screen";
 import type { Icon } from "@calcom/ui/components/icon";
 import { ShellSubHeading } from "@calcom/ui/components/layout";
 import { showToast } from "@calcom/ui/components/toast";
-
-import { QueryCell } from "@lib/QueryCell";
-
+import { AppList, type HandleDisconnect } from "@calcom/web/modules/apps/components/AppList";
+import type { UpdateUsersDefaultConferencingAppParams } from "@calcom/web/modules/apps/components/AppSetDefaultLinkDialog";
+import type { RemoveAppParams } from "@calcom/web/modules/apps/components/DisconnectIntegrationModal";
+import DisconnectIntegrationModal from "@calcom/web/modules/apps/components/DisconnectIntegrationModal";
+import { SkeletonLoader } from "@calcom/web/modules/apps/components/SkeletonLoader";
+import type { BulkUpdatParams } from "@calcom/web/modules/event-types/components/BulkEditDefaultForEventsModal";
 import { CalendarListContainer } from "@components/apps/CalendarListContainer";
 import InstalledAppsLayout from "@components/apps/layouts/InstalledAppsLayout";
+import { QueryCell } from "@lib/QueryCell";
+import { useReducer } from "react";
 
 interface IntegrationsContainerProps {
   variant?: AppCategories;

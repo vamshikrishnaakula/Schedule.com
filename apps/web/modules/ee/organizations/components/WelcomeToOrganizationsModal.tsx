@@ -1,14 +1,13 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useWelcomeModal } from "@calcom/features/ee/organizations/hooks/useWelcomeModal";
 
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { Button } from "@calcom/ui/components/button";
 import { Dialog, DialogContent } from "@calcom/ui/components/dialog";
 import { Icon, type IconName } from "@calcom/ui/components/icon";
 import { Logo } from "@calcom/ui/components/logo";
-
-import { useWelcomeModal } from "@calcom/features/ee/organizations/hooks/useWelcomeModal";
+import { motion } from "framer-motion";
 
 const features = [
   "1_parent_team_unlimited_subteams",

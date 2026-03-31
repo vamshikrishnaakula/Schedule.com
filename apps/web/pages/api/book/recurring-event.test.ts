@@ -1,3 +1,8 @@
+import process from "node:process";
+import { WEBAPP_URL, WEBSITE_URL } from "@calcom/lib/constants";
+import { ErrorCode } from "@calcom/lib/errorCodes";
+import logger from "@calcom/lib/logger";
+import { BookingStatus, SchedulingType } from "@calcom/prisma/enums";
 import {
   createBookingScenario,
   getBooker,
@@ -19,15 +24,9 @@ import {
 } from "@calcom/testing/lib/bookingScenario/expects";
 import { getMockRequestDataForBooking } from "@calcom/testing/lib/bookingScenario/getMockRequestDataForBooking";
 import { setupAndTeardown } from "@calcom/testing/lib/bookingScenario/setupAndTeardown";
-
+import { test } from "@calcom/testing/lib/fixtures/fixtures";
 import { v4 as uuidv4 } from "uuid";
 import { describe, expect } from "vitest";
-
-import { WEBAPP_URL, WEBSITE_URL } from "@calcom/lib/constants";
-import { ErrorCode } from "@calcom/lib/errorCodes";
-import logger from "@calcom/lib/logger";
-import { BookingStatus, SchedulingType } from "@calcom/prisma/enums";
-import { test } from "@calcom/testing/lib/fixtures/fixtures";
 
 const DAY_IN_MS = 1000 * 60 * 60 * 24;
 
@@ -374,9 +373,7 @@ describe("handleNewBooking", () => {
               }),
           });
 
-          await expect(handleRecurringEventBooking(req)).rejects.toThrow(
-            ErrorCode.NoAvailableUsersFound
-          );
+          await expect(handleRecurringEventBooking(req)).rejects.toThrow(ErrorCode.NoAvailableUsersFound);
           // Actually the first booking goes through in this case but the status is still a failure. We should do a dry run to check if booking is possible  for the 2 slots and if yes, then only go for the actual booking otherwise fail the recurring bookign
         },
         timeout

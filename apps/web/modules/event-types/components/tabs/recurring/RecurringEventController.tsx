@@ -1,23 +1,20 @@
-import { useState } from "react";
-import { useFormContext } from "react-hook-form";
-
 import useLockedFieldsManager from "@calcom/features/ee/managed-event-types/hooks/useLockedFieldsManager";
-import { LearnMoreLink } from "@calcom/web/modules/event-types/components/LearnMoreLink";
 import type {
   EventTypeSetup,
+  FormValues,
   InputClassNames,
   SelectClassNames,
   SettingsToggleClassNames,
 } from "@calcom/features/eventtypes/lib/types";
-import type { FormValues } from "@calcom/features/eventtypes/lib/types";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { Frequency } from "@calcom/prisma/zod-utils";
 import type { RecurringEvent } from "@calcom/types/Calendar";
 import classNames from "@calcom/ui/classNames";
 import { Alert } from "@calcom/ui/components/alert";
-import { Select } from "@calcom/ui/components/form";
-import { SettingsToggle } from "@calcom/ui/components/form";
-import { TextField } from "@calcom/ui/components/form";
+import { Select, SettingsToggle, TextField } from "@calcom/ui/components/form";
+import { LearnMoreLink } from "@calcom/web/modules/event-types/components/LearnMoreLink";
+import { useState } from "react";
+import { useFormContext } from "react-hook-form";
 
 export type RecurringEventControllerProps = {
   eventType: EventTypeSetup;
@@ -92,7 +89,6 @@ export default function RecurringEventController({
               descriptionClassName={customClassNames?.recurringToggle?.description}
               title={t("recurring_event")}
               {...recurringLocked}
-              
               checked={!!recurringEventState}
               data-testid="recurring-event-check"
               disabled={(!recurringEventState && isSeatsOffered) || hasBookingLimitPerBooker}
@@ -100,8 +96,8 @@ export default function RecurringEventController({
                 isSeatsOffered
                   ? t("seats_doesnt_support_recurring")
                   : hasBookingLimitPerBooker
-                  ? t("booking_limit_per_booker_doesnt_support_recurring")
-                  : undefined
+                    ? t("booking_limit_per_booker_doesnt_support_recurring")
+                    : undefined
               }
               onCheckedChange={(e) => {
                 if (!e) {

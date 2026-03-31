@@ -1,12 +1,11 @@
-import type { PrismaClient } from "@prisma/client";
-import { describe, it, expect, vi, beforeEach, type MockInstance } from "vitest";
-
 import { MembershipRepository } from "@calcom/features/membership/repositories/MembershipRepository";
 import { OrganizationSettingsRepository } from "@calcom/features/organizations/repositories/OrganizationSettingsRepository";
+import type { PrismaClient } from "@prisma/client";
+import { beforeEach, describe, expect, it, type MockInstance, vi } from "vitest";
 
 import {
-  SamlAccountLinkingService,
   getTeamIdFromSamlTenant,
+  SamlAccountLinkingService,
   validateSamlAccountConversion,
 } from "./samlAccountLinking";
 
@@ -174,7 +173,7 @@ describe("validateSamlAccountConversion", () => {
     const result = await validateSamlAccountConversion(undefined, "user@example.com", "CAL→SAML");
     expect(result).toEqual({
       allowed: false,
-      errorUrl: "/auth/error?error=saml-idp-not-authoritative",
+      errorUrl: "/auth/login?error=saml-idp-not-authoritative",
     });
   });
 
@@ -188,7 +187,7 @@ describe("validateSamlAccountConversion", () => {
 
     expect(result).toEqual({
       allowed: false,
-      errorUrl: "/auth/error?error=saml-idp-not-authoritative",
+      errorUrl: "/auth/login?error=saml-idp-not-authoritative",
     });
   });
 

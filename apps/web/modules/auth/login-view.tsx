@@ -1,35 +1,32 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import classNames from "classnames";
-import { signIn } from "next-auth/react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
-import { z } from "zod";
-
-import { SAMLLogin } from "@calcom/features/auth/SAMLLogin";
+import process from "node:process";
 import { ErrorCode } from "@calcom/features/auth/lib/ErrorCode";
 import { LastUsed, useLastUsed } from "@calcom/features/auth/lib/hooks/useLastUsed";
+import { SAMLLogin } from "@calcom/features/auth/SAMLLogin";
 import { HOSTED_CAL_FEATURES, WEBAPP_URL, WEBSITE_URL } from "@calcom/lib/constants";
 import { emailRegex } from "@calcom/lib/emailSchema";
-import { getSafeRedirectUrl } from "@calcom/lib/getSafeRedirectUrl";
 import { useCompatSearchParams } from "@calcom/lib/hooks/useCompatSearchParams";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { trpc } from "@calcom/trpc/react";
 import { Alert } from "@calcom/ui/components/alert";
 import { Button } from "@calcom/ui/components/button";
 import { EmailField, PasswordField } from "@calcom/ui/components/form";
-
-import type { inferSSRProps } from "@lib/types/inferSSRProps";
-
 import AddToHomescreen from "@components/AddToHomescreen";
 import BackupCode from "@components/auth/BackupCode";
 import TwoFactor from "@components/auth/TwoFactor";
 import AuthContainer from "@components/ui/AuthContainer";
-
+import { zodResolver } from "@hookform/resolvers/zod";
+import type { inferSSRProps } from "@lib/types/inferSSRProps";
 import type { getServerSideProps } from "@server/lib/auth/login/getServerSideProps";
+import classNames from "classnames";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { signIn, useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { z } from "zod";
+import { getNormalizedLoginCallbackUrl } from "./callback-redirect";
 
 interface LoginValues {
   email: string;
@@ -43,6 +40,16 @@ export type PageProps = inferSSRProps<typeof getServerSideProps>;
 
 const GoogleIcon = () => (
   <img className="text-subtle mr-2 h-4 w-4" src="/google-icon-colored.svg" alt="Continue with Google Icon" />
+);
+
+const KeycloakIcon = () => (
+  <svg
+    className="text-subtle mr-2 h-4 w-4"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    aria-label="Keycloak Icon">
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" />
+  </svg>
 );
 
 export default function Login({
@@ -74,6 +81,7 @@ export default function Login({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [lastUsed, setLastUsed] = useLastUsed();
+  const { status } = useSession();
 
   const errorMessages: { [key: string]: string } = {
     // [ErrorCode.SecondFactorRequired]: t("2fa_enabled_instructions"),
@@ -82,33 +90,49 @@ export default function Login({
     [ErrorCode.IncorrectTwoFactorCode]: `${t("incorrect_2fa_code")} ${t("please_try_again")}`,
     [ErrorCode.InternalServerError]: `${t("something_went_wrong")} ${t("please_try_again_and_contact_us")}`,
     [ErrorCode.ThirdPartyIdentityProviderEnabled]: t("account_created_with_identity_provider"),
+    "saml-idp-not-authoritative": t("saml_idp_not_authoritative_error"),
   };
 
-  let callbackUrl = searchParams?.get("callbackUrl") || "";
+  const callbackUrl = getNormalizedLoginCallbackUrl(searchParams?.get("callbackUrl"));
+
+  useEffect(() => {
+    if (status !== "authenticated") {
+      return;
+    }
+
+    window.location.replace(callbackUrl);
+  }, [callbackUrl, status]);
 
   // if there is an error query param from NextAuth redirect, surface it as
   // a user-facing message here instead of sending the user to /auth/error
   useEffect(() => {
     const err = searchParams?.get("error");
     if (err) {
-      setErrorMessage(errorMessages[err] || t("something_went_wrong"));
+      console.error("Login error from NextAuth", {
+        error: err,
+        errorDescription: searchParams?.get("error_description"),
+      });
+      if (err === "OAuthSignin") {
+        setErrorMessage(
+          "Keycloak authentication failed (OAuth signin issue). Please verify your Keycloak server is accessible and configuration is correct. Check server logs for details."
+        );
+      } else if (err === "keycloak") {
+        setErrorMessage(
+          "Keycloak authentication failed. Please check your Keycloak configuration and try again."
+        );
+      } else if (err === "keycloak-missing-email") {
+        setErrorMessage("Keycloak did not provide an email address. Please contact your administrator.");
+      } else if (err === "keycloak-profile-error") {
+        setErrorMessage("Failed to process Keycloak profile data. Please try again.");
+      } else {
+        setErrorMessage(errorMessages[err] || t("something_went_wrong"));
+      }
     }
     const success = searchParams?.get("success");
     if (success) {
       setToastMessage(t("login_successful"));
     }
   }, [searchParams]);
-
-  if (/"\//.test(callbackUrl)) callbackUrl = callbackUrl.substring(1);
-
-  // If not absolute URL, make it absolute
-  if (!/^https?:\/\//.test(callbackUrl)) {
-    callbackUrl = `${WEBAPP_URL}/${callbackUrl}`;
-  }
-
-  const safeCallbackUrl = getSafeRedirectUrl(callbackUrl);
-
-  callbackUrl = safeCallbackUrl || "";
 
   const LoginFooter = (
     <Link href={`${WEBSITE_URL}/signup`} className="text-brand-500 font-medium">
@@ -205,31 +229,32 @@ export default function Login({
               ? TwoFactorFooter
               : ExternalTotpFooter
             : process.env.NEXT_PUBLIC_DISABLE_SIGNUP !== "true" && searchParams?.get("register") !== "false"
-            ? LoginFooter
-            : null
+              ? LoginFooter
+              : null
         }>
         <FormProvider {...methods}>
           {!twoFactorRequired && (
             <>
               <div className="stack-y-3">
                 {isKeycloakLoginEnabled && (
-                <Button
-                  color="secondary"
-                  className="w-full justify-center"
-                  disabled={formState.isSubmitting}
-                  data-testid="keycloak"
-                  onClick={async (e) => {
-                    e.preventDefault();
-                    setLastUsed("keycloak");
-                    await signIn("keycloak", {
-                      callbackUrl,
-                    });
-                  }}>
-                  <span>{t("signin_with_keycloak")}</span>
-                  {lastUsed === "keycloak" && <LastUsed />}
-                </Button>
-              )}
-              {isGoogleLoginEnabled && (
+                  <Button
+                    color="secondary"
+                    className="w-full justify-center"
+                    disabled={formState.isSubmitting}
+                    data-testid="keycloak"
+                    CustomStartIcon={<KeycloakIcon />}
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      setLastUsed("keycloak");
+                      await signIn("keycloak", {
+                        callbackUrl,
+                      });
+                    }}>
+                    <span>{t("signin_with_keycloak")}</span>
+                    {lastUsed === "keycloak" && <LastUsed />}
+                  </Button>
+                )}
+                {isGoogleLoginEnabled && (
                   <Button
                     color="primary"
                     className="w-full justify-center"
@@ -250,6 +275,7 @@ export default function Login({
                 {displaySSOLogin && (
                   <SAMLLogin
                     disabled={formState.isSubmitting}
+                    callbackUrl={callbackUrl}
                     samlTenantID={samlTenantID}
                     samlProductID={samlProductID}
                     setErrorMessage={setErrorMessage}

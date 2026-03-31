@@ -1,5 +1,3 @@
-import { useFieldArray, useForm, useFormContext } from "react-hook-form";
-
 import dayjs from "@calcom/dayjs";
 import { TimezoneSelect } from "@calcom/features/components/timezone-select";
 import DateOverrideInputDialog from "@calcom/features/schedules/components/DateOverrideInputDialog";
@@ -13,8 +11,7 @@ import useMeQuery from "@calcom/trpc/react/hooks/useMeQuery";
 import type { Schedule as ScheduleType, TimeRange, WorkingHours } from "@calcom/types/schedule";
 import { Alert } from "@calcom/ui/components/alert";
 import { Button } from "@calcom/ui/components/button";
-import { Form } from "@calcom/ui/components/form";
-import { Label } from "@calcom/ui/components/form";
+import { Form, Label } from "@calcom/ui/components/form";
 import {
   Sheet,
   SheetBody,
@@ -25,6 +22,7 @@ import {
   SheetTitle,
 } from "@calcom/ui/components/sheet";
 import { showToast } from "@calcom/ui/components/toast";
+import { useFieldArray, useForm, useFormContext } from "react-hook-form";
 
 import type { SliderUser } from "./AvailabilitySliderTable";
 

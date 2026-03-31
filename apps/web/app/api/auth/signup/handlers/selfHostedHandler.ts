@@ -1,8 +1,15 @@
-import { NextResponse } from "next/server";
-
+import process from "node:process";
 import { checkPremiumUsername } from "@calcom/ee/common/lib/checkPremiumUsername";
 import { sendEmailVerification } from "@calcom/features/auth/lib/verifyEmail";
+import { SIGNUP_ERROR_CODES } from "@calcom/features/auth/signup/constants";
 import { createOrUpdateMemberships } from "@calcom/features/auth/signup/utils/createOrUpdateMemberships";
+import { joinAnyChildTeamOnOrgInvite } from "@calcom/features/auth/signup/utils/organization";
+import { prefillAvatar } from "@calcom/features/auth/signup/utils/prefillAvatar";
+import {
+  findTokenByToken,
+  throwIfTokenExpired,
+  validateAndGetCorrectedUsernameForTeam,
+} from "@calcom/features/auth/signup/utils/token";
 import { validateAndGetCorrectedUsernameAndEmail } from "@calcom/features/auth/signup/utils/validateUsername";
 import { hashPassword } from "@calcom/lib/auth/hashPassword";
 import { IS_PREMIUM_USERNAME_ENABLED } from "@calcom/lib/constants";
@@ -13,15 +20,7 @@ import slugify from "@calcom/lib/slugify";
 import prisma from "@calcom/prisma";
 import { IdentityProvider } from "@calcom/prisma/enums";
 import { signupSchema } from "@calcom/prisma/zod-utils";
-
-import { joinAnyChildTeamOnOrgInvite } from "@calcom/features/auth/signup/utils/organization";
-import { prefillAvatar } from "@calcom/features/auth/signup/utils/prefillAvatar";
-import { SIGNUP_ERROR_CODES } from "@calcom/features/auth/signup/constants";
-import {
-  findTokenByToken,
-  throwIfTokenExpired,
-  validateAndGetCorrectedUsernameForTeam,
-} from "@calcom/features/auth/signup/utils/token";
+import { NextResponse } from "next/server";
 
 export default async function handler(body: Record<string, string>) {
   const { email, password, language, token } = signupSchema.parse(body);
@@ -100,7 +99,7 @@ export default async function handler(body: Record<string, string>) {
         }
       }
 
-      const organizationId = team.isOrganization ? team.id : team.parent?.id ?? null;
+      const organizationId = team.isOrganization ? team.id : (team.parent?.id ?? null);
 
       const existingUserByUsername = await prisma.user.findFirst({
         where: {
@@ -200,10 +199,7 @@ export default async function handler(body: Record<string, string>) {
       if (isPrismaError(error) && error.code === "P2002") {
         const target = String(error.meta?.target ?? "");
         if (target.includes("email") || target.includes("username")) {
-          return NextResponse.json(
-            { message: SIGNUP_ERROR_CODES.USER_ALREADY_EXISTS },
-            { status: 409 }
-          );
+          return NextResponse.json({ message: SIGNUP_ERROR_CODES.USER_ALREADY_EXISTS }, { status: 409 });
         }
       }
       throw error;

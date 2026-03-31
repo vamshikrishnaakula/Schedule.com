@@ -1,6 +1,5 @@
-import { _generateMetadata } from "app/_utils";
-
 import { prisma } from "@calcom/prisma";
+import { _generateMetadata } from "app/_utils";
 
 import InsightsRoutingPage from "~/insights/views/insights-routing-view";
 

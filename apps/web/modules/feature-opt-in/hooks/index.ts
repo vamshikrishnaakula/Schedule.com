@@ -1,4 +1,8 @@
-export { useUserFeatureOptIn } from "./useUserFeatureOptIn";
-export { useTeamFeatureOptIn } from "./useTeamFeatureOptIn";
+export type {
+  NormalizedFeature,
+  ToggleLabels,
+  UseFeatureOptInResult,
+} from "@calcom/features/feature-opt-in/types";
 export { useOrganizationFeatureOptIn } from "./useOrganizationFeatureOptIn";
-export type { UseFeatureOptInResult, NormalizedFeature, ToggleLabels } from "@calcom/features/feature-opt-in/types";
+export { useTeamFeatureOptIn } from "./useTeamFeatureOptIn";
+export { useUserFeatureOptIn } from "./useUserFeatureOptIn";

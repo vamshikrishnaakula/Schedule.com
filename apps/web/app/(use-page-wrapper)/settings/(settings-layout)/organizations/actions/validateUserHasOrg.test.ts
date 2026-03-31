@@ -1,11 +1,10 @@
-import type { Session } from "next-auth";
-import { redirect } from "next/navigation";
-import { describe, it, vi, expect, beforeEach, type MockedFunction } from "vitest";
-
 import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
 import { MembershipRole } from "@calcom/prisma/enums";
+import { redirect } from "next/navigation";
+import type { Session } from "next-auth";
+import { beforeEach, describe, expect, it, type MockedFunction, vi } from "vitest";
 
-import { validateUserHasOrg, type ValidatedOrgSession } from "./validateUserHasOrg";
+import { type ValidatedOrgSession, validateUserHasOrg } from "./validateUserHasOrg";
 
 // Mock the dependencies
 vi.mock("next/navigation", () => ({

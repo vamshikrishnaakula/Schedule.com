@@ -1,6 +1,6 @@
 "use client";
 
-import { LazyMotion, domAnimation, m } from "framer-motion";
+import { domAnimation, LazyMotion, m } from "framer-motion";
 import { useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useStore } from "zustand";
 

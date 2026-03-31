@@ -1,15 +1,13 @@
-import { useSession } from "next-auth/react";
-import { useMemo } from "react";
-
 import dayjs from "@calcom/dayjs";
 import { useAvailableTimeSlots } from "@calcom/features/bookings/Booker/components/hooks/useAvailableTimeSlots";
-import { Calendar } from "@calcom/web/modules/calendars/weeklyview/components/Calendar";
-import { BookingStatus } from "@calcom/prisma/enums";
-import { trpc } from "@calcom/trpc/react";
-
 import { useTimePreferences } from "@calcom/features/bookings/lib/timePreferences";
 import { useSchedule } from "@calcom/features/schedules/lib/use-schedule/useSchedule";
 import { useTroubleshooterStore } from "@calcom/features/troubleshooter/store";
+import { BookingStatus } from "@calcom/prisma/enums";
+import { trpc } from "@calcom/trpc/react";
+import { Calendar } from "@calcom/web/modules/calendars/weeklyview/components/Calendar";
+import { useSession } from "next-auth/react";
+import { useMemo } from "react";
 
 export const LargeCalendar = ({ extraDays }: { extraDays: number }) => {
   const { timezone } = useTimePreferences();

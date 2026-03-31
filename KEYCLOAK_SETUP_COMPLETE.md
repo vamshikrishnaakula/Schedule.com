@@ -64,7 +64,7 @@ In your Keycloak Admin Console at `https://auth.leadnest.ai`:
 
 ### Step 3: Test Login
 
-1. Open: `https://schedule.leadnest.ai/auth/login`
+1. Open: `https://schedule.leadnest.ai/`
 2. You should see a **"Sign in with Keycloak"** button
 3. Click it
 4. You'll be redirected to Keycloak login

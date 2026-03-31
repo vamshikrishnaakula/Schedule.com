@@ -1,10 +1,9 @@
-import type { UseMutationOptions } from "@tanstack/react-query";
-import { useMutation } from "@tanstack/react-query";
-import { usePathname } from "next/navigation";
-
 import type { IntegrationOAuthCallbackState } from "@calcom/app-store/types";
 import { WEBAPP_URL } from "@calcom/lib/constants";
 import type { App } from "@calcom/types/App";
+import type { UseMutationOptions } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
+import { usePathname } from "next/navigation";
 
 function gotoUrl(url: string, newTab?: boolean) {
   if (newTab) {
@@ -36,6 +35,7 @@ function useAddAppMutation(_type: App["type"] | null, options?: UseAddAppMutatio
         type?: App["type"];
         variant?: string;
         slug?: string;
+        appDirName?: string;
         teamId?: number;
         returnTo?: string;
         defaultInstall?: boolean;
@@ -45,17 +45,19 @@ function useAddAppMutation(_type: App["type"] | null, options?: UseAddAppMutatio
     ...options,
     mutationFn: async (variables) => {
       let type: string | null | undefined;
+      let appIdentifier: string | null | undefined;
       const teamId = variables && variables.teamId ? variables.teamId : undefined;
       const defaultInstall = variables && variables.defaultInstall ? variables.defaultInstall : undefined;
       const returnTo = options?.returnTo
         ? options.returnTo
         : variables && variables.returnTo
-        ? variables.returnTo
-        : undefined;
+          ? variables.returnTo
+          : undefined;
       if (variables === "") {
         type = _type;
       } else {
         type = variables.type;
+        appIdentifier = variables.appDirName;
       }
       if (type?.endsWith("_other_calendar")) {
         type = type.split("_other_calendar")[0];
@@ -80,7 +82,8 @@ function useAddAppMutation(_type: App["type"] | null, options?: UseAddAppMutatio
         returnTo,
       });
 
-      const res = await fetch(`/api/integrations/${type}/add${searchParams}`);
+      const integrationIdentifier = appIdentifier ?? type;
+      const res = await fetch(`/api/integrations/${integrationIdentifier}/add${searchParams}`);
 
       if (!res.ok) {
         const errorBody = await res.json();

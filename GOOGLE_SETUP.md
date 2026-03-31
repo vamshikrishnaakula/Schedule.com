@@ -58,7 +58,7 @@ curl http://localhost:3000/auth/login | grep -o "Sign in with Google"
 
 ### 5. Connect Google Calendar
 
-1. Login at: https://schedule.leadnest.ai/auth/login
+1. Login at: https://schedule.leadnest.ai/
    - Email: vamshikrishnaakula99@gmail.com
    - Password: Admin123!@#
 

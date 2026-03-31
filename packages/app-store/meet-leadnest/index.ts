@@ -1,3 +1,6 @@
-export * as lib from "./lib";
+import { metadata } from "./_metadata";
+
 export * as api from "./api";
-export { metadata } from "./_metadata";
+export * as lib from "./lib";
+export { metadata };
+export default metadata;

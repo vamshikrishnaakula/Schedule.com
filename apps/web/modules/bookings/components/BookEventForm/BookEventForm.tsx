@@ -1,11 +1,13 @@
-import type { TFunction } from "i18next";
-import Link from "next/link";
-import { useMemo, useState } from "react";
-import type { FieldError } from "react-hook-form";
-
 import { getPaymentAppData } from "@calcom/app-store/_utils/payments/getPaymentAppData";
 import { useIsPlatformBookerEmbed } from "@calcom/atoms/hooks/useIsPlatformBookerEmbed";
 import { useBookerStoreContext } from "@calcom/features/bookings/Booker/BookerStoreProvider";
+import { useBookerTime } from "@calcom/features/bookings/Booker/components/hooks/useBookerTime";
+import type { UseBookingFormReturnType } from "@calcom/features/bookings/Booker/components/hooks/useBookingForm";
+import type {
+  IUseBookingErrors,
+  IUseBookingLoadingStates,
+} from "@calcom/features/bookings/Booker/components/hooks/useBookings";
+import { formatEventFromTime } from "@calcom/features/bookings/Booker/utils/dates";
 import type { BookerEvent } from "@calcom/features/bookings/types";
 import ServerTrans from "@calcom/lib/components/ServerTrans";
 import { WEBSITE_PRIVACY_POLICY_URL, WEBSITE_TERMS_URL } from "@calcom/lib/constants";
@@ -16,11 +18,10 @@ import { Alert } from "@calcom/ui/components/alert";
 import { Button } from "@calcom/ui/components/button";
 import { EmptyScreen } from "@calcom/ui/components/empty-screen";
 import { Form } from "@calcom/ui/components/form";
-
-import { formatEventFromTime } from "@calcom/features/bookings/Booker/utils/dates";
-import { useBookerTime } from "@calcom/features/bookings/Booker/components/hooks/useBookerTime";
-import type { UseBookingFormReturnType } from "@calcom/features/bookings/Booker/components/hooks/useBookingForm";
-import type { IUseBookingErrors, IUseBookingLoadingStates } from "@calcom/features/bookings/Booker/components/hooks/useBookings";
+import type { TFunction } from "i18next";
+import Link from "next/link";
+import { useMemo, useState } from "react";
+import type { FieldError } from "react-hook-form";
 import { BookingFields } from "./BookingFields";
 import { FormSkeleton } from "./Skeleton";
 
@@ -261,10 +262,10 @@ export const BookEventForm = ({
                 {rescheduleUid && bookingData
                   ? t("reschedule")
                   : renderConfirmNotVerifyEmailButtonCond
-                  ? isPaidEvent
-                    ? t("pay_and_book")
-                    : t("confirm")
-                  : t("verify_email_button")}
+                    ? isPaidEvent
+                      ? t("pay_and_book")
+                      : t("confirm")
+                    : t("verify_email_button")}
               </Button>
             </>
           )}

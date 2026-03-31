@@ -99,7 +99,7 @@ pm2 logs
 
 ## Step 4: Test Keycloak Login
 
-1. **Open Cal.com**: `https://schedule.leadnest.ai/auth/login`
+1. **Open Cal.com**: `https://schedule.leadnest.ai/`
 
 2. **Click "Sign in with Keycloak"** button
    - You should see this button if `KEYCLOAK_*` env vars are loaded correctly

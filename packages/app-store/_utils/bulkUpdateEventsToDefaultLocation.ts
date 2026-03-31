@@ -3,7 +3,7 @@ import type { User } from "@calcom/prisma/client";
 import { userMetadata as userMetadataSchema } from "@calcom/prisma/zod-utils";
 
 import type { LocationObject } from "../locations";
-import { getAppFromSlug } from "../utils";
+import { getAppFromSlug, getAppIdentifiers } from "../utils";
 import { filterEventTypesWhereLocationUpdateIsAllowed } from "./getBulkEventTypes";
 
 type PrismaLike = Pick<PrismaClient, "credential" | "eventType">;
@@ -31,8 +31,10 @@ export const bulkUpdateEventsToDefaultLocation = async ({
 
   const credential = await prisma.credential.findFirst({
     where: {
+      appId: {
+        in: getAppIdentifiers(foundApp),
+      },
       userId: user.id,
-      appId: foundApp.slug,
     },
     select: {
       id: true,

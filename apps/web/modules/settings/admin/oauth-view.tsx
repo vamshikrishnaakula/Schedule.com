@@ -1,20 +1,16 @@
 "use client";
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { trpc } from "@calcom/trpc/react";
 import { Avatar } from "@calcom/ui/components/avatar";
 import { Button } from "@calcom/ui/components/button";
-import { Form } from "@calcom/ui/components/form";
-import { Label } from "@calcom/ui/components/form";
-import { Switch } from "@calcom/ui/components/form";
-import { TextField } from "@calcom/ui/components/form";
+import { Form, Label, Switch, TextField } from "@calcom/ui/components/form";
 import { Icon } from "@calcom/ui/components/icon";
 import { ImageUploader } from "@calcom/ui/components/image-uploader";
 import { showToast } from "@calcom/ui/components/toast";
 import { Tooltip } from "@calcom/ui/components/tooltip";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 type FormValues = {
   name: string;
@@ -81,7 +77,7 @@ export default function OAuthView() {
             <div className="mb-5 mt-5">
               <Label className="text-emphasis mb-2 block text-sm font-medium">Authentication Mode</Label>
               <div className="flex items-center space-x-3">
-                <Switch 
+                <Switch
                   checked={oAuthForm.watch("enablePkce")}
                   onCheckedChange={(checked) => oAuthForm.setValue("enablePkce", checked)}
                 />

@@ -1,11 +1,10 @@
 "use client";
 
-import { useState } from "react";
-
 import type { OrganizationRepository } from "@calcom/features/ee/organizations/di/OrganizationRepository.module";
 import { trackFormbricksAction } from "@calcom/features/formbricks/formbricks-client";
 import { trpc } from "@calcom/trpc/react";
 import { showToast } from "@calcom/ui/components/toast";
+import { useState } from "react";
 
 import OtherTeamListItem from "./OtherTeamListItem";
 

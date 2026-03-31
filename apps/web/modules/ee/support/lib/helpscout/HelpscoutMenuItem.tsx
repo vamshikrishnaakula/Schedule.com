@@ -1,7 +1,7 @@
+import process from "node:process";
+import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { useState } from "react";
 import { HelpScout, useChat } from "react-live-chat-loader";
-
-import { useLocale } from "@calcom/lib/hooks/useLocale";
 
 interface HelpscoutMenuItemProps {
   onHelpItemSelect: () => void;
@@ -20,7 +20,6 @@ export default function HelpscoutMenuItem(props: HelpscoutMenuItemProps) {
     onHelpItemSelect();
   }
 
-   
   if (!process.env.NEXT_PUBLIC_HELPSCOUT_KEY) return null;
 
   return (

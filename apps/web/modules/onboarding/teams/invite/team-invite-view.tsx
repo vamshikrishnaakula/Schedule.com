@@ -1,12 +1,11 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import posthog from "posthog-js";
-import React, { useEffect } from "react";
-
 import { useFlags } from "@calcom/features/flags/hooks";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { Button } from "@calcom/ui/components/button";
+import { useRouter, useSearchParams } from "next/navigation";
+import posthog from "posthog-js";
+import React, { useEffect } from "react";
 
 import { InviteOptions } from "../../components/InviteOptions";
 import { OnboardingCard } from "../../components/OnboardingCard";

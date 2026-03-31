@@ -1,11 +1,10 @@
+import { randomBytes } from "node:crypto";
+import process from "node:process";
+import { APP_NAME, IS_MAILHOG_ENABLED, IS_PREMIUM_USERNAME_ENABLED } from "@calcom/lib/constants";
+import prisma from "@calcom/prisma";
 import type { Page } from "@playwright/test";
 import { expect } from "@playwright/test";
 import { hashSync } from "bcryptjs";
-import { randomBytes } from "node:crypto";
-
-import { APP_NAME, IS_PREMIUM_USERNAME_ENABLED, IS_MAILHOG_ENABLED } from "@calcom/lib/constants";
-import prisma from "@calcom/prisma";
-
 import { test } from "./lib/fixtures";
 import { localize } from "./lib/localize";
 import { getEmailsReceivedByUser } from "./lib/testUtils";
@@ -226,7 +225,7 @@ test.describe("Email Signup Flow Test", async () => {
     // Verify that the username is the same as the one provided and isn't accidentally changed to email derived username - That happens only for organization member signup
     expect(dbUser?.username).toBe(userToCreate.username);
   });
-  
+
   test("Signup fields prefilled with query params", async ({ page, users: _users }) => {
     const signupUrlWithParams = "/signup?username=rick-jones&email=rick-jones%40example.com";
     await page.goto(signupUrlWithParams);

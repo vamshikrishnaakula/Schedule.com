@@ -1,11 +1,21 @@
-import type { TFunction } from "i18next";
-import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
-import type { ComponentProps, Dispatch, SetStateAction } from "react";
-import { Controller, useFormContext, useWatch } from "react-hook-form";
-import type { Options } from "react-select";
-import { v4 as uuidv4 } from "uuid";
-
+import type {
+  EventTypeSetupProps,
+  FormValues,
+  Host,
+  SelectClassNames,
+  SettingsToggleClassNames,
+  TeamMember,
+} from "@calcom/features/eventtypes/lib/types";
+import { sortHosts } from "@calcom/lib/bookings/hostGroupUtils";
+import ServerTrans from "@calcom/lib/components/ServerTrans";
+import { useLocale } from "@calcom/lib/hooks/useLocale";
+import { RRTimestampBasis, SchedulingType } from "@calcom/prisma/enums";
+import classNames from "@calcom/ui/classNames";
+import { Button } from "@calcom/ui/components/button";
+import { Label, Select, SettingsToggle } from "@calcom/ui/components/form";
+import { Icon } from "@calcom/ui/components/icon";
+import { RadioAreaGroup as RadioArea } from "@calcom/ui/components/radio";
+import { Tooltip } from "@calcom/ui/components/tooltip";
 import type { AddMembersWithSwitchCustomClassNames } from "@calcom/web/modules/event-types/components/AddMembersWithSwitch";
 import AddMembersWithSwitch, {
   mapUserToValue,
@@ -14,28 +24,15 @@ import AssignAllTeamMembers from "@calcom/web/modules/event-types/components/Ass
 import type { ChildrenEventTypeSelectCustomClassNames } from "@calcom/web/modules/event-types/components/ChildrenEventTypeSelect";
 import ChildrenEventTypeSelect from "@calcom/web/modules/event-types/components/ChildrenEventTypeSelect";
 import { EditWeightsForAllTeamMembers } from "@calcom/web/modules/event-types/components/EditWeightsForAllTeamMembers";
-import { sortHosts } from "@calcom/lib/bookings/hostGroupUtils";
 import { LearnMoreLink } from "@calcom/web/modules/event-types/components/LearnMoreLink";
 import WeightDescription from "@calcom/web/modules/event-types/components/WeightDescription";
-import type {
-  FormValues,
-  TeamMember,
-  EventTypeSetupProps,
-  Host,
-  SelectClassNames,
-  SettingsToggleClassNames,
-} from "@calcom/features/eventtypes/lib/types";
-import ServerTrans from "@calcom/lib/components/ServerTrans";
-import { useLocale } from "@calcom/lib/hooks/useLocale";
-import { RRTimestampBasis, SchedulingType } from "@calcom/prisma/enums";
-import classNames from "@calcom/ui/classNames";
-import { Button } from "@calcom/ui/components/button";
-import { Label } from "@calcom/ui/components/form";
-import { Select } from "@calcom/ui/components/form";
-import { SettingsToggle } from "@calcom/ui/components/form";
-import { Icon } from "@calcom/ui/components/icon";
-import { RadioAreaGroup as RadioArea } from "@calcom/ui/components/radio";
-import { Tooltip } from "@calcom/ui/components/tooltip";
+import type { TFunction } from "i18next";
+import Link from "next/link";
+import type { ComponentProps, Dispatch, SetStateAction } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Controller, useFormContext, useWatch } from "react-hook-form";
+import type { Options } from "react-select";
+import { v4 as uuidv4 } from "uuid";
 
 export type EventTeamAssignmentTabCustomClassNames = {
   assignmentType?: {
@@ -724,7 +721,7 @@ const Hosts = ({
           ),
           MANAGED: <></>,
         };
-        return !!schedulingType ? schedulingTypeRender[schedulingType] : <></>;
+        return schedulingType ? schedulingTypeRender[schedulingType] : <></>;
       }}
     />
   );
@@ -890,10 +887,8 @@ export const EventTeamAssignmentTab = ({
                       hostGroups?.length > 1 ? (
                         <Tooltip
                           content={
-                            !!(
-                              eventType.team?.rrTimestampBasis &&
-                              eventType.team?.rrTimestampBasis !== RRTimestampBasis.CREATED_AT
-                            )
+                            eventType.team?.rrTimestampBasis &&
+                            eventType.team?.rrTimestampBasis !== RRTimestampBasis.CREATED_AT
                               ? t("rr_load_balancing_disabled")
                               : t("rr_load_balancing_disabled_with_groups")
                           }>

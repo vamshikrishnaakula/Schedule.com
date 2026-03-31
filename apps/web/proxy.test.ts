@@ -1,15 +1,12 @@
 // Import mocked functions
+
+import { WEBAPP_URL } from "@calcom/lib/constants";
 import { get as edgeConfigGet } from "@vercel/edge-config";
 import { NextRequest, NextResponse } from "next/server";
 import type { Mock } from "vitest";
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-
-import { WEBAPP_URL } from "@calcom/lib/constants";
-
-import { checkPostMethod } from "./proxy";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 // We'll test the wrapped proxy as it would be used in production
-import proxy from "./proxy";
-import { config } from "./proxy";
+import proxy, { checkPostMethod, config } from "./proxy";
 
 // Mock dependencies at module level
 vi.mock("@vercel/edge-config", () => ({
@@ -446,7 +443,6 @@ describe("Middleware Integration Tests", () => {
   });
 
   describe("Multiple Features", () => {
-
     it("should handle embed route with routing forms rewrite", async () => {
       const req = createTestRequest({
         url: `${WEBAPP_URL}/apps/routing_forms/form/embed?ui.color-scheme=light`,

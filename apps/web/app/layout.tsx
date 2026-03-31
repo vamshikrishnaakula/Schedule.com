@@ -1,19 +1,17 @@
-import { dir } from "i18next";
-import { Inter } from "next/font/google";
-import localFont from "next/font/local";
-import { headers, cookies } from "next/headers";
-import React from "react";
-
 import { getLocale } from "@calcom/features/auth/lib/getLocale";
 import { loadTranslations } from "@calcom/lib/server/i18n";
 import { IconSprites } from "@calcom/ui/components/icon";
-
 import { buildLegacyRequest } from "@lib/buildLegacyCtx";
+import { dir } from "i18next";
+import { Inter } from "next/font/google";
+import localFont from "next/font/local";
+import { cookies, headers } from "next/headers";
+import type React from "react";
 
 import "../styles/globals.css";
 import { AppRouterI18nProvider } from "./AppRouterI18nProvider";
-import { SpeculationRules } from "./SpeculationRules";
 import { Providers } from "./providers";
+import { SpeculationRules } from "./SpeculationRules";
 
 const interFont = Inter({ subsets: ["latin"], variable: "--font-sans", preload: true, display: "swap" });
 const calFont = localFont({
@@ -117,8 +115,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <head nonce={nonce}>
         <style>{`
           :root {
-            --font-sans: ${interFont.style.fontFamily.replace(/\'/g, "")};
-            --font-cal: ${calFont.style.fontFamily.replace(/\'/g, "")};
+            --font-sans: ${interFont.style.fontFamily.replace(/'/g, "")};
+            --font-cal: ${calFont.style.fontFamily.replace(/'/g, "")};
           }
         `}</style>
       </head>

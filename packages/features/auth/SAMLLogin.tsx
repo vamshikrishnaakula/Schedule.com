@@ -1,8 +1,3 @@
-import { signIn } from "next-auth/react";
-import type { Dispatch, SetStateAction } from "react";
-import { useFormContext } from "react-hook-form";
-import z from "zod";
-
 import { LastUsed, useLastUsed } from "@calcom/features/auth/lib/hooks/useLastUsed";
 import { HOSTED_CAL_FEATURES } from "@calcom/lib/constants";
 import { emailRegex } from "@calcom/lib/emailSchema";
@@ -10,8 +5,13 @@ import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { trpc } from "@calcom/trpc/react";
 import type { ButtonProps } from "@calcom/ui/components/button";
 import { Button } from "@calcom/ui/components/button";
+import { signIn } from "next-auth/react";
+import type { Dispatch, SetStateAction } from "react";
+import { useFormContext } from "react-hook-form";
+import z from "zod";
 
 interface Props {
+  callbackUrl: string;
   samlTenantID: string;
   samlProductID: string;
   setErrorMessage: Dispatch<SetStateAction<string | null>>;
@@ -22,6 +22,7 @@ const schema = z.object({
 });
 
 export function SAMLLogin({
+  callbackUrl,
   samlTenantID,
   samlProductID,
   setErrorMessage,
@@ -34,7 +35,7 @@ export function SAMLLogin({
   const mutation = trpc.viewer.public.samlTenantProduct.useMutation({
     onSuccess: async (data) => {
       setLastUsed("saml");
-      await signIn("saml", {}, { tenant: data.tenant, product: data.product });
+      await signIn("saml", { callbackUrl }, { tenant: data.tenant, product: data.product });
     },
     onError: (err) => {
       setErrorMessage(t(err.message));
@@ -51,7 +52,7 @@ export function SAMLLogin({
         event.preventDefault();
 
         if (!HOSTED_CAL_FEATURES) {
-          await signIn("saml", {}, { tenant: samlTenantID, product: samlProductID });
+          await signIn("saml", { callbackUrl }, { tenant: samlTenantID, product: samlProductID });
           return;
         }
 

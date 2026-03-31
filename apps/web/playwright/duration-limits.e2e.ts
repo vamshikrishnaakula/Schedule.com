@@ -2,13 +2,13 @@
  * These e2e tests only aim to cover standard cases
  * Edge cases are currently handled in integration tests only
  */
-import { expect } from "@playwright/test";
 
 import type { Dayjs } from "@calcom/dayjs";
 import dayjs from "@calcom/dayjs";
 import { intervalLimitKeyToUnit } from "@calcom/lib/intervalLimits/intervalLimit";
 import type { IntervalLimit } from "@calcom/lib/intervalLimits/intervalLimitSchema";
 import { entries } from "@calcom/prisma/zod-utils";
+import { expect } from "@playwright/test";
 
 import { test } from "./lib/fixtures";
 import { bookTimeSlot, createUserWithLimits, expectSlotNotAllowedToBook } from "./lib/testUtils";
@@ -144,12 +144,15 @@ test.describe("Duration limits", () => {
     test("day limit with multiple limits set", async ({ page, users }) => {
       const slug = "duration-limit-multiple-day";
 
-      const durationLimits = entries(BOOKING_LIMITS_MULTIPLE).reduce((limits, [limitKey, bookingLimit]) => {
-        return {
-          ...limits,
-          [limitKey]: bookingLimit * EVENT_LENGTH,
-        };
-      }, {} as Record<keyof IntervalLimit, number>);
+      const durationLimits = entries(BOOKING_LIMITS_MULTIPLE).reduce(
+        (limits, [limitKey, bookingLimit]) => {
+          return {
+            ...limits,
+            [limitKey]: bookingLimit * EVENT_LENGTH,
+          };
+        },
+        {} as Record<keyof IntervalLimit, number>
+      );
 
       const user = await createUserWithLimits({
         users,
@@ -210,12 +213,15 @@ test.describe("Duration limits", () => {
     test("week limit with multiple limits set", async ({ page, users, bookings }) => {
       const slug = "duration-limit-multiple-week";
 
-      const durationLimits = entries(BOOKING_LIMITS_MULTIPLE).reduce((limits, [limitKey, bookingLimit]) => {
-        return {
-          ...limits,
-          [limitKey]: bookingLimit * EVENT_LENGTH,
-        };
-      }, {} as Record<keyof IntervalLimit, number>);
+      const durationLimits = entries(BOOKING_LIMITS_MULTIPLE).reduce(
+        (limits, [limitKey, bookingLimit]) => {
+          return {
+            ...limits,
+            [limitKey]: bookingLimit * EVENT_LENGTH,
+          };
+        },
+        {} as Record<keyof IntervalLimit, number>
+      );
 
       const user = await createUserWithLimits({
         users,
@@ -295,12 +301,15 @@ test.describe("Duration limits", () => {
     test("month limit with multiple limits set", async ({ page, users, bookings }) => {
       const slug = "duration-limit-multiple-month";
 
-      const durationLimits = entries(BOOKING_LIMITS_MULTIPLE).reduce((limits, [limitKey, bookingLimit]) => {
-        return {
-          ...limits,
-          [limitKey]: bookingLimit * EVENT_LENGTH,
-        };
-      }, {} as Record<keyof IntervalLimit, number>);
+      const durationLimits = entries(BOOKING_LIMITS_MULTIPLE).reduce(
+        (limits, [limitKey, bookingLimit]) => {
+          return {
+            ...limits,
+            [limitKey]: bookingLimit * EVENT_LENGTH,
+          };
+        },
+        {} as Record<keyof IntervalLimit, number>
+      );
 
       const user = await createUserWithLimits({
         users,
@@ -375,12 +384,15 @@ test.describe("Duration limits", () => {
     test("year limit with multiple limits set", async ({ page, users, bookings }) => {
       const slug = "duration-limit-multiple-year";
 
-      const durationLimits = entries(BOOKING_LIMITS_MULTIPLE).reduce((limits, [limitKey, bookingLimit]) => {
-        return {
-          ...limits,
-          [limitKey]: bookingLimit * EVENT_LENGTH,
-        };
-      }, {} as Record<keyof IntervalLimit, number>);
+      const durationLimits = entries(BOOKING_LIMITS_MULTIPLE).reduce(
+        (limits, [limitKey, bookingLimit]) => {
+          return {
+            ...limits,
+            [limitKey]: bookingLimit * EVENT_LENGTH,
+          };
+        },
+        {} as Record<keyof IntervalLimit, number>
+      );
 
       const user = await createUserWithLimits({
         users,

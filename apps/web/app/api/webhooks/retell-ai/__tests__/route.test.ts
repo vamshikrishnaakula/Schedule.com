@@ -1,9 +1,8 @@
+import type { Agent, CalAiPhoneNumber, Team, User } from "@calcom/prisma/client";
+import { CreditUsageType } from "@calcom/prisma/enums";
 import type { NextRequest } from "next/server";
 import { Retell } from "retell-sdk";
-import { describe, it, expect, vi, beforeEach } from "vitest";
-
-import type { CalAiPhoneNumber, User, Team, Agent } from "@calcom/prisma/client";
-import { CreditUsageType } from "@calcom/prisma/enums";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { POST } from "../route";
 
@@ -76,10 +75,12 @@ const mockSendCreditBalanceLimitReachedEmails = vi.fn();
 const mockSendCreditBalanceLowWarningEmails = vi.fn();
 
 vi.mock("@calcom/features/ee/billing/credit-service", () => ({
-  CreditService: vi.fn().mockImplementation(function() { return {
-    hasAvailableCredits: mockHasAvailableCredits,
-    chargeCredits: mockChargeCredits,
-  }; }),
+  CreditService: vi.fn().mockImplementation(function () {
+    return {
+      hasAvailableCredits: mockHasAvailableCredits,
+      chargeCredits: mockChargeCredits,
+    };
+  }),
 }));
 
 vi.mock("@calcom/emails/email-manager", () => ({
@@ -92,15 +93,19 @@ const mockFindByPhoneNumber = vi.fn();
 const mockFindByProviderAgentId = vi.fn();
 
 vi.mock("@calcom/features/calAIPhone/repositories/PrismaPhoneNumberRepository", () => ({
-  PrismaPhoneNumberRepository: vi.fn().mockImplementation(function() { return {
-    findByPhoneNumber: mockFindByPhoneNumber,
-  }; }),
+  PrismaPhoneNumberRepository: vi.fn().mockImplementation(function () {
+    return {
+      findByPhoneNumber: mockFindByPhoneNumber,
+    };
+  }),
 }));
 
 vi.mock("@calcom/features/calAIPhone/repositories/PrismaAgentRepository", () => ({
-  PrismaAgentRepository: vi.fn().mockImplementation(function() { return {
-    findByProviderAgentId: mockFindByProviderAgentId,
-  }; }),
+  PrismaAgentRepository: vi.fn().mockImplementation(function () {
+    return {
+      findByProviderAgentId: mockFindByProviderAgentId,
+    };
+  }),
 }));
 
 vi.mock("next/server", () => ({

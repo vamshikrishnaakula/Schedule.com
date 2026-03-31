@@ -3,9 +3,8 @@
  *
  * It works in conjunction with `/api/cron/credentials` route(which creates the Credential records for all the members of an organization that has delegation credentials enabled)
  */
-import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
 
+import process from "node:process";
 import { findUniqueDelegationCalendarCredential } from "@calcom/app-store/delegationCredential";
 import {
   createGoogleCalendarServiceWithGoogleType,
@@ -19,7 +18,8 @@ import { safeStringify } from "@calcom/lib/safeStringify";
 import { SelectedCalendarRepository } from "@calcom/lib/server/repository/selectedCalendar";
 import type { CredentialForCalendarServiceWithEmail } from "@calcom/types/Credential";
 import type { Ensure } from "@calcom/types/utils";
-
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { defaultResponderForAppDir } from "../../defaultResponderForAppDir";
 
 const limitOnQueryingGoogleCalendar = 50;
@@ -267,10 +267,13 @@ export async function handleCreateSelectedCalendars() {
   }
 
   // Groups delegationUserCredentials by delegationCredentialId
-  const groupedDelegationUserCredentials = allDelegationUserCredentials.reduce((acc, curr) => {
-    acc[curr.delegationCredentialId] = [...(acc[curr.delegationCredentialId] || []), curr];
-    return acc;
-  }, {} as Record<string, typeof allDelegationUserCredentials>);
+  const groupedDelegationUserCredentials = allDelegationUserCredentials.reduce(
+    (acc, curr) => {
+      acc[curr.delegationCredentialId] = [...(acc[curr.delegationCredentialId] || []), curr];
+      return acc;
+    },
+    {} as Record<string, typeof allDelegationUserCredentials>
+  );
 
   let totalSuccess = 0;
   let totalFailures = 0;
@@ -279,9 +282,8 @@ export async function handleCreateSelectedCalendars() {
     groupedDelegationUserCredentials
   )) {
     log.info(`Processing delegation user credentials for delegationCredentialId: ${delegationCredentialId}`);
-    const delegationUserCredentialsToProcess = await getDelegationUserCredentialsToProcess(
-      delegationUserCredentials
-    );
+    const delegationUserCredentialsToProcess =
+      await getDelegationUserCredentialsToProcess(delegationUserCredentials);
     log.info(
       `Found ${delegationUserCredentialsToProcess.length} delegationUserCredentials to process for delegationCredentialId: ${delegationCredentialId}`
     );

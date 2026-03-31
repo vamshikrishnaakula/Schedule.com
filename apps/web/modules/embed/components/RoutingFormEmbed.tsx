@@ -1,19 +1,17 @@
-import type { ComponentProps } from "react";
-
-import { EmbedDialog, EmbedButton } from "@calcom/web/modules/embed/components/Embed";
+import { tabs } from "@calcom/features/embed/lib/EmbedTabs";
+import { useEmbedTypes } from "@calcom/features/embed/lib/hooks";
 import { IS_CALCOM } from "@calcom/lib/constants";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { trpc } from "@calcom/trpc/react";
-
-import { tabs } from "@calcom/features/embed/lib/EmbedTabs";
-import { useEmbedTypes } from "@calcom/features/embed/lib/hooks";
+import { EmbedButton, EmbedDialog } from "@calcom/web/modules/embed/components/Embed";
+import type { ComponentProps } from "react";
 
 export const RoutingFormEmbedDialog = () => {
   const types = useEmbedTypes();
   const { t } = useLocale();
   const { data: user } = trpc.viewer.me.get.useQuery();
   const routingFormTypes = types.filter((type) => type.type !== "email");
-  
+
   // Add the headless option specifically for routing forms
   const headlessType = {
     title: t("use_my_own_form"),
@@ -60,10 +58,8 @@ export const RoutingFormEmbedDialog = () => {
     ),
   };
 
-  const routingFormTypesWithHeadless = IS_CALCOM 
-    ? [...routingFormTypes, headlessType]
-    : routingFormTypes;
-  
+  const routingFormTypesWithHeadless = IS_CALCOM ? [...routingFormTypes, headlessType] : routingFormTypes;
+
   return (
     <EmbedDialog
       types={routingFormTypesWithHeadless}

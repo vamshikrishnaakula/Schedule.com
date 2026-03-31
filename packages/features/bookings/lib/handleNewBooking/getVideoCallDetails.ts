@@ -8,9 +8,14 @@ type ExtraAdditionalInfo = AdditionalInformation & {
 
 type VideoResult = EventResult<ExtraAdditionalInfo>;
 
-function extractUpdatedVideoEvent(result: VideoResult | undefined): ExtraAdditionalInfo | undefined {
+function extractVideoEvent(result: VideoResult | undefined): ExtraAdditionalInfo | undefined {
   if (!result || !result.success) return undefined;
-  return Array.isArray(result.updatedEvent) ? result.updatedEvent[0] : result.updatedEvent;
+
+  if (Array.isArray(result.updatedEvent)) {
+    return result.updatedEvent[0];
+  }
+
+  return result.updatedEvent ?? result.createdEvent;
 }
 
 function extractMetadata(event: ExtraAdditionalInfo): AdditionalInformation {
@@ -23,10 +28,10 @@ function extractMetadata(event: ExtraAdditionalInfo): AdditionalInformation {
 
 export function getVideoCallDetails({ results }: { results: VideoResult[] }) {
   const firstVideoResult = results.find((result) => result.type.includes("_video"));
-  const updatedVideoEvent = extractUpdatedVideoEvent(firstVideoResult);
-  const metadata = updatedVideoEvent ? extractMetadata(updatedVideoEvent) : {};
+  const videoEvent = extractVideoEvent(firstVideoResult);
+  const metadata = videoEvent ? extractMetadata(videoEvent) : {};
 
-  const videoCallUrl = metadata.hangoutLink || updatedVideoEvent?.url;
+  const videoCallUrl = metadata.hangoutLink || videoEvent?.url;
 
-  return { videoCallUrl, metadata, updatedVideoEvent };
+  return { videoCallUrl, metadata, updatedVideoEvent: videoEvent };
 }

@@ -1,6 +1,4 @@
-import type { GetServerSidePropsContext } from "next";
-import { z } from "zod";
-
+import process from "node:process";
 import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
 import type { GetBookingType } from "@calcom/features/bookings/lib/get-booking";
 import { getBookingForReschedule } from "@calcom/features/bookings/lib/get-booking";
@@ -15,8 +13,9 @@ import { prisma } from "@calcom/prisma";
 import type { User } from "@calcom/prisma/client";
 import { BookingStatus, RedirectType, SchedulingType } from "@calcom/prisma/enums";
 import { EventTypeMetaDataSchema } from "@calcom/prisma/zod-utils";
-
 import { handleOrgRedirect } from "@lib/handleOrgRedirect";
+import type { GetServerSidePropsContext } from "next";
+import { z } from "zod";
 
 const paramsSchema = z.object({
   type: z.string().transform((s) => slugify(s)),

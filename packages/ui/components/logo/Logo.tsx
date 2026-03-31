@@ -5,7 +5,7 @@ export function Logo({
   icon,
   inline = true,
   className,
-  src = "/api/logo",
+  src = "/cal-com-icon-white.svg",
 }: {
   small?: boolean;
   icon?: boolean;
@@ -15,18 +15,7 @@ export function Logo({
 }) {
   return (
     <h3 className={classNames("logo", inline && "inline", className)}>
-      <strong>
-        {icon ? (
-          <img className="mx-auto w-9 dark:invert" alt="Cal" title="Cal" src={`${src}?type=icon`} />
-        ) : (
-          <img
-            className={classNames(small ? "h-4 w-auto" : "h-5 w-auto", "dark:invert")}
-            alt="Cal"
-            title="Cal"
-            src={src}
-          />
-        )}
-      </strong>
+
     </h3>
   );
 }

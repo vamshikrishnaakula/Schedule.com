@@ -1,44 +1,39 @@
 "use client";
 
-import { useMemo } from "react";
-
+import { useDataTable, useFilterValue } from "@calcom/features/data-table/hooks";
+import type {
+  FilterableColumn as _FilterableColumn,
+  FacetedValue,
+  FilterValueSchema,
+} from "@calcom/features/data-table/lib/types";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
+import type { FilterType } from "@calcom/types/data-table";
 import classNames from "@calcom/ui/classNames";
 import { buttonClasses } from "@calcom/ui/components/button";
 import {
   Command,
-  CommandInput,
-  CommandList,
   CommandEmpty,
-  CommandItem,
-  CommandSeparator,
   CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
 } from "@calcom/ui/components/command";
 import { Icon } from "@calcom/ui/components/icon";
+import { useMemo } from "react";
 
-import { useDataTable, useFilterValue } from "@calcom/features/data-table/hooks";
-import type {
-  FacetedValue,
-  FilterableColumn as _FilterableColumn,
-  FilterValueSchema,
-} from "@calcom/features/data-table/lib/types";
-import type { FilterType } from "@calcom/types/data-table";
+type FilterableColumn = Extract<_FilterableColumn, { type: Extract<FilterType, "ms" | "ss"> }>;
 
-type FilterableColumn = Extract<
-  _FilterableColumn,
-  { type: Extract<FilterType, "ms" | "ss"> }
+type FilterableSelectColumn<T extends Extract<FilterType, "ms" | "ss">> = Extract<
+  FilterableColumn,
+  { type: T }
 >;
-
-type FilterableSelectColumn<T extends Extract<FilterType, "ms" | "ss">> =
-  Extract<FilterableColumn, { type: T }>;
 
 type FilterValue<T extends Extract<FilterType, "ms" | "ss">> = ReturnType<
   typeof useFilterValue<T, FilterValueSchema<T>>
 >;
 
-export type BaseSelectFilterOptionsProps<
-  T extends Extract<FilterType, "ms" | "ss">
-> = {
+export type BaseSelectFilterOptionsProps<T extends Extract<FilterType, "ms" | "ss">> = {
   column: FilterableSelectColumn<T>;
   filterValueSchema: FilterValueSchema<T>;
   isOptionSelected: (filterValue: FilterValue<T> | undefined, optionValue: string | number) => boolean;
@@ -87,9 +82,7 @@ function getSectionedOptions(options: FacetedValue[]) {
   return sectionedOptions;
 }
 
-export function BaseSelectFilterOptions<
-  T extends Extract<FilterType, "ms" | "ss">
->({
+export function BaseSelectFilterOptions<T extends Extract<FilterType, "ms" | "ss">>({
   column,
   filterValueSchema,
   isOptionSelected,

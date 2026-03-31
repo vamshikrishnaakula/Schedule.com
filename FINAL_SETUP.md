@@ -53,7 +53,7 @@ Once server starts (shows "✓ Ready in XXXms"):
 curl http://localhost:3000/auth/login | grep -o "Sign in with Keycloak"
 
 # Test your domain
-curl -k https://schedule.leadnest.ai/auth/login | grep -o "Sign in with Keycloak"
+curl -k https://schedule.leadnest.ai/ | grep -o "Sign in with Keycloak"
 ```
 
 You should see: `Sign in with Keycloak`
@@ -80,7 +80,7 @@ In your Keycloak Admin Console:
 
 ## Expected Flow
 
-1. User visits: https://schedule.leadnest.ai/auth/login
+1. User visits: https://schedule.leadnest.ai/
 2. Clicks "Sign in with Keycloak"
 3. Redirected to: https://auth.leadnest.ai/realms/prod-leadnest-realm/protocol/openid-connect/auth
 4. User logs in with Keycloak

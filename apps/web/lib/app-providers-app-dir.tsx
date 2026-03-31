@@ -1,26 +1,23 @@
-import { TooltipProvider } from "@radix-ui/react-tooltip";
-import type { Session } from "next-auth";
-import { useSession } from "next-auth/react";
-import { ThemeProvider } from "next-themes";
-import type { AppProps as NextAppProps } from "next/app";
-import type { ReadonlyURLSearchParams } from "next/navigation";
-import { usePathname, useSearchParams } from "next/navigation";
-import { NuqsAdapter } from "nuqs/adapters/next/app";
-
-import DynamicPostHogProvider from "~/ee/posthog/providerDynamic";
-import DynamicPostHogPageView from "~/ee/posthog/pageViewDynamic";
 import { OrgBrandingProvider } from "@calcom/features/ee/organizations/context/provider";
 import { FeatureProvider } from "@calcom/features/flags/context/provider";
 import { useFlags } from "@calcom/features/flags/hooks";
 import DynamicHelpscoutProvider from "@calcom/web/modules/ee/support/lib/helpscout/providerDynamic";
 import DynamicIntercomProvider from "@calcom/web/modules/ee/support/lib/intercom/providerDynamic";
-
+import type { PageWrapperProps } from "@components/PageWrapperAppDir";
 import useIsBookingPage from "@lib/hooks/useIsBookingPage";
 import useIsThemeSupported from "@lib/hooks/useIsThemeSupported";
 import { useNuqsParams } from "@lib/hooks/useNuqsParams";
 import type { WithLocaleProps } from "@lib/withLocale";
-
-import type { PageWrapperProps } from "@components/PageWrapperAppDir";
+import { TooltipProvider } from "@radix-ui/react-tooltip";
+import type { AppProps as NextAppProps } from "next/app";
+import type { ReadonlyURLSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
+import type { Session } from "next-auth";
+import { useSession } from "next-auth/react";
+import { ThemeProvider } from "next-themes";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
+import DynamicPostHogPageView from "~/ee/posthog/pageViewDynamic";
+import DynamicPostHogProvider from "~/ee/posthog/providerDynamic";
 
 import { getThemeProviderProps } from "./getThemeProviderProps";
 
@@ -48,7 +45,7 @@ export type AppProps = Omit<
 const getEmbedNamespace = (searchParams: ReadonlyURLSearchParams) => {
   // Mostly embed query param should be available on server. Use that there.
   // Use the most reliable detection on client
-  return typeof window !== "undefined" ? window.getEmbedNamespace() : searchParams.get("embed") ?? null;
+  return typeof window !== "undefined" ? window.getEmbedNamespace() : (searchParams.get("embed") ?? null);
 };
 
 type CalcomThemeProps = Readonly<{

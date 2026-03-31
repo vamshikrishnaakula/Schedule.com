@@ -1,16 +1,17 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-
+import { createDefaultInstallation } from "@calcom/app-store/_utils/installation";
 import { throwIfNotHaveAdminAccessToTeam } from "@calcom/app-store/_utils/throwIfNotHaveAdminAccessToTeam";
 import prisma from "@calcom/prisma";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 import getInstalledAppPath from "../../_utils/getInstalledAppPath";
+import { metadata } from "../_metadata";
 
 /**
  * This is an example endpoint for an app, these will run under `/api/integrations/[...args]`
  * @param req
  * @param res
  */
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
   if (!req.session?.user?.id) {
     return res.status(401).json({ message: "You must be logged in to do this" });
   }
@@ -18,36 +19,43 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   await throwIfNotHaveAdminAccessToTeam({ teamId: Number(teamId) ?? null, userId: req.session.user.id });
 
-  const installForObject = teamId ? { teamId: Number(teamId) } : { userId: req.session.user.id };
-  const appType = "Leadnest_video";
+  let installForObject: { teamId: number } | { userId: number } = { userId: req.session.user.id };
+  let parsedTeamId: number | undefined;
+  if (teamId) {
+    parsedTeamId = Number(teamId);
+    installForObject = { teamId: parsedTeamId };
+  }
   try {
     const alreadyInstalled = await prisma.credential.findFirst({
       where: {
-        type: appType,
+        type: metadata.type,
         ...installForObject,
       },
     });
     if (alreadyInstalled) {
       throw new Error("Already installed");
     }
-    const installation = await prisma.credential.create({
-      data: {
-        type: appType,
-        key: {},
-        ...installForObject,
-        appId: "leadnestvideo",
-      },
+
+    const installation = await createDefaultInstallation({
+      appType: metadata.type,
+      user: req.session.user,
+      slug: metadata.slug,
+      key: {},
+      teamId: parsedTeamId,
     });
     if (!installation) {
-      throw new Error("Unable to create user credential for leadnestvideo");
+      throw new Error(`Unable to create user credential for ${metadata.slug}`);
     }
   } catch (error: unknown) {
     if (error instanceof Error) {
-      return res.status(500).json({ message: error.message });
+      res.status(500).json({ message: error.message });
+      return;
     }
-    return res.status(500);
+    res.status(500);
+    return;
   }
-  return res
+
+  res
     .status(200)
-    .json({ url: returnTo ?? getInstalledAppPath({ variant: "conferencing", slug: "leadnest" }) });
+    .json({ url: returnTo ?? getInstalledAppPath({ variant: metadata.variant, slug: metadata.slug }) });
 }

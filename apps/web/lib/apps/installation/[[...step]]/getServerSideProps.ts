@@ -1,10 +1,7 @@
-import type { GetServerSidePropsContext } from "next";
-import { z } from "zod";
-
 import { filterEventTypesWhereLocationUpdateIsAllowed } from "@calcom/app-store/_utils/getBulkEventTypes";
 import { appStoreMetadata } from "@calcom/app-store/appStoreMetaData";
 import type { LocationObject } from "@calcom/app-store/locations";
-import { isConferencing as isConferencingApp } from "@calcom/app-store/utils";
+import { getAppIdentifiers, isConferencing as isConferencingApp } from "@calcom/app-store/utils";
 import { getLocale } from "@calcom/features/auth/lib/getLocale";
 import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
 import { UserRepository } from "@calcom/features/users/repositories/UserRepository";
@@ -14,6 +11,8 @@ import { getPlaceholderAvatar } from "@calcom/lib/defaultAvatarImage";
 import prisma from "@calcom/prisma";
 import type { Prisma } from "@calcom/prisma/client";
 import { eventTypeBookingFields } from "@calcom/prisma/zod-utils";
+import type { GetServerSidePropsContext } from "next";
+import { z } from "zod";
 
 import { STEPS } from "~/apps/installation/[[...step]]/constants";
 import type { OnboardingPageProps, TEventTypeGroup } from "~/apps/installation/[[...step]]/step-view";
@@ -66,9 +65,15 @@ const getOrgSubTeams = async (parentId: number) => {
   }));
 };
 
-const getAppBySlug = async (appSlug: string) => {
-  const app = await prisma.app.findUnique({
-    where: { slug: appSlug, enabled: true },
+const getAppByIdentifiers = async (appIdentifiers: string[]) => {
+  const app = await prisma.app.findFirst({
+    where: {
+      enabled: true,
+      OR: [
+        ...appIdentifiers.map((identifier) => ({ slug: identifier })),
+        ...appIdentifiers.map((identifier) => ({ dirName: identifier })),
+      ],
+    },
     select: { slug: true, keys: true, enabled: true, dirName: true },
   });
   return app;
@@ -197,17 +202,17 @@ const getEventTypes = async ({
   return eventTypeGroups;
 };
 
-const getAppInstallsBySlug = async (appSlug: string, userId: number, teamIds?: number[]) => {
+const getAppInstallsByIdentifiers = async (appIdentifiers: string[], userId: number, teamIds?: number[]) => {
   const appInstalls = await prisma.credential.findMany({
     where: {
       OR: [
         {
-          appId: appSlug,
+          appId: { in: appIdentifiers },
           userId: userId,
         },
         teamIds && Boolean(teamIds.length)
           ? {
-              appId: appSlug,
+              appId: { in: appIdentifiers },
               teamId: { in: teamIds },
             }
           : {},
@@ -229,9 +234,13 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   const session = await getServerSession({ req });
   if (!session?.user?.id) return { redirect: { permanent: false, destination: "/auth/login" } };
   const _locale = await getLocale(context.req);
-  const app = await getAppBySlug(parsedAppSlug);
-  if (!app) return { redirect: { permanent: false, destination: "/apps" } };
-  const appMetadata = appStoreMetadata[app.dirName as keyof typeof appStoreMetadata];
+  const appMetadata = Object.values(appStoreMetadata).find((metadata) =>
+    getAppIdentifiers(metadata).includes(parsedAppSlug)
+  );
+
+  if (!appMetadata) return { redirect: { permanent: false, destination: "/apps" } };
+
+  const app = await getAppByIdentifiers(getAppIdentifiers(appMetadata));
   const extendsEventType = appMetadata?.extendsFeature === "EventType";
 
   const isConferencing = isConferencingApp(appMetadata.categories);
@@ -268,7 +277,11 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
       const teamIds = userTeams.map((item) => item.id);
       eventTypeGroups = await getEventTypes({ userId: user.id, teamIds, isConferencing });
     } else if (parsedTeamIdParam) {
-      eventTypeGroups = await getEventTypes({ userId: user.id, teamIds: [parsedTeamIdParam], isConferencing });
+      eventTypeGroups = await getEventTypes({
+        userId: user.id,
+        teamIds: [parsedTeamIdParam],
+        isConferencing,
+      });
     } else {
       eventTypeGroups = await getEventTypes({ userId: user.id, isConferencing });
     }
@@ -291,8 +304,8 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     }
   }
 
-  const appInstalls = await getAppInstallsBySlug(
-    parsedAppSlug,
+  const appInstalls = await getAppInstallsByIdentifiers(
+    getAppIdentifiers(appMetadata),
     user.id,
     userTeams.map(({ id }) => id)
   );

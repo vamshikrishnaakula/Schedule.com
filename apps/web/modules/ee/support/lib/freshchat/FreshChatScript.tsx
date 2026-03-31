@@ -1,7 +1,7 @@
+import process from "node:process";
+import { trpc } from "@calcom/trpc/react";
 import Script from "next/script";
 import { z } from "zod";
-
-import { trpc } from "@calcom/trpc/react";
 
 const nonEmptySchema = z.string().min(1);
 declare global {
@@ -11,9 +11,8 @@ declare global {
   }
 }
 
- 
 const host = process.env.NEXT_PUBLIC_FRESHCHAT_HOST;
- 
+
 const token = process.env.NEXT_PUBLIC_FRESHCHAT_TOKEN;
 
 export const isFreshChatEnabled =

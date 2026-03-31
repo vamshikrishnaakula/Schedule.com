@@ -1,10 +1,3 @@
-import { useAutoAnimate } from "@formkit/auto-animate/react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import type { Dispatch, SetStateAction } from "react";
-import { useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-
 import { Dialog } from "@calcom/features/components/controlled-dialog";
 import { ErrorCode } from "@calcom/lib/errorCodes";
 import { useDebounce } from "@calcom/lib/hooks/useDebounce";
@@ -14,15 +7,21 @@ import { trpc } from "@calcom/trpc/react";
 import classNames from "@calcom/ui/classNames";
 import { Button } from "@calcom/ui/components/button";
 import {
+  ConfirmationDialogContent,
+  DialogClose,
   DialogContent,
   DialogFooter,
-  DialogClose,
-  ConfirmationDialogContent,
 } from "@calcom/ui/components/dialog";
-import { TextAreaField, Form, Label, Input } from "@calcom/ui/components/form";
+import { Form, Input, Label, TextAreaField } from "@calcom/ui/components/form";
 import { Icon } from "@calcom/ui/components/icon";
 import { RadioAreaGroup as RadioArea } from "@calcom/ui/components/radio";
 import { showToast } from "@calcom/ui/components/toast";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import type { Dispatch, SetStateAction } from "react";
+import { useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 enum ReassignType {
   AUTO = "auto",
@@ -252,7 +251,9 @@ export const ReassignDialog = ({
                   <strong className="mb-1 block">
                     {isManagedEvent ? t("auto_reassign") : t("round_robin")}
                   </strong>
-                  <p>{isManagedEvent ? t("auto_reassign_description") : t("round_robin_reassign_description")}</p>
+                  <p>
+                    {isManagedEvent ? t("auto_reassign_description") : t("round_robin_reassign_description")}
+                  </p>
                 </RadioArea.Item>
               ) : null}
               <RadioArea.Item
@@ -295,42 +296,42 @@ export const ReassignDialog = ({
                       </div>
                     ) : (
                       teamMemberOptions.map((member) => (
-                      <label
-                        key={member.value}
-                        tabIndex={watchedTeamMemberId === member.value ? -1 : 0}
-                        role="radio"
-                        aria-checked={watchedTeamMemberId === member.value}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter" || e.key === " ") {
-                            e.preventDefault();
-                            form.setValue("teamMemberId", member.value);
-                          }
-                        }}
-                        className={classNames(
-                          "hover:bg-subtle focus:bg-subtle focus:ring-emphasis cursor-pointer items-center justify-between gap-0.5 rounded-sm py-2 outline-none focus:ring-2",
-                          watchedTeamMemberId === member.value && "bg-subtle"
-                        )}>
-                        <div className="flex flex-1 items-center space-x-3">
-                          <input
-                            type="radio"
-                            className="hidden"
-                            checked={watchedTeamMemberId === member.value}
-                            onChange={() => form.setValue("teamMemberId", member.value)}
-                          />
-                          <div
-                            className={classNames(
-                              "h-3 w-3 shrink-0 rounded-full",
-                              member.status === "unavailable" ? "bg-red-500" : "bg-green-500"
+                        <label
+                          key={member.value}
+                          tabIndex={watchedTeamMemberId === member.value ? -1 : 0}
+                          role="radio"
+                          aria-checked={watchedTeamMemberId === member.value}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                              e.preventDefault();
+                              form.setValue("teamMemberId", member.value);
+                            }
+                          }}
+                          className={classNames(
+                            "hover:bg-subtle focus:bg-subtle focus:ring-emphasis cursor-pointer items-center justify-between gap-0.5 rounded-sm py-2 outline-none focus:ring-2",
+                            watchedTeamMemberId === member.value && "bg-subtle"
+                          )}>
+                          <div className="flex flex-1 items-center space-x-3">
+                            <input
+                              type="radio"
+                              className="hidden"
+                              checked={watchedTeamMemberId === member.value}
+                              onChange={() => form.setValue("teamMemberId", member.value)}
+                            />
+                            <div
+                              className={classNames(
+                                "h-3 w-3 shrink-0 rounded-full",
+                                member.status === "unavailable" ? "bg-red-500" : "bg-green-500"
+                              )}
+                            />
+                            <span className="text-emphasis w-full text-sm">{member.label}</span>
+                            {watchedTeamMemberId === member.value && (
+                              <div className="place-self-end pr-2">
+                                <Icon name="check" className="text-emphasis h-4 w-4" />
+                              </div>
                             )}
-                          />
-                          <span className="text-emphasis w-full text-sm">{member.label}</span>
-                          {watchedTeamMemberId === member.value && (
-                            <div className="place-self-end pr-2">
-                              <Icon name="check" className="text-emphasis h-4 w-4" />
-                            </div>
-                          )}
-                        </div>
-                      </label>
+                          </div>
+                        </label>
                       ))
                     )}
                     {teamMemberOptions.length > 0 && (

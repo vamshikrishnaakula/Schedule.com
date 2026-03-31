@@ -1,12 +1,11 @@
 "use client";
 
-import { useSession } from "next-auth/react";
-
 import { WEBAPP_URL } from "@calcom/lib/constants";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { Button } from "@calcom/ui/components/button";
 import { ButtonGroup } from "@calcom/ui/components/buttonGroup";
 import { Icon } from "@calcom/ui/components/icon";
+import { useSession } from "next-auth/react";
 
 import { UpgradeTip } from "~/shell/UpgradeTip";
 
@@ -44,9 +43,9 @@ export default function UpgradeTipWrapper({ children }: { children: React.ReactN
             <Button color="primary" href={`${WEBAPP_URL}/settings/teams/new`}>
               {t("create_team")}
             </Button>
-            <Button color="minimal" href="https://go.cal.com/insights" target="_blank">
+            {/* <Button color="minimal" href="https://go.cal.com/insights" target="_blank">
               {t("learn_more")}
-            </Button>
+            </Button> */}
           </ButtonGroup>
         </div>
       }>

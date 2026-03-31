@@ -1,7 +1,5 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-
 import { checkAdminOrOwner } from "@calcom/features/auth/lib/checkAdminOrOwner";
 import SectionBottomActions from "@calcom/features/settings/SectionBottomActions";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
@@ -12,6 +10,7 @@ import { Button } from "@calcom/ui/components/button";
 import { Form } from "@calcom/ui/components/form";
 import { showToast } from "@calcom/ui/components/toast";
 import { revalidateTeamDataCache } from "@calcom/web/app/(booking-page-wrapper)/team/[slug]/[type]/actions";
+import { useForm } from "react-hook-form";
 
 import RoundRobinResetInterval from "./RoundRobinResetInterval";
 import RoundRobinTimestampBasis from "./RoundRobinTimestampBasis";
@@ -36,10 +35,7 @@ const RoundRobinSettings = ({ team }: RoundRobinSettingsProps) => {
     },
   });
 
-  const [watchedResetInterval, watchedTimestampBasis] = form.watch([
-    "rrResetInterval",
-    "rrTimestampBasis",
-  ]);
+  const [watchedResetInterval, watchedTimestampBasis] = form.watch(["rrResetInterval", "rrTimestampBasis"]);
   const hasChanges =
     watchedResetInterval !== initialResetInterval || watchedTimestampBasis !== initialTimestampBasis;
 

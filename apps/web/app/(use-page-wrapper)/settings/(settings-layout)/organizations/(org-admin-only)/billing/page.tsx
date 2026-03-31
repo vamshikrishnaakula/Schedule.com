@@ -1,8 +1,6 @@
-import { _generateMetadata } from "app/_utils";
-import { getTranslate } from "app/_utils";
-
 import SettingsHeader from "@calcom/features/settings/appDir/SettingsHeader";
 import { MembershipRole } from "@calcom/prisma/enums";
+import { _generateMetadata, getTranslate } from "app/_utils";
 
 import BillingView from "~/settings/billing/billing-view";
 

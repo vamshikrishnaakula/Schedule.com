@@ -1,12 +1,11 @@
 "use client";
 
-import { Fragment, useMemo, type ReactNode } from "react";
-
 import classNames from "@calcom/ui/classNames";
 import { PanelCard } from "@calcom/ui/components/card";
 import { Spinner } from "@calcom/ui/components/icon";
 import { SkeletonText } from "@calcom/ui/components/skeleton";
 import { Tooltip } from "@calcom/ui/components/tooltip";
+import { Fragment, type ReactNode, useMemo } from "react";
 
 type PanelCardProps = React.ComponentProps<typeof PanelCard>;
 
@@ -25,7 +24,7 @@ export function ChartCard({
   isPending,
   isError,
   ...panelCardProps
-}: Omit<PanelCardProps, 'children'> & {
+}: Omit<PanelCardProps, "children"> & {
   legend?: Array<LegendItem>;
   legendSize?: LegendSize;
   enabledLegend?: Array<LegendItem>;

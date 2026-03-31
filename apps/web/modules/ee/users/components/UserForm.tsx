@@ -1,8 +1,5 @@
 "use client";
 
-import { noop } from "lodash";
-import { Controller, useForm } from "react-hook-form";
-
 import { TimezoneSelect } from "@calcom/features/components/timezone-select";
 import { formatToLocalizedDate } from "@calcom/lib/dayjs";
 import { getUserAvatarUrl } from "@calcom/lib/getAvatarUrl";
@@ -11,8 +8,10 @@ import { defaultLocaleOption, localeOptions } from "@calcom/lib/i18n";
 import { nameOfDay } from "@calcom/lib/weekday";
 import { Avatar } from "@calcom/ui/components/avatar";
 import { Button } from "@calcom/ui/components/button";
-import { Form, EmailField, Select, Label, TextField } from "@calcom/ui/components/form";
+import { EmailField, Form, Label, Select, TextField } from "@calcom/ui/components/form";
 import { ImageUploader } from "@calcom/ui/components/image-uploader";
+import { noop } from "lodash";
+import { Controller, useForm } from "react-hook-form";
 
 interface User {
   id: number;

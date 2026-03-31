@@ -1,19 +1,16 @@
-import Link from "next/link";
-import { Fragment } from "react";
-
 import { useIsPlatform } from "@calcom/atoms/hooks/useIsPlatform";
+import type { UseCalendarsReturnType } from "@calcom/features/bookings/Booker/components/hooks/useCalendars";
 import { Dialog } from "@calcom/features/components/controlled-dialog";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import classNames from "@calcom/ui/classNames";
 import { Alert } from "@calcom/ui/components/alert";
-import { DialogContent, DialogClose } from "@calcom/ui/components/dialog";
+import { DialogClose, DialogContent } from "@calcom/ui/components/dialog";
 import { EmptyScreen } from "@calcom/ui/components/empty-screen";
 import { Switch } from "@calcom/ui/components/form";
 import { ListItem, ListItemText, ListItemTitle } from "@calcom/ui/components/list";
-import { SkeletonContainer } from "@calcom/ui/components/skeleton";
-import { SkeletonText } from "@calcom/ui/components/skeleton";
-
-import type { UseCalendarsReturnType } from "@calcom/features/bookings/Booker/components/hooks/useCalendars";
+import { SkeletonContainer, SkeletonText } from "@calcom/ui/components/skeleton";
+import Link from "next/link";
+import { Fragment } from "react";
 
 interface IOverlayCalendarSettingsModalProps {
   open?: boolean;

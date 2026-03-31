@@ -1,11 +1,10 @@
-import Link from "next/link";
-import { useState, useEffect, useRef } from "react";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
-
 import { getPaymentAppData } from "@calcom/app-store/_utils/payments/getPaymentAppData";
 import type { getEventLocationValue } from "@calcom/app-store/locations";
 import { getSuccessPageLocationMessage, guessEventLocationType } from "@calcom/app-store/locations";
 import dayjs from "@calcom/dayjs";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 // TODO: Use browser locale, implement Intl in Dayjs maybe?
 import "@calcom/dayjs/locales";
 import { formatTime } from "@calcom/lib/dayjs";
@@ -29,9 +28,9 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuPortal,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  DropdownMenuPortal,
 } from "@calcom/ui/components/dropdown";
 import { Icon } from "@calcom/ui/components/icon";
 import { MeetingTimeInTimezones } from "@calcom/ui/components/popover";
@@ -44,20 +43,20 @@ import { buildBookingLink } from "../../modules/bookings/lib/buildBookingLink";
 import { useBookingDetailsSheetStore } from "../../modules/bookings/store/bookingDetailsSheetStore";
 import type { BookingAttendee } from "../../modules/bookings/types";
 import { AcceptBookingButton } from "./AcceptBookingButton";
-import { RejectBookingButton } from "./RejectBookingButton";
 import { BookingActionsDropdown } from "./actions/BookingActionsDropdown";
 import {
-  useBookingActionsStoreContext,
   BookingActionsStoreProvider,
+  useBookingActionsStoreContext,
 } from "./actions/BookingActionsStoreProvider";
 import {
-  shouldShowPendingActions,
-  shouldShowRecurringCancelAction,
-  shouldShowIndividualReportButton,
   type BookingActionContext,
   getReportAction,
   isActionDisabled,
+  shouldShowIndividualReportButton,
+  shouldShowPendingActions,
+  shouldShowRecurringCancelAction,
 } from "./actions/bookingActions";
+import { RejectBookingButton } from "./RejectBookingButton";
 import type { BookingItemProps } from "./types";
 
 type ParsedBooking = ReturnType<typeof buildParsedBooking>;
@@ -745,20 +744,19 @@ const Attendee = (
   const { copyToClipboard, isCopied } = useCopy();
 
   const noShowMutation = trpc.viewer.loggedInViewerRouter.markNoShow.useMutation({
-      onSuccess: async (data) => {
-        showToast(data.message, "success");
-        await utils.viewer.bookings.invalidate();
-      },
-      onError: (err) => {
-        showToast(err.message, "error");
-      },
-    });
+    onSuccess: async (data) => {
+      showToast(data.message, "success");
+      await utils.viewer.bookings.invalidate();
+    },
+    onError: (err) => {
+      showToast(err.message, "error");
+    },
+  });
 
   const displayName = user?.name || name || user?.email || email;
 
   const isTeamMemberOrHost =
-    email === organizerEmail ||
-    eventTypeHosts?.some((host) => host.user?.email === email);
+    email === organizerEmail || eventTypeHosts?.some((host) => host.user?.email === email);
   const shouldHideEmail = hideOrganizerEmail && isTeamMemberOrHost;
 
   return (
@@ -799,7 +797,7 @@ const Attendee = (
               onClick={(e) => {
                 e.preventDefault();
                 const isEmailCopied = isSmsCalEmail(email);
-                copyToClipboard(isEmailCopied ? email : phoneNumber ?? "");
+                copyToClipboard(isEmailCopied ? email : (phoneNumber ?? ""));
                 setOpenDropdown(false);
                 showToast(isEmailCopied ? t("email_copied") : t("phone_number_copied"), "success");
               }}>
@@ -1043,7 +1041,9 @@ const DisplayAttendees = ({
 
   return (
     <div className="text-emphasis text-sm" onClick={(e) => e.stopPropagation()}>
-      {user && <FirstAttendee user={user} currentEmail={currentEmail} hideOrganizerEmail={hideOrganizerEmail} />}
+      {user && (
+        <FirstAttendee user={user} currentEmail={currentEmail} hideOrganizerEmail={hideOrganizerEmail} />
+      )}
       {attendees.length > 1 ? <span>,&nbsp;</span> : <span>&nbsp;{t("and")}&nbsp;</span>}
       <Attendee
         {...attendees[0]}

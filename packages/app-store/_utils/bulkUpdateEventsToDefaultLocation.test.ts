@@ -1,6 +1,5 @@
-import { describe, expect, it, beforeEach, vi } from "vitest";
-
 import type { PrismaClient } from "@calcom/prisma";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { bulkUpdateEventsToDefaultLocation } from "./bulkUpdateEventsToDefaultLocation";
 
@@ -9,6 +8,7 @@ vi.mock("../utils", () => ({
     if (slug === "google-meet") {
       return {
         slug: "google-meet",
+        dirName: "googlevideo",
         appData: {
           location: {
             type: "integrations:google:meet",
@@ -19,6 +19,7 @@ vi.mock("../utils", () => ({
     if (slug === "zoom") {
       return {
         slug: "zoom",
+        dirName: "zoomvideo",
         appData: {
           location: {
             type: "integrations:zoom",
@@ -26,8 +27,26 @@ vi.mock("../utils", () => ({
         },
       };
     }
+    if (slug === "jitsi" || slug === "leadnest-video") {
+      return {
+        slug: "leadnest-video",
+        dirName: "leadnestvideo",
+        appData: {
+          location: {
+            type: "integrations:leadnestvideo",
+          },
+        },
+      };
+    }
     return null;
   }),
+  doesAppIdMatch: vi.fn(
+    (app: { slug?: string; dirName?: string } | undefined, appId: string | null) =>
+      !!appId && [app?.slug, app?.dirName].filter(Boolean).includes(appId)
+  ),
+  getAppIdentifiers: vi.fn((app: { slug?: string; dirName?: string } | undefined) =>
+    [app?.slug, app?.dirName].filter(Boolean)
+  ),
 }));
 
 type MockPrisma = {
@@ -159,8 +178,7 @@ describe("bulkUpdateEventsToDefaultLocation", () => {
         parentId: 100,
         metadata: {
           managedEventConfig: {
-            unlockedFields: {
-            },
+            unlockedFields: {},
           },
         },
       },
@@ -225,8 +243,7 @@ describe("bulkUpdateEventsToDefaultLocation", () => {
         parentId: 100,
         metadata: {
           managedEventConfig: {
-            unlockedFields: {
-            },
+            unlockedFields: {},
           },
         },
       },
@@ -344,5 +361,49 @@ describe("bulkUpdateEventsToDefaultLocation", () => {
         }),
       })
     );
+  });
+
+  it("should keep using a legacy credential appId that matches the app dirName", async () => {
+    const user = {
+      id: 7,
+      metadata: {
+        defaultConferencingApp: {
+          appSlug: "leadnest-video",
+          appLink: "https://meet.leadnest.ai/example-room",
+        },
+      },
+    };
+
+    const credential = { id: 700, appId: "leadnestvideo" };
+    const eventTypes = [{ id: 50, parentId: null, metadata: {} }];
+
+    mockPrisma.credential.findFirst.mockResolvedValue(credential);
+    mockPrisma.eventType.findMany.mockResolvedValue(eventTypes);
+    mockPrisma.eventType.updateMany.mockResolvedValue({ count: 1 });
+
+    const result = await bulkUpdateEventsToDefaultLocation({
+      eventTypeIds: [50],
+      user,
+      prisma: mockPrisma as unknown as PrismaClient,
+    });
+
+    expect(result.count).toBe(1);
+    expect(mockPrisma.eventType.updateMany).toHaveBeenCalledWith({
+      where: {
+        id: {
+          in: [50],
+        },
+        userId: 7,
+      },
+      data: {
+        locations: [
+          {
+            type: "integrations:leadnestvideo",
+            link: "https://meet.leadnest.ai/example-room",
+            credentialId: 700,
+          },
+        ],
+      },
+    });
   });
 });

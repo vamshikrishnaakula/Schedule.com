@@ -6,7 +6,7 @@ import Row from "./Row";
 const CommentIE = ({ html = "" }) => <RawHtml html={`<!--[if mso | IE]>${html}<![endif]-->`} />;
 
 const EmailBodyLogo = () => {
-  const image = `${WEBAPP_URL}/emails/logo.png`;
+  const image = `${WEBAPP_URL}/emails/cal-logo-word-dark.svg`;
 
   return (
     <>
@@ -48,14 +48,13 @@ const EmailBodyLogo = () => {
                     <td style={{ width: "89px" }}>
                       <a href={WEBAPP_URL} target="_blank" rel="noreferrer">
                         <img
-                          height="19"
                           src={image}
                           style={{
                             border: "0",
                             display: "block",
                             outline: "none",
                             textDecoration: "none",
-                            height: "19px",
+                            height: "30px",
                             width: "100%",
                             fontSize: "13px",
                           }}

@@ -1,17 +1,15 @@
-import { ShellMainAppDir } from "app/(use-page-wrapper)/(main-nav)/ShellMainAppDir";
-import type { PageProps } from "app/_types";
-import { _generateMetadata, getTranslate } from "app/_utils";
-import { cookies, headers } from "next/headers";
-import { redirect } from "next/navigation";
-import { z } from "zod";
-
 import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
 import { FeaturesRepository } from "@calcom/features/flags/features.repository";
 import { PermissionCheckService } from "@calcom/features/pbac/services/permission-check.service";
 import { prisma } from "@calcom/prisma";
 import { MembershipRole } from "@calcom/prisma/enums";
-
 import { buildLegacyRequest } from "@lib/buildLegacyCtx";
+import type { PageProps } from "app/_types";
+import { _generateMetadata, getTranslate } from "app/_utils";
+import { ShellMainAppDir } from "app/(use-page-wrapper)/(main-nav)/ShellMainAppDir";
+import { cookies, headers } from "next/headers";
+import { redirect } from "next/navigation";
+import { z } from "zod";
 
 import { validStatuses } from "~/bookings/lib/validStatuses";
 import BookingsList from "~/bookings/views/bookings-view";

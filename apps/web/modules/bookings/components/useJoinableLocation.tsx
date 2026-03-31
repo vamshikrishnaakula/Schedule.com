@@ -1,13 +1,20 @@
-import type { TFunction } from "i18next";
-import { useMemo } from "react";
-
+import { getConferencingUrlForMeetingId } from "@calcom/app-store/locations";
 import { useBookingLocation } from "@calcom/features/bookings/hooks";
 import type { BookingStatus } from "@calcom/prisma/enums";
 import { bookingMetadataSchema } from "@calcom/prisma/zod-utils";
+import type { TFunction } from "i18next";
+import { useMemo } from "react";
+
+type BookingReference = {
+  type?: string | null;
+  meetingId?: string | null;
+  meetingUrl?: string | null;
+};
 
 interface UseJoinableLocationParams {
   location: string | null;
   metadata?: unknown;
+  references?: BookingReference[] | null;
   bookingStatus: BookingStatus;
   t: TFunction;
 }
@@ -22,15 +29,35 @@ interface UseJoinableLocationParams {
  * - `provider`: Provider information (label, iconUrl, etc.)
  * - `isLocationURL`: Whether the location is a URL
  */
-export function useJoinableLocation({ location, metadata, bookingStatus, t }: UseJoinableLocationParams) {
+export function useJoinableLocation({
+  location,
+  metadata,
+  references,
+  bookingStatus,
+  t,
+}: UseJoinableLocationParams) {
   const bookingMetadata = useMemo(() => {
     const parsedMetadata = bookingMetadataSchema.safeParse(metadata ?? null);
     return parsedMetadata.success ? parsedMetadata.data : null;
   }, [metadata]);
 
+  const fallbackVideoCallUrl = useMemo(() => {
+    const locationVideoReference = references?.find((reference) => reference.type?.includes("_video"));
+
+    return (
+      bookingMetadata?.videoCallUrl ??
+      locationVideoReference?.meetingUrl ??
+      getConferencingUrlForMeetingId({
+        locationType: location,
+        meetingId: locationVideoReference?.meetingId,
+      }) ??
+      null
+    );
+  }, [bookingMetadata?.videoCallUrl, location, references]);
+
   const { locationToDisplay, provider, isLocationURL } = useBookingLocation({
     location,
-    videoCallUrl: bookingMetadata?.videoCallUrl,
+    videoCallUrl: fallbackVideoCallUrl,
     t,
     bookingStatus,
   });

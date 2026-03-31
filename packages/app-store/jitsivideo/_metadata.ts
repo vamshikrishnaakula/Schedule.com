@@ -14,7 +14,7 @@ export const metadata = {
   url: "https://meet.leadnest.ai/",
   slug: "jitsi",
   title: "Leadnest Meet",
-  isGlobal: false,
+  isGlobal: true,
   email: "support@leadnest.ai",
   appData: {
     location: {

@@ -1,13 +1,10 @@
-import { useAutoAnimate } from "@formkit/auto-animate/react";
-import { useEffect, useState } from "react";
-import type { SubmitHandler, UseFormReturn } from "react-hook-form";
-import { Controller, useFieldArray, useForm, useFormContext } from "react-hook-form";
-import type { z } from "zod";
-import { ZodError } from "zod";
-
 import { useIsPlatform } from "@calcom/atoms/hooks/useIsPlatform";
 import { Dialog } from "@calcom/features/components/controlled-dialog";
-import { LearnMoreLink } from "@calcom/web/modules/event-types/components/LearnMoreLink";
+import { fieldsThatSupportLabelAsSafeHtml } from "@calcom/features/form-builder/fieldsThatSupportLabelAsSafeHtml";
+import { fieldTypesConfigMap } from "@calcom/features/form-builder/fieldTypes";
+import type { fieldsSchema } from "@calcom/features/form-builder/schema";
+import { getFieldIdentifier } from "@calcom/features/form-builder/utils/getFieldIdentifier";
+import { getConfig as getVariantsConfig } from "@calcom/features/form-builder/utils/variantsConfig";
 import { getCurrencySymbol } from "@calcom/lib/currencyConversions";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { md } from "@calcom/lib/markdownIt";
@@ -17,26 +14,27 @@ import { excludeOrRequireEmailSchema } from "@calcom/prisma/zod-utils";
 import classNames from "@calcom/ui/classNames";
 import { Badge } from "@calcom/ui/components/badge";
 import { Button } from "@calcom/ui/components/button";
-import { DialogContent, DialogFooter, DialogHeader, DialogClose } from "@calcom/ui/components/dialog";
+import { DialogClose, DialogContent, DialogFooter, DialogHeader } from "@calcom/ui/components/dialog";
 import { Editor } from "@calcom/ui/components/editor";
-import { ToggleGroup } from "@calcom/ui/components/form";
 import {
-  Switch,
   CheckboxField,
-  SelectField,
   Form,
   Input,
   InputField,
   Label,
+  SelectField,
+  Switch,
+  ToggleGroup,
 } from "@calcom/ui/components/form";
 import { Icon } from "@calcom/ui/components/icon";
 import { showToast } from "@calcom/ui/components/toast";
-
-import { fieldTypesConfigMap } from "@calcom/features/form-builder/fieldTypes";
-import { fieldsThatSupportLabelAsSafeHtml } from "@calcom/features/form-builder/fieldsThatSupportLabelAsSafeHtml";
-import type { fieldsSchema } from "@calcom/features/form-builder/schema";
-import { getFieldIdentifier } from "@calcom/features/form-builder/utils/getFieldIdentifier";
-import { getConfig as getVariantsConfig } from "@calcom/features/form-builder/utils/variantsConfig";
+import { LearnMoreLink } from "@calcom/web/modules/event-types/components/LearnMoreLink";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { useEffect, useState } from "react";
+import type { SubmitHandler, UseFormReturn } from "react-hook-form";
+import { Controller, useFieldArray, useForm, useFormContext } from "react-hook-form";
+import type { z } from "zod";
+import { ZodError } from "zod";
 
 type RhfForm = {
   fields: z.infer<typeof fieldsSchema>;
@@ -152,7 +150,9 @@ export const FormBuilder = function FormBuilder({
           {LockedIcon}
         </div>
         <div className="flex items-start justify-between">
-          <p className="text-subtle mt-1 max-w-[280px] wrap-break-word text-sm sm:max-w-[500px]">{description}</p>
+          <p className="text-subtle mt-1 max-w-[280px] wrap-break-word text-sm sm:max-w-[500px]">
+            {description}
+          </p>
           {showPhoneAndEmailToggle && (
             <ToggleGroup
               value={(() => {
@@ -256,15 +256,18 @@ export const FormBuilder = function FormBuilder({
             if (!fieldType) {
               throw new Error(`Invalid field type - ${field.type}`);
             }
-            const groupedBySourceLabel = sources.reduce((groupBy, source) => {
-              const item = groupBy[source.label] || [];
-              if (source.type === "user" || source.type === "default") {
+            const groupedBySourceLabel = sources.reduce(
+              (groupBy, source) => {
+                const item = groupBy[source.label] || [];
+                if (source.type === "user" || source.type === "default") {
+                  return groupBy;
+                }
+                item.push(source);
+                groupBy[source.label] = item;
                 return groupBy;
-              }
-              item.push(source);
-              groupBy[source.label] = item;
-              return groupBy;
-            }, {} as Record<string, NonNullable<(typeof field)["sources"]>>);
+              },
+              {} as Record<string, NonNullable<(typeof field)["sources"]>>
+            );
 
             return (
               <li

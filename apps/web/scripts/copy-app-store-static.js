@@ -1,10 +1,17 @@
-const fs = require("node:fs");
-const path = require("node:path");
+import process from "node:process";
+import fs from "node:fs";
+import path from "node:path";
+import { createRequire } from "node:module";
+import { createHash } from "node:crypto";
+import { fileURLToPath } from "node:url";
+
+const require = createRequire(import.meta.url);
 const glob = require("glob");
-const crypto = require("node:crypto");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const copyAppStoreStatic = () => {
-  // Get all static files from app-store packages
+  // Get all static files from app-store packages (relative to apps/web)
   const staticFiles = glob.sync("../../packages/app-store/**/static/**/*", { nodir: true });
 
   // Object to store icon SVG hashes
@@ -17,32 +24,36 @@ const copyAppStoreStatic = () => {
     const appNameMatch = normalizedFile.match(/app-store\/(.*?)\/static/);
     if (!appNameMatch) return;
 
-    const appDirName = appNameMatch[1];
+    const appName = appNameMatch[1];
     const fileName = path.basename(file);
-    // Create destination directory if it doesn't exist
-    const destDir = path.join(process.cwd(), "public", "app-store", appDirName);
+    const destDir = `public/app-store/${appName}`;
+    const destPath = `${destDir}/${fileName}`;
+
+    // Create directory if it doesn't exist
     if (!fs.existsSync(destDir)) {
       fs.mkdirSync(destDir, { recursive: true });
     }
 
-    // Copy file to destination (Turborepo caching handles change detection)
-    const destPath = path.join(destDir, fileName);
+    // Copy file
     fs.copyFileSync(file, destPath);
 
-    // If it's an icon SVG file, compute hash
-    if (fileName.includes("icon") && fileName.endsWith(".svg")) {
-      const content = fs.readFileSync(file, "utf8");
-      const hash = crypto.createHash("md5").update(content).digest("hex").slice(0, 8);
-      SVG_HASHES[appDirName] = hash;
+    // Store SVG hash for icon.svg files
+    if (fileName === "icon.svg") {
+      const fileContents = fs.readFileSync(file);
+      const hash = createHash("sha256").update(fileContents).digest("hex").substring(0, 8);
+      SVG_HASHES[appName] = hash;
     }
-
-    console.log(`Copied ${file} to ${destPath}`);
   });
 
-  // Write SVG hashes to a JSON file
-  const hashFilePath = path.join(process.cwd(), "public", "app-store", "svg-hashes.json");
-  fs.writeFileSync(hashFilePath, JSON.stringify(SVG_HASHES, null, 2));
+  // Create directory if it doesn't exist
+  if (!fs.existsSync("public/app-store")) {
+    fs.mkdirSync("public/app-store", { recursive: true });
+  }
+
+  // Write SVG hashes to JSON file
+  fs.writeFileSync("public/app-store/svg-hashes.json", JSON.stringify(SVG_HASHES, null, 2));
+  
+  console.log(`✅ Copied ${staticFiles.length} static files`);
 };
 
-// Run the copy function
 copyAppStoreStatic();

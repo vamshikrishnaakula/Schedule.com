@@ -3,7 +3,7 @@ import { isDelegationCredential } from "@calcom/lib/delegationCredential";
 import { prisma } from "@calcom/prisma";
 import type { Prisma } from "@calcom/prisma/client";
 
-import getApps from "../utils";
+import getApps, { getAppIdentifiers } from "../utils";
 
 type EnabledApp = ReturnType<typeof getApps>[number] & { enabled: boolean };
 
@@ -72,7 +72,7 @@ const getEnabledAppsFromCredentials = async (
 
   const apps = getApps(credentials, filterOnCredentials);
   const filteredApps = apps.reduce((reducedArray, app) => {
-    const appDbQuery = enabledApps.find((metadata) => metadata.slug === app.slug);
+    const appDbQuery = enabledApps.find((metadata) => getAppIdentifiers(app).includes(metadata.slug));
     if (appDbQuery?.enabled || app.isGlobal) {
       reducedArray.push({ ...app, enabled: true });
     }

@@ -1,27 +1,25 @@
-import { useSession } from "next-auth/react";
-import { useState, useMemo } from "react";
-
 import { checkAdminOrOwner } from "@calcom/features/auth/lib/checkAdminOrOwner";
+import { useDataTable } from "@calcom/features/data-table/hooks";
+import type {
+  CombinedFilterSegment,
+  FilterSegmentOutput,
+  SystemFilterSegmentInternal,
+  UserFilterSegment,
+} from "@calcom/features/data-table/lib/types";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { Button } from "@calcom/ui/components/button";
 import {
   Dropdown,
   DropdownItem,
-  DropdownMenuPortal,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger,
   DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuTrigger,
 } from "@calcom/ui/components/dropdown";
 import { Icon, type IconName } from "@calcom/ui/components/icon";
-
-import { useDataTable } from "@calcom/features/data-table/hooks";
-import type {
-  FilterSegmentOutput,
-  CombinedFilterSegment,
-  SystemFilterSegmentInternal,
-  UserFilterSegment,
-} from "@calcom/features/data-table/lib/types";
+import { useSession } from "next-auth/react";
+import { useMemo, useState } from "react";
 import { DeleteSegmentDialog } from "./DeleteSegmentDialog";
 import { DuplicateSegmentDialog } from "./DuplicateSegmentDialog";
 import { RenameSegmentDialog } from "./RenameSegmentDialog";
@@ -247,9 +245,7 @@ function DropdownItemWithSubmenu({
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <DropdownMenuItem
-      className="cursor-pointer rounded-lg last-of-type:rounded-b-lg"
-      onSelect={onSelect}>
+    <DropdownMenuItem className="cursor-pointer rounded-lg last-of-type:rounded-b-lg" onSelect={onSelect}>
       <div className="flex items-center">
         {children}
         <div className="grow" />

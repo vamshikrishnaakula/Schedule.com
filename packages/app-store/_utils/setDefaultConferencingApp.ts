@@ -2,7 +2,7 @@ import prisma from "@calcom/prisma";
 import { userMetadata } from "@calcom/prisma/zod-utils";
 
 import type { LocationObject } from "../locations";
-import { getAppFromSlug } from "../utils";
+import { doesAppIdMatch, getAppFromSlug } from "../utils";
 import { getBulkUserEventTypes } from "./getBulkEventTypes";
 
 const setDefaultConferencingApp = async (userId: number, appSlug: string) => {
@@ -26,7 +26,7 @@ const setDefaultConferencingApp = async (userId: number, appSlug: string) => {
   });
 
   const currentMetadata = userMetadata.parse(user?.metadata);
-  const credentialId = user?.credentials.find((item) => item.appId == appSlug)?.id;
+  const credentialId = user?.credentials.find((item) => doesAppIdMatch(foundApp, item.appId))?.id;
 
   //Update the default conferencing app for the user.
   await prisma.user.update({

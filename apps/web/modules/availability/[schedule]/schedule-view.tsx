@@ -1,12 +1,6 @@
 "use client";
 
-import { revalidateAvailabilityList } from "app/(use-page-wrapper)/(main-nav)/availability/actions";
-import { revalidateSchedulePage } from "app/(use-page-wrapper)/availability/[schedule]/actions";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
-
 import { AvailabilitySettings } from "@calcom/atoms/availability/AvailabilitySettings";
-import type { BulkUpdatParams } from "@calcom/web/modules/event-types/components/BulkEditDefaultForEventsModal";
 import { withErrorFromUnknown } from "@calcom/lib/getClientErrorFromUnknown";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { HttpError } from "@calcom/lib/http-error";
@@ -14,6 +8,11 @@ import type { RouterOutputs } from "@calcom/trpc/react";
 import { trpc } from "@calcom/trpc/react";
 import useMeQuery from "@calcom/trpc/react/hooks/useMeQuery";
 import { showToast } from "@calcom/ui/components/toast";
+import type { BulkUpdatParams } from "@calcom/web/modules/event-types/components/BulkEditDefaultForEventsModal";
+import { revalidateAvailabilityList } from "app/(use-page-wrapper)/(main-nav)/availability/actions";
+import { revalidateSchedulePage } from "app/(use-page-wrapper)/availability/[schedule]/actions";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 type PageProps = {
   scheduleData: RouterOutputs["viewer"]["availability"]["schedule"]["get"];

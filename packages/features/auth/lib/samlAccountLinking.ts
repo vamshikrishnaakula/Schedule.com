@@ -2,16 +2,16 @@ import { MembershipRepository } from "@calcom/features/membership/repositories/M
 import { OrganizationSettingsRepository } from "@calcom/features/organizations/repositories/OrganizationSettingsRepository";
 import { HOSTED_CAL_FEATURES } from "@calcom/lib/constants";
 import logger from "@calcom/lib/logger";
-import { prisma } from "@calcom/prisma";
 import type { PrismaClient } from "@calcom/prisma";
+import { prisma } from "@calcom/prisma";
 
 import { tenantPrefix } from "../../ee/sso/lib/saml";
 
 const log: ReturnType<typeof logger.getSubLogger> = logger.getSubLogger({ prefix: ["samlAccountLinking"] });
-const SAML_NOT_AUTHORITATIVE_ERROR_URL = "/auth/error?error=saml-idp-not-authoritative";
+const SAML_NOT_AUTHORITATIVE_ERROR_URL = "/auth/login?error=saml-idp-not-authoritative";
 
-export function getTeamIdFromSamlTenant(tenant: string): number | null {
-  if (!tenant.startsWith(tenantPrefix)) {
+export function getTeamIdFromSamlTenant(tenant: string | undefined | null): number | null {
+  if (!tenant || !tenant.startsWith(tenantPrefix)) {
     return null;
   }
   const teamId = parseInt(tenant.replace(tenantPrefix, ""), 10);
@@ -65,9 +65,7 @@ export class SamlAccountLinkingService {
   }
 }
 
-export type AccountConversionValidationResult =
-  | { allowed: true }
-  | { allowed: false; errorUrl: string };
+export type AccountConversionValidationResult = { allowed: true } | { allowed: false; errorUrl: string };
 
 export async function validateSamlAccountConversion(
   samlTenant: string | undefined,
@@ -76,7 +74,10 @@ export async function validateSamlAccountConversion(
 ): Promise<AccountConversionValidationResult> {
   if (!samlTenant) {
     // Deny by default - if tenant is missing, we cannot verify IdP authority
-    log.error("SAML conversion blocked - missing tenant", { emailDomain: email.split("@")[1], conversionContext });
+    log.error("SAML conversion blocked - missing tenant", {
+      emailDomain: email.split("@")[1],
+      conversionContext,
+    });
     return { allowed: false, errorUrl: SAML_NOT_AUTHORITATIVE_ERROR_URL };
   }
 

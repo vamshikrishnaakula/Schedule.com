@@ -1,12 +1,10 @@
+import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
+import { WEBAPP_URL } from "@calcom/lib/constants";
+import { buildLegacyRequest } from "@lib/buildLegacyCtx";
 import { _generateMetadata } from "app/_utils";
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
-
-import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
 import LicenseRequired from "~/ee/common/components/LicenseRequired";
-import { WEBAPP_URL } from "@calcom/lib/constants";
-
-import { buildLegacyRequest } from "@lib/buildLegacyCtx";
 
 import LegacyPage, { LayoutWrapper } from "~/settings/platform/new/create-new-view";
 

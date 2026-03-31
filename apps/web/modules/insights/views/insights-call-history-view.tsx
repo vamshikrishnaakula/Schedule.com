@@ -1,26 +1,25 @@
 "use client";
 
-import { getCoreRowModel, getSortedRowModel, useReactTable, type ColumnDef } from "@tanstack/react-table";
-import { usePathname } from "next/navigation";
-import { useMemo, useState, useReducer } from "react";
-
 import {
-  DataTableProvider,
   ColumnFilterType,
   convertFacetedValuesToMap,
+  DataTableProvider,
   useDataTable,
 } from "@calcom/features/data-table";
-import { DataTableWrapper, DataTableToolbar, DataTableFilters } from "~/data-table/components";
 import { useSegments } from "@calcom/features/data-table/hooks/useSegments";
 import { useOrgBranding } from "@calcom/features/ee/organizations/context/provider";
-import type { CallDetailsState, CallDetailsAction } from "@calcom/features/ee/workflows/lib/types";
+import type { CallDetailsAction, CallDetailsState } from "@calcom/features/ee/workflows/lib/types";
 import { WEBAPP_URL } from "@calcom/lib/constants";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
-import { trpc } from "@calcom/trpc/react";
 import type { RouterOutputs } from "@calcom/trpc/react";
+import { trpc } from "@calcom/trpc/react";
 import { Badge } from "@calcom/ui/components/badge";
 import { EmptyScreen } from "@calcom/ui/components/empty-screen";
 import { CallDetailsSheet } from "@calcom/web/modules/ee/workflows/components/CallDetailsSheet";
+import { type ColumnDef, getCoreRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
+import { usePathname } from "next/navigation";
+import { useMemo, useReducer, useState } from "react";
+import { DataTableFilters, DataTableToolbar, DataTableWrapper } from "~/data-table/components";
 
 type CallHistoryRow = {
   id: string;
@@ -106,8 +105,8 @@ function CallHistoryContent({ org: _org }: CallHistoryProps) {
         call.call_analysis?.user_sentiment?.toLowerCase() === "positive"
           ? "positive"
           : call.call_analysis?.user_sentiment?.toLowerCase() === "negative"
-          ? "negative"
-          : "neutral",
+            ? "negative"
+            : "neutral",
       from: "from_number" in call ? call.from_number || t("unknown") : t("unknown"),
       to: "to_number" in call ? call.to_number || t("unknown") : t("unknown"),
       callCreated: call.call_analysis?.call_successful ?? true,

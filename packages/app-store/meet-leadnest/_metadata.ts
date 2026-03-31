@@ -3,7 +3,7 @@ import type { AppMeta } from "@calcom/types/App";
 import _package from "./package.json";
 
 export const metadata = {
-  name: "Meet-Leadnest ",
+  name: "Leadnest Video",
   description: _package.description,
   installed: true,
   type: "leadnest_video",
@@ -12,9 +12,9 @@ export const metadata = {
   logo: "https://meet.leadnest.ai/custom/favicon.svg",
   publisher: "leadnest.ai",
   url: "https://meet.leadnest.ai/",
-  slug: "jitsi",
+  slug: "leadnest-video",
   title: "Leadnest Meet",
-  isGlobal: false,
+  isGlobal: true,
   email: "support@leadnest.ai",
   appData: {
     location: {
@@ -23,7 +23,7 @@ export const metadata = {
       label: "Leadnest Video",
     },
   },
-  dirName: "leadnestvideo",
+  dirName: "meet-leadnest",
   concurrentMeetings: true,
   isOAuth: false,
   defaultVideo: true,

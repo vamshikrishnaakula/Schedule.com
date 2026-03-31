@@ -1,9 +1,3 @@
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useFormContext } from "react-hook-form";
-
-import LicenseRequired from "~/ee/common/components/LicenseRequired";
 import useLockedFieldsManager from "@calcom/features/ee/managed-event-types/hooks/useLockedFieldsManager";
 import { getActionIcon } from "@calcom/features/ee/workflows/lib/getActionIcon";
 import type { FormValues } from "@calcom/features/eventtypes/lib/types";
@@ -22,6 +16,11 @@ import { Icon } from "@calcom/ui/components/icon";
 import { showToast } from "@calcom/ui/components/toast";
 import { Tooltip } from "@calcom/ui/components/tooltip";
 import { revalidateEventTypeEditPage } from "@calcom/web/app/(use-page-wrapper)/event-types/[type]/actions";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useFormContext } from "react-hook-form";
+import LicenseRequired from "~/ee/common/components/LicenseRequired";
 
 import SkeletonLoader from "~/ee/workflows/components/SkeletonLoaderEventWorkflowsTab";
 import type { WorkflowType } from "~/ee/workflows/components/WorkflowListPage";
@@ -148,8 +147,8 @@ const WorkflowListItem = (props: ItemProps) => {
               workflow.readOnly && props.isChildrenManagedEventType
                 ? "locked_by_team_admin"
                 : isActive
-                ? "turn_off"
-                : "turn_on"
+                  ? "turn_off"
+                  : "turn_on"
             ) as string
           }>
           <div className="flex items-center ltr:mr-2 rtl:ml-2">
@@ -203,7 +202,7 @@ function EventWorkflowsTab(props: Props) {
         const dataWf = data.workflows.find((wf) => wf.id === workflowOnEventType.id);
         return {
           ...workflowOnEventType,
-          readOnly: isChildrenManagedEventType && dataWf?.teamId ? true : dataWf?.readOnly ?? false,
+          readOnly: isChildrenManagedEventType && dataWf?.teamId ? true : (dataWf?.readOnly ?? false),
         } as WorkflowType;
       });
 

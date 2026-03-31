@@ -1,10 +1,8 @@
+import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
+import { buildLegacyRequest } from "@lib/buildLegacyCtx";
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
-
-import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
-
-import { buildLegacyRequest } from "@lib/buildLegacyCtx";
 
 import Shell from "~/shell/Shell";
 

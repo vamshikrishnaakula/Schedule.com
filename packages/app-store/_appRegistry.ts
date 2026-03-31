@@ -1,6 +1,6 @@
 import { appStoreMetadata } from "@calcom/app-store/appStoreMetaData";
 import { getAllDelegationCredentialsForUser } from "@calcom/app-store/delegationCredential";
-import { getAppFromSlug } from "@calcom/app-store/utils";
+import { getAppFromSlug, getAppIdentifiers } from "@calcom/app-store/utils";
 import type { UserAdminTeams } from "@calcom/features/users/repositories/UserRepository";
 import getInstallCountPerApp from "@calcom/lib/apps/getInstallCountPerApp";
 import prisma, { safeAppSelect, safeCredentialSelect } from "@calcom/prisma";
@@ -13,6 +13,12 @@ export type TDependencyData = {
   installed?: boolean;
 }[];
 
+const isLegacyLeadnestDbApp = (app: { slug: string; dirName: string }) =>
+  app.slug === "jitsi" || app.dirName === "leadnestvideo";
+
+const isPreferredLeadnestDbApp = (app: { slug: string; dirName: string }) =>
+  app.slug === "leadnest-video" || app.dirName === "meet-leadnest";
+
 /**
  * Get App metadata either using dirName or slug
  */
@@ -23,7 +29,7 @@ export async function getAppWithMetadata(app: { dirName: string } | { slug: stri
     appMetadata = appStoreMetadata[app.dirName as keyof typeof appStoreMetadata] as App;
   } else {
     const foundEntry = Object.entries(appStoreMetadata).find(([, meta]) => {
-      return meta.slug === app.slug;
+      return getAppIdentifiers(meta).includes(app.slug);
     });
     if (!foundEntry) return null;
     appMetadata = foundEntry[1] as App;
@@ -42,9 +48,14 @@ export async function getAppRegistry() {
     where: { enabled: true },
     select: { dirName: true, slug: true, categories: true, enabled: true, createdAt: true },
   });
+  const hasPreferredLeadnestApp = dbApps.some(isPreferredLeadnestDbApp);
   const apps = [] as App[];
   const installCountPerApp = await getInstallCountPerApp();
   for await (const dbapp of dbApps) {
+    if (hasPreferredLeadnestApp && isLegacyLeadnestDbApp(dbapp)) {
+      continue;
+    }
+
     const app = await getAppWithMetadata(dbapp);
     if (!app) continue;
     // Skip if app isn't installed
@@ -54,8 +65,7 @@ export async function getAppRegistry() {
     apps.push({
       ...app,
       category: app.category || "other",
-      installed:
-        true /* All apps from DB are considered installed by default. @TODO: Add and filter our by `enabled` property */,
+      installed: true /* All apps from DB are considered installed by default. @TODO: Add and filter our by `enabled` property */,
       installCount: installCountPerApp[dbapp.slug] || 0,
     });
   }
@@ -97,12 +107,17 @@ export async function getAppRegistryWithCredentials(userId: number, userAdminTea
     : [];
 
   const usersDefaultApp = userMetadata.parse(user?.metadata)?.defaultConferencingApp?.appSlug;
+  const hasPreferredLeadnestApp = dbApps.some(isPreferredLeadnestDbApp);
   const apps = [] as (App & {
     credentials: Credential[];
     isDefault?: boolean;
   })[];
   const installCountPerApp = await getInstallCountPerApp();
   for await (const dbapp of dbApps) {
+    if (hasPreferredLeadnestApp && isLegacyLeadnestDbApp(dbapp)) {
+      continue;
+    }
+
     const delegationCredentialsForApp = delegationCredentials.filter(
       (credential) => credential.appId === dbapp.slug
     );

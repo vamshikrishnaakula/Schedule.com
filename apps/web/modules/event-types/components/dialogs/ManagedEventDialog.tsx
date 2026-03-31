@@ -1,7 +1,7 @@
-import type { ChildrenEventType } from "@calcom/web/modules/event-types/components/ChildrenEventTypeSelect";
 import ServerTrans from "@calcom/lib/components/ServerTrans";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { ConfirmationDialogContent, Dialog } from "@calcom/ui/components/dialog";
+import type { ChildrenEventType } from "@calcom/web/modules/event-types/components/ChildrenEventTypeSelect";
 
 interface ManagedEventDialogProps {
   slugExistsChildrenDialogOpen: ChildrenEventType[];

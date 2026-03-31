@@ -1,8 +1,3 @@
-import { useAutoAnimate } from "@formkit/auto-animate/react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-
 import { getActionIcon } from "@calcom/features/ee/workflows/lib/getActionIcon";
 import type { WorkflowListType } from "@calcom/features/ee/workflows/lib/types";
 import { getPlaceholderAvatar } from "@calcom/lib/defaultAvatarImage";
@@ -23,6 +18,10 @@ import {
 } from "@calcom/ui/components/dropdown";
 import { Icon } from "@calcom/ui/components/icon";
 import { Tooltip } from "@calcom/ui/components/tooltip";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 import { DeleteDialog } from "./DeleteDialog";
 
@@ -102,12 +101,12 @@ export default function WorkflowListPage({ workflows }: Props) {
                             {workflow.name
                               ? workflow.name
                               : workflow.steps[0]
-                              ? `Untitled (${`${t(`${workflow.steps[0].action.toLowerCase()}_action`)}`
-                                  .charAt(0)
-                                  .toUpperCase()}${`${t(
-                                  `${workflow.steps[0].action.toLowerCase()}_action`
-                                )}`.slice(1)})`
-                              : "Untitled"}
+                                ? `Untitled (${`${t(`${workflow.steps[0].action.toLowerCase()}_action`)}`
+                                    .charAt(0)
+                                    .toUpperCase()}${`${t(
+                                    `${workflow.steps[0].action.toLowerCase()}_action`
+                                  )}`.slice(1)})`
+                                : "Untitled"}
                           </div>
                           <div>
                             {(workflow.permissions?.readOnly ?? workflow.readOnly) && (

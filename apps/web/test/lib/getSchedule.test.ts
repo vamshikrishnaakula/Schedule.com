@@ -1,24 +1,21 @@
+import dayjs from "@calcom/dayjs";
 import CalendarManagerMock from "@calcom/features/calendars/lib/__mocks__/CalendarManager";
+import { getAvailableSlotsService } from "@calcom/features/di/containers/AvailableSlots";
 import { constantsScenarios } from "@calcom/lib/__mocks__/constants";
-
+import { type BookingStatus, SchedulingType } from "@calcom/prisma/enums";
 import {
+  createBookingScenario,
+  createCredentials,
+  createOrganization,
   getDate,
   getGoogleCalendarCredential,
-  createBookingScenario,
-  createOrganization,
   getOrganizer,
   getScenarioData,
-  Timezones,
-  TestData,
-  createCredentials,
   mockCrmApp,
+  TestData,
+  Timezones,
 } from "@calcom/testing/lib/bookingScenario/bookingScenario";
-
-import { describe, vi, test } from "vitest";
-
-import dayjs from "@calcom/dayjs";
-import { getAvailableSlotsService } from "@calcom/features/di/containers/AvailableSlots";
-import { SchedulingType, type BookingStatus } from "@calcom/prisma/enums";
+import { describe, test, vi } from "vitest";
 
 import { expect, expectedSlotsForSchedule } from "./getSchedule/expects";
 import { setupAndTeardown } from "./getSchedule/setupAndTeardown";
@@ -2827,9 +2824,9 @@ describe("getSchedule", () => {
         });
       }
 
-      expect(availableSlotsInScheduleTz.filter((slot) => slot.format().startsWith(plus2DateString)).length).toBe(
-        0
-      );
+      expect(
+        availableSlotsInScheduleTz.filter((slot) => slot.format().startsWith(plus2DateString)).length
+      ).toBe(0);
     });
 
     test("a slot counts as being busy when the eventType is requiresConfirmation and requiresConfirmationWillBlockSlot", async () => {

@@ -18,19 +18,67 @@ export type LocationOption = {
   disabled?: boolean;
 };
 
-const ALL_APPS_MAP = Object.keys(appStoreMetadata).reduce((store, key) => {
-  const metadata = appStoreMetadata[key as keyof typeof appStoreMetadata] as AppMeta;
+function isLegacyLeadnestApp(app: Pick<AppMeta, "slug" | "dirName"> | undefined): boolean {
+  if (!app) {
+    return false;
+  }
 
-  store[key] = metadata;
+  return app.slug === "jitsi" || app.dirName === "leadnestvideo";
+}
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  //@ts-ignore
-  delete store[key]["/*"];
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  //@ts-ignore
-  delete store[key]["__createdUsingCli"];
-  return store;
-}, {} as Record<string, AppMeta>);
+function isPreferredLeadnestApp(app: Pick<AppMeta, "slug" | "dirName"> | undefined): boolean {
+  if (!app) {
+    return false;
+  }
+
+  return app.slug === "leadnest-video" || app.dirName === "meet-leadnest";
+}
+
+function getLegacyAppIdentifiers(app: Pick<AppMeta, "slug" | "dirName"> | undefined): string[] {
+  if (!app) {
+    return [];
+  }
+
+  if (app.dirName === "leadnestvideo" || app.slug === "leadnest-video" || app.slug === "jitsi") {
+    return ["jitsi", "leadnestvideo"];
+  }
+
+  return [];
+}
+
+export function getAppIdentifiers(app: Pick<AppMeta, "slug" | "dirName"> | undefined): string[] {
+  if (!app) {
+    return [];
+  }
+
+  const identifiers = [app.slug, app.dirName, ...getLegacyAppIdentifiers(app)].filter(Boolean);
+  return identifiers as string[];
+}
+
+export function doesAppIdMatch(app: Pick<AppMeta, "slug" | "dirName"> | undefined, appId: string | null) {
+  if (!appId) {
+    return false;
+  }
+
+  return getAppIdentifiers(app).includes(appId);
+}
+
+const ALL_APPS_MAP = Object.keys(appStoreMetadata).reduce(
+  (store, key) => {
+    const metadata = appStoreMetadata[key as keyof typeof appStoreMetadata] as AppMeta;
+
+    store[key] = metadata;
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-expect-error
+    delete store[key]["/*"];
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-expect-error
+    delete store[key]["__createdUsingCli"];
+    return store;
+  },
+  {} as Record<string, AppMeta>
+);
 
 export type CredentialDataWithTeamName = CredentialForCalendarService & {
   team?: {
@@ -45,63 +93,75 @@ export const ALL_APPS = Object.values(ALL_APPS_MAP);
  * credentials, this should also get globally available apps.
  */
 function getApps(credentials: CredentialDataWithTeamName[], filterOnCredentials?: boolean) {
-  const apps = ALL_APPS.reduce((reducedArray, appMeta) => {
-    const appCredentials = credentials.filter((credential) => credential.appId === appMeta.slug);
+  const hasPreferredLeadnestApp = ALL_APPS.some(isPreferredLeadnestApp);
+  const apps = ALL_APPS.reduce(
+    (reducedArray, appMeta) => {
+      if (hasPreferredLeadnestApp && isLegacyLeadnestApp(appMeta)) {
+        return reducedArray;
+      }
 
-    if (filterOnCredentials && !appCredentials.length && !appMeta.isGlobal) return reducedArray;
+      const appCredentials = credentials.filter((credential) => doesAppIdMatch(appMeta, credential.appId));
 
-    let locationOption: LocationOption | null = null;
+      if (filterOnCredentials && !appCredentials.length && !appMeta.isGlobal) return reducedArray;
 
-    /** If the app is a globally installed one, let's inject it's key */
-    if (appMeta.isGlobal) {
-      const credential = {
-        id: 0,
-        type: appMeta.type,
+      let locationOption: LocationOption | null = null;
 
-        key: appMeta.key!,
-        userId: 0,
-        user: { email: "" },
-        teamId: null,
-        appId: appMeta.slug,
-        invalid: false,
-        delegatedTo: null,
-        delegatedToId: null,
-        delegationCredentialId: null,
-        team: {
-          name: "Default",
-        },
-      };
-      logger.debug(
-        `${appMeta.type} is a global app, injecting credential`,
-        safeStringify(getPiiFreeCredential(credential))
-      );
-      appCredentials.push(credential);
-    }
+      /** If the app is a globally installed one, let's inject it's key */
+      if (appMeta.isGlobal) {
+        const credential = {
+          id: 0,
+          type: appMeta.type,
 
-    /** Check if app has location option AND add it if user has credentials for it */
-    if (appCredentials.length > 0 && appMeta?.appData?.location) {
-      locationOption = {
-        value: appMeta.appData.location.type,
-        label: appMeta.appData.location.label || "No label set",
-        disabled: false,
-      };
-    }
+          key: appMeta.key!,
+          userId: 0,
+          user: { email: "" },
+          teamId: null,
+          appId: appMeta.slug,
+          invalid: false,
+          delegatedTo: null,
+          delegatedToId: null,
+          delegationCredentialId: null,
+          team: {
+            name: "Default",
+          },
+        };
+        logger.debug(
+          `${appMeta.type} is a global app, injecting credential`,
+          safeStringify(getPiiFreeCredential(credential))
+        );
+        appCredentials.push(credential);
+      }
 
-    const credential: (typeof appCredentials)[number] | null = appCredentials[0] || null;
+      /** Check if app has location option AND add it if user has credentials for it */
+      if (appCredentials.length > 0 && appMeta?.appData?.location) {
+        locationOption = {
+          value: appMeta.appData.location.type,
+          label: appMeta.appData.location.label || "No label set",
+          disabled: false,
+        };
+      }
 
-    reducedArray.push({
-      ...appMeta,
-      /**
-       * @deprecated use `credentials`
-       */
-      credential,
-      credentials: appCredentials,
-      /** Option to display in `location` field while editing event types */
-      locationOption,
-    });
+      const credential: (typeof appCredentials)[number] | null = appCredentials[0] || null;
 
-    return reducedArray;
-  }, [] as (App & { credential: CredentialDataWithTeamName; credentials: CredentialDataWithTeamName[]; locationOption: LocationOption | null })[]);
+      reducedArray.push({
+        ...appMeta,
+        /**
+         * @deprecated use `credentials`
+         */
+        credential,
+        credentials: appCredentials,
+        /** Option to display in `location` field while editing event types */
+        locationOption,
+      });
+
+      return reducedArray;
+    },
+    [] as (App & {
+      credential: CredentialDataWithTeamName;
+      credentials: CredentialDataWithTeamName[];
+      locationOption: LocationOption | null;
+    })[]
+  );
 
   return apps;
 }
@@ -131,7 +191,7 @@ export function getAppType(name: string): string {
 }
 
 export function getAppFromSlug(slug: string | undefined): AppMeta | undefined {
-  return ALL_APPS.find((app) => app.slug === slug);
+  return ALL_APPS.find((app) => getAppIdentifiers(app).includes(slug ?? ""));
 }
 
 export function getAppFromLocationValue(type: string): AppMeta | undefined {
@@ -179,7 +239,7 @@ export function sanitizeAppForViewer<
     credential?: CredentialDataWithTeamName | null;
     credentials?: CredentialDataWithTeamName[];
     locationOption?: LocationOption | null;
-  }
+  },
 >(app: T): Omit<T, "key" | "credential" | "credentials"> {
   const { key: _, credential: _1, credentials: _2, ...sanitizedApp } = app;
   return sanitizedApp;

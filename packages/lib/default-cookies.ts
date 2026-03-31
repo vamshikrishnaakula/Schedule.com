@@ -1,3 +1,4 @@
+import process from "node:process";
 import type { CookieOption, CookiesOptions } from "next-auth";
 
 /**
@@ -13,16 +14,27 @@ import type { CookieOption, CookiesOptions } from "next-auth";
  */
 
 const NEXTAUTH_COOKIE_DOMAIN = process.env.NEXTAUTH_COOKIE_DOMAIN || "";
+const NEXTAUTH_COOKIE_SAME_SITE = process.env.NEXTAUTH_COOKIE_SAME_SITE;
+
+const getSameSite = (useSecureCookies: boolean): "lax" | "strict" | "none" => {
+  if (
+    NEXTAUTH_COOKIE_SAME_SITE === "lax" ||
+    NEXTAUTH_COOKIE_SAME_SITE === "strict" ||
+    NEXTAUTH_COOKIE_SAME_SITE === "none"
+  ) {
+    return NEXTAUTH_COOKIE_SAME_SITE;
+  }
+
+  return useSecureCookies ? "lax" : "lax";
+};
 
 export function defaultCookies(useSecureCookies: boolean): CookiesOptions {
   const cookiePrefix = useSecureCookies ? "__Secure-" : "";
+  const sameSite = getSameSite(useSecureCookies);
 
   const defaultOptions: CookieOption["options"] = {
     domain: NEXTAUTH_COOKIE_DOMAIN || undefined,
-    // To enable cookies on widgets,
-    // https://stackoverflow.com/questions/45094712/iframe-not-reading-cookies-in-chrome
-    // But we need to set it as `lax` in development
-    sameSite: useSecureCookies ? "none" : "lax",
+    sameSite,
     path: "/",
     secure: useSecureCookies,
   };
@@ -63,9 +75,10 @@ export function defaultCookies(useSecureCookies: boolean): CookiesOptions {
       name: `${cookiePrefix}next-auth.nonce`,
       options: {
         httpOnly: true,
-        sameSite: "lax",
+        sameSite,
         path: "/",
         secure: useSecureCookies,
+        domain: NEXTAUTH_COOKIE_DOMAIN || undefined,
       },
     },
   };

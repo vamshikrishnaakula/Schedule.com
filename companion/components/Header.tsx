@@ -87,11 +87,15 @@ export function Header({
   return (
     <View
       className="flex-row items-center justify-between border-b border-[#E5E5EA] bg-white px-2 md:px-4"
-      style={{ paddingTop: insets.top + 4, paddingBottom: 4 }}
+      style={{ height: 42, paddingTop: insets.top + 4, paddingBottom: 4 }}
     >
       {/* Left: Cal.com Logo */}
       <View className="ms-1">
-        <CalComLogo width={101} height={22} color="#333" />
+        <img
+            className="-mt-px inline h-[40px] w-auto"
+            src="/cal-com-icon-white.svg"
+            alt="leadnest-logo"
+         />
       </View>
 
       {/* Right: Filter Dropdown + Profile */}

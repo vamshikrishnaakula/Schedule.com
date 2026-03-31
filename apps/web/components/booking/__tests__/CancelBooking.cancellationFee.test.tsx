@@ -1,7 +1,6 @@
-import { render, screen, cleanup } from "@testing-library/react";
-import { describe, expect, it, vi, beforeAll, afterAll, afterEach } from "vitest";
-
 import * as shouldChargeModule from "@calcom/features/bookings/lib/payment/shouldChargeNoShowCancellationFee";
+import { cleanup, render, screen } from "@testing-library/react";
+import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 
 import CancelBooking from "../CancelBooking";
 

@@ -1,24 +1,13 @@
 "use client";
 
-import { keepPreviousData } from "@tanstack/react-query";
-import {
-  createColumnHelper,
-  getCoreRowModel,
-  getFilteredRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import { usePathname } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
-
 import dayjs from "@calcom/dayjs";
 import {
-  DataTableProvider,
   ColumnFilterType,
+  DataTableProvider,
   useDataTable,
   useFilterValue,
   ZDateRangeFilterValue,
 } from "@calcom/features/data-table";
-import { DataTableWrapper, DataTableToolbar, DataTableFilters, DataTableSegment } from "~/data-table/components";
 import { useSegments } from "@calcom/features/data-table/hooks/useSegments";
 import SettingsHeader from "@calcom/features/settings/appDir/SettingsHeader";
 import ServerTrans from "@calcom/lib/components/ServerTrans";
@@ -33,10 +22,25 @@ import { Icon } from "@calcom/ui/components/icon";
 import { SkeletonText } from "@calcom/ui/components/skeleton";
 import { showToast } from "@calcom/ui/components/toast";
 import { Tooltip } from "@calcom/ui/components/tooltip";
+import { keepPreviousData } from "@tanstack/react-query";
+import {
+  createColumnHelper,
+  getCoreRowModel,
+  getFilteredRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { usePathname } from "next/navigation";
+import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  DataTableFilters,
+  DataTableSegment,
+  DataTableToolbar,
+  DataTableWrapper,
+} from "~/data-table/components";
 
 import CreateNewOutOfOfficeEntryButton from "./CreateNewOutOfOfficeEntryButton";
-import type { BookingRedirectForm } from "./types";
 import { OutOfOfficeTab, OutOfOfficeToggleGroup } from "./OutOfOfficeToggleGroup";
+import type { BookingRedirectForm } from "./types";
 
 interface OutOfOfficeEntry {
   id: number;
@@ -131,7 +135,7 @@ function OutOfOfficeEntriesListContent({
   const totalRowCount = data?.pages?.[0]?.meta?.totalRowCount ?? 0;
   const flatData = useMemo(
     () =>
-      isPending || isFetching ? new Array(5).fill(null) : data?.pages?.flatMap((page) => page.rows) ?? [],
+      isPending || isFetching ? new Array(5).fill(null) : (data?.pages?.flatMap((page) => page.rows) ?? []),
     [data, isPending, isFetching]
   ) as OutOfOfficeEntry[];
 
@@ -340,7 +344,15 @@ function OutOfOfficeEntriesListContent({
         },
       }),
     ];
-  }, [selectedTab, isPending, isFetching, onOpenEditDialog, t, deleteOutOfOfficeEntryMutation, totalRowCount]);
+  }, [
+    selectedTab,
+    isPending,
+    isFetching,
+    onOpenEditDialog,
+    t,
+    deleteOutOfOfficeEntryMutation,
+    totalRowCount,
+  ]);
 
   const table = useReactTable({
     data: flatData,
@@ -386,7 +398,13 @@ function OutOfOfficeEntriesListContent({
         EmptyView={
           <EmptyScreen
             className="mt-6"
-            headline={searchTerm ? t("no_result_found_for", {searchTerm}) : selectedTab === OutOfOfficeTab.TEAM ? t("ooo_team_empty_title") : t("ooo_empty_title")}
+            headline={
+              searchTerm
+                ? t("no_result_found_for", { searchTerm })
+                : selectedTab === OutOfOfficeTab.TEAM
+                  ? t("ooo_team_empty_title")
+                  : t("ooo_empty_title")
+            }
             description={
               selectedTab === OutOfOfficeTab.TEAM
                 ? t("ooo_team_empty_description")

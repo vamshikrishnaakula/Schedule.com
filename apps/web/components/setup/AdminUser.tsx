@@ -1,17 +1,17 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import classNames from "classnames";
-import { signIn } from "next-auth/react";
-import React from "react";
-import { Controller, FormProvider, useForm } from "react-hook-form";
-import { z } from "zod";
-
+import process from "node:process";
 import { isPasswordValid } from "@calcom/lib/auth/isPasswordValid";
 import { WEBSITE_URL } from "@calcom/lib/constants";
 import { emailRegex } from "@calcom/lib/emailSchema";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { Button } from "@calcom/ui/components/button";
 import { EmptyScreen } from "@calcom/ui/components/empty-screen";
-import { EmailField, Label, TextField, PasswordField } from "@calcom/ui/components/form";
+import { EmailField, Label, PasswordField, TextField } from "@calcom/ui/components/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import classNames from "classnames";
+import { signIn } from "next-auth/react";
+import type React from "react";
+import { Controller, FormProvider, useForm } from "react-hook-form";
+import { z } from "zod";
 
 export const AdminUserContainer = (props: React.ComponentProps<typeof AdminUser> & { userCount: number }) => {
   const { t } = useLocale();
@@ -75,32 +75,37 @@ export const AdminUser = (props: {
     props.onError();
   };
 
-  const onSubmit = formMethods.handleSubmit(async (data) => {
-    props.onSubmit();
-    const response = await fetch("/api/auth/setup", {
-      method: "POST",
-      body: JSON.stringify({
-        username: data.username.trim(),
-        full_name: data.full_name,
-        email_address: data.email_address.toLowerCase(),
-        password: data.password,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (response.status === 200) {
-      await signIn("credentials", {
-        redirect: false,
-        callbackUrl: "/",
-        email: data.email_address.toLowerCase(),
-        password: data.password,
+  const onSubmit = formMethods.handleSubmit(
+    async (data) => {
+      props.onSubmit();
+      const response = await fetch("/api/auth/setup", {
+        method: "POST",
+        body: JSON.stringify({
+          username: data.username.trim(),
+          full_name: data.full_name,
+          email_address: data.email_address.toLowerCase(),
+          password: data.password,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
-      props.onSuccess();
-    } else {
-      props.onError();
-    }
-  }, onError);
+
+      const successfulStatus = [200, 201];
+      if (successfulStatus.includes(response.status) || response.status === 409) {
+        await signIn("credentials", {
+          redirect: false,
+          callbackUrl: "/",
+          email: data.email_address.toLowerCase(),
+          password: data.password,
+        });
+        props.onSuccess();
+      } else {
+        props.onError();
+      }
+    },
+    onError
+  );
 
   const longWebsiteUrl = WEBSITE_URL.length > 30;
 

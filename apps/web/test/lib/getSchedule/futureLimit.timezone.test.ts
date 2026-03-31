@@ -1,15 +1,13 @@
-import {
-  TestData,
-  Timezones,
-  createBookingScenario,
-  replaceDates,
-} from "@calcom/testing/lib/bookingScenario/bookingScenario";
-import type { ScenarioData } from "@calcom/testing/lib/bookingScenario/bookingScenario";
-
-import { describe, expect, vi, test } from "vitest";
-
 import { getAvailableSlotsService } from "@calcom/features/di/containers/AvailableSlots";
 import { PeriodType } from "@calcom/prisma/enums";
+import type { ScenarioData } from "@calcom/testing/lib/bookingScenario/bookingScenario";
+import {
+  createBookingScenario,
+  replaceDates,
+  TestData,
+  Timezones,
+} from "@calcom/testing/lib/bookingScenario/bookingScenario";
+import { describe, expect, test, vi } from "vitest";
 
 import { expectedSlotsForSchedule } from "./expects";
 import { setupAndTeardown } from "./setupAndTeardown";
@@ -1614,23 +1612,17 @@ describe("getSchedule", () => {
               orgSlug: null,
             },
           });
+          expect(scheduleForEventForPagoTz).toHaveDateDisabled({
+            dateString: "2024-07-21",
+          });
 
-          /**
-           * Current day in test is 5th July, so verify that earlier timeslots than 24th July are disabled
-           */
-          {
-            expect(scheduleForEventForPagoTz).toHaveDateDisabled({
-              dateString: "2024-07-21",
-            });
+          expect(scheduleForEventForPagoTz).toHaveDateDisabled({
+            dateString: "2024-07-22",
+          });
 
-            expect(scheduleForEventForPagoTz).toHaveDateDisabled({
-              dateString: "2024-07-22",
-            });
-
-            expect(scheduleForEventForPagoTz).toHaveDateDisabled({
-              dateString: "2024-07-23",
-            });
-          }
+          expect(scheduleForEventForPagoTz).toHaveDateDisabled({
+            dateString: "2024-07-23",
+          });
 
           expect(scheduleForEventForPagoTz).toHaveTimeSlots(
             [
@@ -1670,19 +1662,13 @@ describe("getSchedule", () => {
             dateString: "2024-07-26",
             doExactMatch: true,
           });
+          expect(scheduleForEventForPagoTz).toHaveDateDisabled({
+            dateString: "2024-07-27",
+          });
 
-          /**
-           * Verify that timeslots beyond 26th July are disabled
-           */
-          {
-            expect(scheduleForEventForPagoTz).toHaveDateDisabled({
-              dateString: "2024-07-27",
-            });
-
-            expect(scheduleForEventForPagoTz).toHaveDateDisabled({
-              dateString: "2024-07-28",
-            });
-          }
+          expect(scheduleForEventForPagoTz).toHaveDateDisabled({
+            dateString: "2024-07-28",
+          });
         });
       });
     });

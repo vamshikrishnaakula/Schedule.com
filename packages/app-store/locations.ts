@@ -296,8 +296,38 @@ const getStaticLinkLocationByValue = (value: string | undefined | null) => {
   });
 };
 
+const getDynamicLinkLocationByAppUrl = (value: string | undefined | null) => {
+  if (!value) {
+    return null;
+  }
+
+  try {
+    const { hostname } = new URL(value);
+
+    return locationsFromApps.find((locationFromApp) => {
+      if (locationFromApp.linkType !== "dynamic") {
+        return false;
+      }
+
+      const appMetadata = Object.values(appStoreMetadata).find(
+        (app) => app.appData?.location?.type === locationFromApp.type
+      );
+
+      if (!appMetadata?.url) {
+        return false;
+      }
+
+      return new URL(appMetadata.url).hostname === hostname;
+    });
+  } catch {
+    return null;
+  }
+};
+
 export const guessEventLocationType = (locationTypeOrValue: string | undefined | null) =>
-  getEventLocationType(locationTypeOrValue) || getStaticLinkLocationByValue(locationTypeOrValue);
+  getEventLocationType(locationTypeOrValue) ||
+  getStaticLinkLocationByValue(locationTypeOrValue) ||
+  getDynamicLinkLocationByAppUrl(locationTypeOrValue);
 
 export const LocationType = { ...DefaultEventLocationTypeEnum, ...AppStoreLocationType };
 
@@ -469,6 +499,32 @@ export function getSuccessPageLocationMessage(
     }
   }
   return locationToDisplay;
+}
+
+export function getConferencingUrlForMeetingId({
+  locationType,
+  meetingId,
+}: {
+  locationType: string | null | undefined;
+  meetingId: string | null | undefined;
+}) {
+  if (!locationType || !meetingId) {
+    return null;
+  }
+
+  if (locationType !== "integrations:leadnestvideo") {
+    return null;
+  }
+
+  const appMetadata = Object.values(appStoreMetadata).find(
+    (app) => app.appData?.location?.type === locationType
+  );
+
+  if (!appMetadata?.url) {
+    return null;
+  }
+
+  return new URL(`/cal/${encodeURIComponent(meetingId)}`, appMetadata.url).toString();
 }
 
 export const getTranslatedLocation = (

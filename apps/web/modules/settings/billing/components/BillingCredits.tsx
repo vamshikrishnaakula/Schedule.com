@@ -1,11 +1,5 @@
 "use client";
 
-import { useSession } from "next-auth/react";
-import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
-import { useState, useMemo } from "react";
-import { useForm } from "react-hook-form";
-
 import dayjs from "@calcom/dayjs";
 import { useOrgBranding } from "@calcom/features/ee/organizations/context/provider";
 import ServerTrans from "@calcom/lib/components/ServerTrans";
@@ -16,12 +10,16 @@ import { useParamsWithFallback } from "@calcom/lib/hooks/useParamsWithFallback";
 import { trpc } from "@calcom/trpc/react";
 import classNames from "@calcom/ui/classNames";
 import { Button } from "@calcom/ui/components/button";
-import { Select } from "@calcom/ui/components/form";
-import { TextField, Label, InputError } from "@calcom/ui/components/form";
+import { InputError, Label, Select, TextField } from "@calcom/ui/components/form";
 import { Icon } from "@calcom/ui/components/icon";
 import { ProgressBar } from "@calcom/ui/components/progress-bar";
 import { showToast } from "@calcom/ui/components/toast";
 import { Tooltip } from "@calcom/ui/components/tooltip";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
 
 import { MemberInvitationModalWithoutMembers } from "~/ee/teams/components/MemberInvitationModal";
 
@@ -51,8 +49,8 @@ const CreditRow = ({ label, value, isBold = false, underline, className = "" }: 
         underline === "dashed"
           ? "border-subtle border-b border-dashed"
           : underline === "solid"
-          ? "border-subtle border-b border-solid"
-          : "mt-1",
+            ? "border-subtle border-b border-solid"
+            : "mt-1",
         className
       )}>
       <span
@@ -116,8 +114,8 @@ export default function BillingCredits() {
   const teamId: number | undefined = Number.isFinite(parsedTeamId)
     ? parsedTeamId
     : typeof orgId === "number"
-    ? orgId
-    : undefined;
+      ? orgId
+      : undefined;
 
   const tokens = (pathname ?? "").split("/").filter(Boolean);
   const settingsIndex = tokens.indexOf("settings");
@@ -294,11 +292,7 @@ export default function BillingCredits() {
         </div>
         {/*Credit Worth Section*/}
         <div className="text-subtle px-5 py-4 text-sm font-medium leading-tight">
-          <ServerTrans
-            t={t}
-            i18nKey="credit_worth_description"
-          
-          />
+          <ServerTrans t={t} i18nKey="credit_worth_description" />
         </div>
       </div>
       {teamId && (

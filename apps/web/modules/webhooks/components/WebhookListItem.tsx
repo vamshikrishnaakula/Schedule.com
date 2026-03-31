@@ -1,8 +1,6 @@
 "use client";
 
-import Link from "next/link";
-
-import { getWebhookVersionLabel, getWebhookVersionDocsUrl } from "@calcom/features/webhooks/lib/constants";
+import { getWebhookVersionDocsUrl, getWebhookVersionLabel } from "@calcom/features/webhooks/lib/constants";
 import type { Webhook } from "@calcom/features/webhooks/lib/dto/types";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { trpc } from "@calcom/trpc/react";
@@ -23,6 +21,7 @@ import { showToast } from "@calcom/ui/components/toast";
 import { Tooltip } from "@calcom/ui/components/tooltip";
 import { revalidateEventTypeEditPage } from "@calcom/web/app/(use-page-wrapper)/event-types/[type]/actions";
 import { revalidateWebhooksList } from "@calcom/web/app/(use-page-wrapper)/settings/(settings-layout)/developer/webhooks/(with-loader)/actions";
+import Link from "next/link";
 
 export default function WebhookListItem(props: {
   webhook: Webhook;

@@ -1,16 +1,9 @@
 "use client";
 
-import classNames from "classnames";
-import dynamic from "next/dynamic";
-import type { FC } from "react";
-import { useEffect, useState } from "react";
-
 import { getPaymentAppData } from "@calcom/app-store/_utils/payments/getPaymentAppData";
 import { getSuccessPageLocationMessage } from "@calcom/app-store/locations";
 import dayjs from "@calcom/dayjs";
 import { sdkActionManager, useIsEmbed } from "@calcom/embed-core/embed-iframe";
-import { PayIcon } from "@calcom/web/modules/bookings/components/event-meta/PayIcon";
-import { Price } from "@calcom/web/modules/bookings/components/event-meta/Price";
 import type { PaymentPageProps } from "@calcom/features/ee/payments/pages/payment";
 import { APP_NAME, WEBSITE_URL } from "@calcom/lib/constants";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
@@ -18,6 +11,12 @@ import useTheme from "@calcom/lib/hooks/useTheme";
 import { getIs24hClockFromLocalStorage, isBrowserLocale24h } from "@calcom/lib/timeFormat";
 import { CURRENT_TIMEZONE } from "@calcom/lib/timezoneConstants";
 import { localStorage } from "@calcom/lib/webstorage";
+import { PayIcon } from "@calcom/web/modules/bookings/components/event-meta/PayIcon";
+import { Price } from "@calcom/web/modules/bookings/components/event-meta/Price";
+import classNames from "classnames";
+import dynamic from "next/dynamic";
+import type { FC } from "react";
+import { useEffect, useState } from "react";
 
 const StripePaymentComponent = dynamic(() => import("@calcom/features/ee/payments/components/Payment"), {
   ssr: false,

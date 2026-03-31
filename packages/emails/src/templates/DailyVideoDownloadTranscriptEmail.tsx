@@ -15,7 +15,7 @@ interface DailyVideoDownloadTranscriptEmailProps {
 export const DailyVideoDownloadTranscriptEmail = (
   props: DailyVideoDownloadTranscriptEmailProps & Partial<React.ComponentProps<typeof V2BaseEmailHtml>>
 ) => {
-  const image = `${WEBAPP_URL}/emails/logo.png`;
+  const image = `${WEBAPP_URL}/emails/cal-logo-word-dark.svg`;
   return (
     <V2BaseEmailHtml
       subject={props.language("download_transcript_email_subject", {
@@ -25,14 +25,13 @@ export const DailyVideoDownloadTranscriptEmail = (
       <div style={{ width: "89px", marginBottom: "35px" }}>
         <a href={WEBAPP_URL} target="_blank" rel="noreferrer">
           <img
-            height="19"
             src={image}
             style={{
               border: "0",
               display: "block",
               outline: "none",
               textDecoration: "none",
-              height: "19px",
+              height: "30px",
               width: "100%",
               fontSize: "13px",
             }}

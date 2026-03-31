@@ -1,12 +1,13 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import type { Session } from "next-auth";
-
 import { throwIfNotHaveAdminAccessToTeam } from "@calcom/app-store/_utils/throwIfNotHaveAdminAccessToTeam";
+import { appStoreMetadata } from "@calcom/app-store/appStoreMetaData";
 import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
 import { deriveAppDictKeyFromType } from "@calcom/lib/deriveAppDictKeyFromType";
 import { HttpError } from "@calcom/lib/http-error";
 import prisma from "@calcom/prisma";
+import type { AppMeta } from "@calcom/types/App";
 import type { AppDeclarativeHandler, AppHandler } from "@calcom/types/AppHandler";
+import type { NextApiRequest, NextApiResponse } from "next";
+import type { Session } from "next-auth";
 
 const defaultIntegrationAddHandler = async ({
   slug,
@@ -43,6 +44,43 @@ const defaultIntegrationAddHandler = async ({
   await createCredential({ user: user, appType, slug, teamId });
 };
 
+const resolveHandlerKey = (appName: string, handlerMap: Record<string, unknown>) => {
+  const derivedHandlerKey = deriveAppDictKeyFromType(appName, handlerMap);
+  if (handlerMap[derivedHandlerKey]) {
+    return derivedHandlerKey;
+  }
+
+  const matchingMetadataKeys = Object.entries(appStoreMetadata).reduce<string[]>(
+    (keys, [metadataKey, metadata]) => {
+      const appMetadata = metadata as AppMeta;
+      if (
+        metadataKey === appName ||
+        appMetadata.slug === appName ||
+        appMetadata.dirName === appName ||
+        appMetadata.type === appName
+      ) {
+        keys.push(metadataKey);
+      }
+      return keys;
+    },
+    []
+  );
+
+  for (const metadataKey of matchingMetadataKeys) {
+    if (handlerMap[metadataKey]) {
+      return metadataKey;
+    }
+
+    const metadata = appStoreMetadata[metadataKey as keyof typeof appStoreMetadata] as AppMeta;
+    const derivedMetadataHandlerKey = deriveAppDictKeyFromType(metadata.type, handlerMap);
+    if (handlerMap[derivedMetadataHandlerKey]) {
+      return derivedMetadataHandlerKey;
+    }
+  }
+
+  return derivedHandlerKey;
+};
+
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // Check that user is authenticated
   req.session = await getServerSession({ req });
@@ -57,7 +95,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     /* Absolute path didn't work */
     const handlerMap = (await import("@calcom/app-store/apps.server.generated")).apiHandlers;
-    const handlerKey = deriveAppDictKeyFromType(appName, handlerMap);
+    const handlerKey = resolveHandlerKey(appName, handlerMap);
     const handlers = await handlerMap[handlerKey as keyof typeof handlerMap];
     if (!handlers) throw new HttpError({ statusCode: 404, message: `No handlers found for ${handlerKey}` });
     const handler = handlers[apiEndpoint as keyof typeof handlers] as AppHandler;

@@ -1,18 +1,17 @@
 "use client";
 
-import { useState } from "react";
-
 import type { Resource } from "@calcom/features/pbac/domain/types/permission-registry";
 import {
-  Scope,
   CrudAction,
   getPermissionsForScope,
+  Scope,
 } from "@calcom/features/pbac/domain/types/permission-registry";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import classNames from "@calcom/ui/classNames";
 import { Checkbox, Label } from "@calcom/ui/components/form";
 import { Icon } from "@calcom/ui/components/icon";
 import { Tooltip } from "@calcom/ui/components/tooltip";
+import { useState } from "react";
 
 import { usePermissions } from "./usePermissions";
 
@@ -54,10 +53,10 @@ export function AdvancedPermissionGroup({
   const allPermissions = isAllResources
     ? ["*.*"]
     : resourceConfig
-    ? Object.entries(resourceConfig)
-        .filter(([action]) => action !== INTERNAL_DATAACCESS_KEY)
-        .map(([action]) => `${resource}.${action}`)
-    : [];
+      ? Object.entries(resourceConfig)
+          .filter(([action]) => action !== INTERNAL_DATAACCESS_KEY)
+          .map(([action]) => `${resource}.${action}`)
+      : [];
 
   // Check if all permissions for this resource are selected
   const isAllSelected = isAllResources

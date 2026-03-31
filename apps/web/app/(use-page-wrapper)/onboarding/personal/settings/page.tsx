@@ -1,11 +1,9 @@
+import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
+import { APP_NAME } from "@calcom/lib/constants";
+import { buildLegacyRequest } from "@lib/buildLegacyCtx";
 import { _generateMetadata } from "app/_utils";
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
-
-import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
-import { APP_NAME } from "@calcom/lib/constants";
-
-import { buildLegacyRequest } from "@lib/buildLegacyCtx";
 
 import { PersonalSettingsView } from "~/onboarding/personal/settings/personal-settings-view";
 
@@ -31,7 +29,9 @@ const ServerPage = async (props: { searchParams: Promise<{ fromTeamOnboarding?: 
   const searchParams = await props.searchParams;
   const fromTeamOnboarding = searchParams?.fromTeamOnboarding === "true";
 
-  return <PersonalSettingsView userEmail={userEmail} userName={userName} fromTeamOnboarding={fromTeamOnboarding} />;
+  return (
+    <PersonalSettingsView userEmail={userEmail} userName={userName} fromTeamOnboarding={fromTeamOnboarding} />
+  );
 };
 
 export default ServerPage;

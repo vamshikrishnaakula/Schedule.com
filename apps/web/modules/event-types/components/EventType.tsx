@@ -1,21 +1,20 @@
 "use client";
 
-/* eslint-disable @typescript-eslint/no-empty-function */
-import { useAutoAnimate } from "@formkit/auto-animate/react";
-import type { UseFormReturn } from "react-hook-form";
-
 import type { Workflow } from "@calcom/features/ee/workflows/lib/types";
-import type { ChildrenEventType } from "@calcom/web/modules/event-types/components/ChildrenEventTypeSelect";
 import type {
-  TabMap,
+  EventTypeApps,
   EventTypeSetupProps,
   FormValues,
-  EventTypeApps,
+  TabMap,
 } from "@calcom/features/eventtypes/lib/types";
 import type { customInputSchema } from "@calcom/prisma/zod-utils";
 import type { RouterOutputs } from "@calcom/trpc/react";
 import { Form } from "@calcom/ui/components/form";
 import type { VerticalTabItemProps } from "@calcom/ui/components/navigation";
+import type { ChildrenEventType } from "@calcom/web/modules/event-types/components/ChildrenEventTypeSelect";
+/* eslint-disable @typescript-eslint/no-empty-function */
+import { useAutoAnimate } from "@formkit/auto-animate/react";
+import type { UseFormReturn } from "react-hook-form";
 
 import { EventTypeSingleLayout } from "./EventTypeLayout";
 

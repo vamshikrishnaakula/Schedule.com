@@ -1,16 +1,12 @@
-import { useAutoAnimate } from "@formkit/auto-animate/react";
-import * as RadioGroup from "@radix-ui/react-radio-group";
-import type { Key } from "react";
-import React, { useEffect, useState } from "react";
-import type { UseFormRegisterReturn, UseFormReturn } from "react-hook-form";
-import { Controller, useFormContext } from "react-hook-form";
-import type { SingleValue } from "react-select";
-
 import useLockedFieldsManager from "@calcom/features/ee/managed-event-types/hooks/useLockedFieldsManager";
-import { LearnMoreLink } from "@calcom/web/modules/event-types/components/LearnMoreLink";
 import { getDefinedBufferTimes } from "@calcom/features/eventtypes/lib/getDefinedBufferTimes";
-import type { FormValues, EventTypeSetupProps, InputClassNames } from "@calcom/features/eventtypes/lib/types";
-import type { SelectClassNames, SettingsToggleClassNames } from "@calcom/features/eventtypes/lib/types";
+import type {
+  EventTypeSetupProps,
+  FormValues,
+  InputClassNames,
+  SelectClassNames,
+  SettingsToggleClassNames,
+} from "@calcom/features/eventtypes/lib/types";
 import CheckboxField from "@calcom/features/form/components/CheckboxField";
 import { ROLLING_WINDOW_PERIOD_MAX_DAYS_TO_CHECK } from "@calcom/lib/constants";
 import type { DurationType } from "@calcom/lib/convertToNewDurationType";
@@ -23,15 +19,23 @@ import { PeriodType } from "@calcom/prisma/enums";
 import classNames from "@calcom/ui/classNames";
 import { Button } from "@calcom/ui/components/button";
 import {
-  InputField,
   DateRangePicker,
+  InputField,
   Label,
-  TextField,
   Select,
   SettingsToggle,
+  TextField,
 } from "@calcom/ui/components/form";
 import { Icon } from "@calcom/ui/components/icon";
 import { Tooltip } from "@calcom/ui/components/tooltip";
+import { LearnMoreLink } from "@calcom/web/modules/event-types/components/LearnMoreLink";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
+import * as RadioGroup from "@radix-ui/react-radio-group";
+import type { Key } from "react";
+import React, { useEffect, useState } from "react";
+import type { UseFormRegisterReturn, UseFormReturn } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
+import type { SingleValue } from "react-select";
 
 import MaxActiveBookingsPerBookerController from "./MaxActiveBookingsPerBookerController";
 
@@ -595,7 +599,6 @@ export const EventLimitsTab = ({ eventType, customClassNames }: EventLimitsTabPr
               labelClassName={classNames("text-sm", customClassNames?.bookingFrequencyLimit?.label)}
               title={t("limit_booking_frequency")}
               {...bookingLimitsLocked}
-              
               checked={isChecked}
               onCheckedChange={(active) => {
                 if (active) {
@@ -959,9 +962,9 @@ export const IntervalLimitsManager = <K extends "durationLimits" | "bookingLimit
 
           setValue(
             propertyName,
-            // TODO: Remove @ts-ignore, type error no longer exists in later TS versions.
+            // TODO: Remove @ts-expect-error, type error no longer exists in later TS versions.
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            // @ts-expect-error
             {
               ...watchIntervalLimits,
               [rest.value]: defaultLimit,

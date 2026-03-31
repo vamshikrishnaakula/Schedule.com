@@ -1,12 +1,10 @@
-import { ShellMainAppDir } from "app/(use-page-wrapper)/(main-nav)/ShellMainAppDir";
+import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
+import { buildLegacyRequest } from "@lib/buildLegacyCtx";
 import type { PageProps as ServerPageProps } from "app/_types";
 import { _generateMetadata, getTranslate } from "app/_utils";
+import { ShellMainAppDir } from "app/(use-page-wrapper)/(main-nav)/ShellMainAppDir";
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
-
-import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
-
-import { buildLegacyRequest } from "@lib/buildLegacyCtx";
 
 import { ServerTeamsListing } from "./server-page";
 
@@ -31,10 +29,6 @@ const ServerPage = async ({ searchParams: _searchParams }: ServerPageProps) => {
         autoAccept ? `&autoAccept=${encodeURIComponent(autoAccept)}` : ""
       }`
     : null;
-
-  if (!session) {
-    redirect(callbackUrl ? `/auth/login?callbackUrl=${callbackUrl}` : "/auth/login");
-  }
 
   const t = await getTranslate();
   const { Main, CTA } = await ServerTeamsListing({ searchParams, session });

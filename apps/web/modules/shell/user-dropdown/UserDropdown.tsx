@@ -1,9 +1,4 @@
-import { signOut } from "next-auth/react";
-import { usePathname } from "next/navigation";
-import type { MouseEvent } from "react";
-import { useEffect, useState } from "react";
-
-import { ROADMAP, DESKTOP_APP_LINK } from "@calcom/lib/constants";
+import { DESKTOP_APP_LINK, ROADMAP } from "@calcom/lib/constants";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import useMeQuery from "@calcom/trpc/react/hooks/useMeQuery";
 import classNames from "@calcom/ui/classNames";
@@ -21,6 +16,10 @@ import { Icon } from "@calcom/ui/components/icon";
 // TODO (Platform): we shouldnt be importing from web here
 import { useGetUserAttributes } from "@calcom/web/components/settings/platform/hooks/useGetUserAttributes";
 import FreshChatProvider from "@calcom/web/modules/ee/support/lib/freshchat/FreshChatProvider";
+import { usePathname } from "next/navigation";
+import { signOut } from "next-auth/react";
+import type { MouseEvent } from "react";
+import { useEffect, useState } from "react";
 
 declare global {
   interface Window {
@@ -135,7 +134,7 @@ export function UserDropdown({ small }: UserDropdownProps) {
             <span className="flex grow items-center gap-2">
               <span className="w-24 shrink-0 text-sm leading-none">
                 <span className="text-emphasis block truncate py-0.5 font-medium leading-normal">
-                  {isPending ? "Loading..." : user?.name ?? "Nameless User"}
+                  {isPending ? "Loading..." : (user?.name ?? "Nameless User")}
                 </span>
               </span>
               <Icon

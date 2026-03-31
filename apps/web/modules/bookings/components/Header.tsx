@@ -1,11 +1,9 @@
-import { useCallback, useMemo } from "react";
-import { shallow } from "zustand/shallow";
-
 import { useIsPlatform } from "@calcom/atoms/hooks/useIsPlatform";
 import dayjs from "@calcom/dayjs";
 import { useIsEmbed } from "@calcom/embed-core/embed-iframe";
 import { useBookerStoreContext } from "@calcom/features/bookings/Booker/BookerStoreProvider";
 import { useInitializeWeekStart } from "@calcom/features/bookings/Booker/components/hooks/useInitializeWeekStart";
+import type { BookerLayout } from "@calcom/features/bookings/Booker/types";
 import { WEBAPP_URL } from "@calcom/lib/constants";
 import { formatDateTime } from "@calcom/lib/dateTimeFormatter";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
@@ -15,9 +13,9 @@ import { ButtonGroup } from "@calcom/ui/components/buttonGroup";
 import { ToggleGroup } from "@calcom/ui/components/form";
 import { Icon } from "@calcom/ui/components/icon";
 import { Tooltip } from "@calcom/ui/components/tooltip";
-
 import { TimeFormatToggle } from "@calcom/web/modules/bookings/components/TimeFormatToggle";
-import type { BookerLayout } from "@calcom/features/bookings/Booker/types";
+import { useCallback, useMemo } from "react";
+import { shallow } from "zustand/shallow";
 
 export function Header({
   extraDays,

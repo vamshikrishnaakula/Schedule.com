@@ -3,13 +3,13 @@ import { checkAdminOrOwner } from "@calcom/features/auth/lib/checkAdminOrOwner";
 import getInstallCountPerApp from "@calcom/lib/apps/getInstallCountPerApp";
 import { buildNonDelegationCredentials } from "@calcom/lib/delegationCredential";
 import type { PrismaClient } from "@calcom/prisma";
-import type { Prisma, User, AppCategories } from "@calcom/prisma/client";
+import type { AppCategories, Prisma, User } from "@calcom/prisma/client";
 import { credentialForCalendarServiceSelect } from "@calcom/prisma/selects/credential";
 
 import type { TDependencyData } from "../_appRegistry";
 import { PaymentServiceMap } from "../payment.services.generated";
 import type { CredentialOwner } from "../types";
-import { getAppFromSlug } from "../utils";
+import { doesAppIdMatch, getAppFromSlug } from "../utils";
 import getEnabledAppsFromCredentials from "./getEnabledAppsFromCredentials";
 
 export type ConnectedApps = Awaited<ReturnType<typeof getConnectedApps>>;
@@ -149,13 +149,15 @@ export async function getConnectedApps({
   //TODO: Refactor this to pick up only needed fields and prevent more leaking
   let apps = await Promise.all(
     enabledApps.map(async ({ credentials: _, credential, key: _2 /* don't leak to frontend */, ...app }) => {
-      const userCredentialIds = credentials.filter((c) => c.appId === app.slug && !c.teamId).map((c) => c.id);
+      const userCredentialIds = credentials
+        .filter((c) => doesAppIdMatch(app, c.appId) && !c.teamId)
+        .map((c) => c.id);
       const invalidCredentialIds = credentials
-        .filter((c) => c.appId === app.slug && c.invalid)
+        .filter((c) => doesAppIdMatch(app, c.appId) && c.invalid)
         .map((c) => c.id);
       const teams = await Promise.all(
         credentials
-          .filter((c) => c.appId === app.slug && c.teamId)
+          .filter((c) => doesAppIdMatch(app, c.appId) && c.teamId)
           .map(async (c) => {
             const team = userTeams.find((team) => team.id === c.teamId);
             if (!team) {
@@ -178,14 +180,14 @@ export async function getConnectedApps({
 
       // We need to know if app is payment type
       // undefined it means that app don't require app/setup/page
-      let isSetupAlready = undefined;
+      let isSetupAlready;
       if (credential && app.categories.includes("payment")) {
         const paymentAppImportFn = PaymentServiceMap[app.dirName as keyof typeof PaymentServiceMap];
         if (paymentAppImportFn) {
           const paymentApp = await paymentAppImportFn;
-                              if (paymentApp && "BuildPaymentService" in paymentApp && paymentApp?.BuildPaymentService) {
-                      const createPaymentService = paymentApp.BuildPaymentService;
-                      const paymentInstance = createPaymentService(credential);
+          if (paymentApp && "BuildPaymentService" in paymentApp && paymentApp?.BuildPaymentService) {
+            const createPaymentService = paymentApp.BuildPaymentService;
+            const paymentInstance = createPaymentService(credential);
             isSetupAlready = paymentInstance.isSetupAlready();
           }
         }

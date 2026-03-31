@@ -1,8 +1,8 @@
-import type { NextApiRequest } from "next";
-
 import { HttpError } from "@calcom/lib/http-error";
 import prisma from "@calcom/prisma";
+import type { NextApiRequest } from "next";
 
+import { resolveCredentialAppSlug } from "../installation";
 import { decodeOAuthState } from "../oauth/decodeOAuthState";
 import { throwIfNotHaveAdminAccessToTeam } from "../throwIfNotHaveAdminAccessToTeam";
 
@@ -24,6 +24,7 @@ const createOAuthAppCredential = async (
   if (!userId) {
     throw new HttpError({ statusCode: 401, message: "You must be logged in to do this" });
   }
+  const resolvedAppSlug = await resolveCredentialAppSlug({ slug: appData.appId, appType: appData.type });
   // For OAuth flows, see if a teamId was passed through the state
   const state = decodeOAuthState(req);
 
@@ -36,7 +37,7 @@ const createOAuthAppCredential = async (
         type: appData.type,
         key: key || {},
         teamId: state.teamId,
-        appId: appData.appId,
+        appId: resolvedAppSlug,
       },
     });
   }
@@ -46,7 +47,7 @@ const createOAuthAppCredential = async (
       type: appData.type,
       key: key || {},
       userId,
-      appId: appData.appId,
+      appId: resolvedAppSlug,
     },
   });
 };

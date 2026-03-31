@@ -57,6 +57,16 @@ const getUserBooking = async (uid: string) => {
           hideOrganizerEmail: true,
         },
       },
+      references: {
+        where: {
+          deleted: null,
+        },
+        select: {
+          type: true,
+          meetingId: true,
+          meetingUrl: true,
+        },
+      },
       seatsReferences: {
         select: {
           referenceUid: true,

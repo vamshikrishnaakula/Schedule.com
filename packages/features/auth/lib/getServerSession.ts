@@ -33,12 +33,30 @@ export async function getServerSession(options: {
   req: NextApiRequest | GetServerSidePropsContext["req"];
   authOptions?: AuthOptions;
 }) {
-  const { req, authOptions: { secret } = {} } = options;
-
-  const token = await getToken({
+  const {
     req,
-    secret,
-  });
+    authOptions: { secret } = {},
+  } = options;
+
+  const secureCookie = (process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_WEBAPP_URL || "").startsWith("https://");
+  const secureCookieName = "__Secure-next-auth.session-token";
+  const plainCookieName = "next-auth.session-token";
+
+  const secure = secureCookie;
+  const names = secure
+    ? ["__Secure-next-auth.session-token", "next-auth.session-token"]
+    : ["next-auth.session-token", "__Secure-next-auth.session-token"];
+
+  let token = null;
+  for (const name of names) {
+    token = await getToken({
+      req,
+      secret: secret || process.env.NEXTAUTH_SECRET,
+      secureCookie: secure,
+      cookieName: name,
+    });
+    if (token) break;
+  }
 
   log.debug("Getting server session", safeStringify({ token }));
 
@@ -54,10 +72,10 @@ export async function getServerSession(options: {
     return cachedSession;
   }
 
-  const userId = token.sub ? Number(token.sub) : null;
+  const userId = token.sub ? Number(token.sub) : token.id ? Number(token.id) : null;
 
   if (!userId || userId <= 0) {
-    log.warn("Invalid or missing user ID in token", { sub: token.sub });
+    log.warn("Invalid or missing user ID in token", { sub: token.sub, id: token.id });
     return null;
   }
 

@@ -87,7 +87,7 @@ NEXTAUTH_TRUST_HOST=true
 6. Should redirect back to `http://localhost:3000`
 
 #### Test production:
-1. Open: `https://schedule.leadnest.ai/auth/login`
+1. Open: `https://schedule.leadnest.ai/`
 2. Click "Sign in with Keycloak"
 3. You should be redirected to:
    ```

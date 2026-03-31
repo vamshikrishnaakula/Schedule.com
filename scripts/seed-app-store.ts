@@ -2,13 +2,14 @@
  * @deprecated
  * This file is deprecated. The only use of this file is to seed the database for E2E tests. Each test should take care of seeding it's own data going forward.
  */
-import dotEnv from "dotenv";
-import path from "node:path"
 
+import path from "node:path";
+import process from "node:process";
 import { appStoreMetadata } from "@calcom/app-store/appStoreMetaData";
 import prisma from "@calcom/prisma";
 import type { Prisma } from "@calcom/prisma/client";
 import { AppCategories } from "@calcom/prisma/enums";
+import dotEnv from "dotenv";
 
 dotEnv.config({ path: path.resolve(__dirname, "../.env") });
 dotEnv.config({ path: path.resolve(__dirname, "../.env.appStore") });
@@ -155,7 +156,7 @@ export default async function main() {
       client_secret: process.env.ZOOM_CLIENT_SECRET,
     });
   }
-  await createApp("jitsi", "jitsivideo", ["conferencing"], "jitsi_video");
+  await createApp("leadnest-video", "meet-leadnest", ["conferencing"], "leadnest_video");
   // Other apps
   if (process.env.HUBSPOT_CLIENT_ID && process.env.HUBSPOT_CLIENT_SECRET) {
     await createApp("hubspot", "hubspot", ["crm"], "hubspot_other_calendar", {
@@ -251,6 +252,26 @@ export default async function main() {
       app.isTemplate
     );
   }
+
+  await prisma.credential.updateMany({
+    where: {
+      appId: {
+        in: ["jitsi", "leadnestvideo", "meet-leadnest"],
+      },
+    },
+    data: {
+      appId: "leadnest-video",
+    },
+  });
+
+  await prisma.app.updateMany({
+    where: {
+      OR: [{ slug: "jitsi" }, { dirName: "leadnestvideo" }],
+    },
+    data: {
+      enabled: false,
+    },
+  });
 }
 
 if (require.main === module) {

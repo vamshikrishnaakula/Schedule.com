@@ -1,12 +1,11 @@
 "use client";
 
+import { TOP_BANNER_HEIGHT } from "@calcom/lib/constants";
+import { trpc } from "@calcom/trpc/react";
 import { useSession } from "next-auth/react";
 import { useMemo } from "react";
 
-import { TOP_BANNER_HEIGHT } from "@calcom/lib/constants";
-import { trpc } from "@calcom/trpc/react";
-
-import { type AllBannerProps } from "./LayoutBanner";
+import type { AllBannerProps } from "./LayoutBanner";
 
 const useBannersInternal = () => {
   const { data: getUserTopBanners, isPending } = trpc.viewer.me.getUserTopBanners.useQuery();

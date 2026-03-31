@@ -2,9 +2,9 @@
 
 import type { Resource } from "@calcom/features/pbac/domain/types/permission-registry";
 import {
-  Scope,
-  PERMISSION_REGISTRY,
   getPermissionsForScope,
+  PERMISSION_REGISTRY,
+  Scope,
 } from "@calcom/features/pbac/domain/types/permission-registry";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { ToggleGroup } from "@calcom/ui/components/form";

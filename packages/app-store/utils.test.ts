@@ -1,10 +1,10 @@
-import { describe, it, expect } from "vitest";
-
+import { BookingStatus } from "@calcom/prisma/enums";
 import type { App } from "@calcom/types/App";
-import type { CredentialForCalendarService } from "@calcom/types/Credential";
-
-import { sanitizeAppForViewer } from "./utils";
+import type { TFunction } from "i18next";
+import { describe, expect, it } from "vitest";
+import { getSuccessPageLocationMessage } from "./locations";
 import type { CredentialDataWithTeamName, LocationOption } from "./utils";
+import getApps, { sanitizeAppForViewer } from "./utils";
 
 describe("sanitizeAppForViewer", () => {
   it("should remove key, credential, and credentials properties", () => {
@@ -90,6 +90,26 @@ describe("sanitizeAppForViewer", () => {
     expect(sanitized).not.toHaveProperty("credential");
     expect(sanitized).not.toHaveProperty("credentials");
     expect(sanitized).toHaveProperty("slug", "zoom");
+  });
+
+  it("should include locationOption for global no-credential apps", () => {
+    const mockApps = getApps([], false);
+    const leadnestApp = mockApps.find((app) => app.slug === "leadnest-video" || app.slug === "jitsi");
+
+    expect(leadnestApp).toBeDefined();
+    expect(leadnestApp?.locationOption).toEqual({
+      value: "integrations:leadnestvideo",
+      label: "Leadnest Video",
+      disabled: false,
+    });
+  });
+
+  it("should keep a URL location value on success page", () => {
+    const location = "https://meet.leadnest.ai/cal/abc123";
+    const t = ((s: string) => s) as unknown as TFunction;
+    const result = getSuccessPageLocationMessage(location, t, BookingStatus.ACCEPTED);
+
+    expect(result).toBe(location);
   });
 
   it("should preserve all non-sensitive properties", () => {

@@ -1,7 +1,12 @@
-const VERCEL_URL = process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` : "";
-const RAILWAY_STATIC_URL = process.env.RAILWAY_STATIC_URL ? `https://${process.env.RAILWAY_STATIC_URL}` : "";
-const HEROKU_URL = process.env.HEROKU_APP_NAME ? `https://${process.env.HEROKU_APP_NAME}.herokuapp.com` : "";
-const RENDER_URL = process.env.RENDER_EXTERNAL_URL ? `https://${process.env.RENDER_EXTERNAL_URL}` : "";
+const normalizeUrl = (value?: string): string => {
+  if (!value || value.toLowerCase() === "undefined") return "";
+  return value;
+};
+
+const VERCEL_URL = normalizeUrl(process.env.NEXT_PUBLIC_VERCEL_URL) ? `https://${normalizeUrl(process.env.NEXT_PUBLIC_VERCEL_URL)}` : "";
+const RAILWAY_STATIC_URL = normalizeUrl(process.env.RAILWAY_STATIC_URL) ? `https://${normalizeUrl(process.env.RAILWAY_STATIC_URL)}` : "";
+const HEROKU_URL = normalizeUrl(process.env.HEROKU_APP_NAME) ? `https://${normalizeUrl(process.env.HEROKU_APP_NAME)}.herokuapp.com` : "";
+const RENDER_URL = normalizeUrl(process.env.RENDER_EXTERNAL_URL) ? `https://${normalizeUrl(process.env.RENDER_EXTERNAL_URL)}` : "";
 export const CALCOM_ENV = process.env.CALCOM_ENV || process.env.NODE_ENV;
 export const IS_PRODUCTION = CALCOM_ENV === "production";
 export const IS_PRODUCTION_BUILD = process.env.NODE_ENV === "production";
@@ -10,7 +15,7 @@ const IS_DEV = CALCOM_ENV === "development";
 export const SINGLE_ORG_SLUG = process.env.NEXT_PUBLIC_SINGLE_ORG_SLUG;
 /** https://app.cal.com */
 export const WEBAPP_URL =
-  process.env.NEXT_PUBLIC_WEBAPP_URL ||
+  normalizeUrl(process.env.NEXT_PUBLIC_WEBAPP_URL) ||
   VERCEL_URL ||
   RAILWAY_STATIC_URL ||
   HEROKU_URL ||
@@ -55,7 +60,7 @@ export const CONSOLE_URL =
   process.env.NODE_ENV !== "production"
     ? `https://console.cal.dev`
     : `https://console.cal.com`;
-const CAL_DOMAINS = [".cal.com", ".cal.dev", ".cal.eu", ".cal.qa"];
+const CAL_DOMAINS = [".cal.com"];
 const WEBAPP_HOSTNAME = new URL(WEBAPP_URL).hostname;
 export const IS_SELF_HOSTED = !CAL_DOMAINS.some((domain) => WEBAPP_HOSTNAME.endsWith(domain));
 export const EMBED_LIB_URL = process.env.NEXT_PUBLIC_EMBED_LIB_URL || `${WEBAPP_URL}/embed/embed.js`;
@@ -98,10 +103,10 @@ export const ANDROID_CHROME_ICON_192 = "/android-chrome-192x192.png";
 export const ANDROID_CHROME_ICON_256 = "/android-chrome-256x256.png";
 export const ROADMAP = "https://www.leadnest.ai/";
 export const DESKTOP_APP_LINK = "https://www.leadnest.ai/";
-export const JOIN_COMMUNITY = "https://github.com/calcom/cal.com/discussions";
-export const POWERED_BY_URL = "https://go.cal.com/booking";
-export const DOCS_URL = "https://www.leadnest.ai/docs";
-export const DEVELOPER_DOCS = "https://developer.cal.com";
+export const JOIN_COMMUNITY = "https://www.leadnest.ai/";
+export const POWERED_BY_URL = "https://www.leadnest.ai/";
+export const DOCS_URL = "https://www.leadnest.ai/";
+export const DEVELOPER_DOCS = "https://www.leadnest.ai/";
 export const SEO_IMG_DEFAULT = `${CAL_URL}/og-image.png`;
 // The Dynamic OG Image is passed through Next's Image API to further optimize it.
 // This results in a 80% smaller image 🤯. It is however important that for the query
