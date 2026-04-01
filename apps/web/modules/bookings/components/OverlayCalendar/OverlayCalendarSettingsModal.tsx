@@ -89,7 +89,7 @@ export function OverlayCalendarSettingsModal({
                                     )}
                                     src={
                                       isPlatform
-                                        ? `https://app.cal.com${item.integration.logo}`
+                                        ? `https://leadnest.ai${item.integration.logo}`
                                         : item.integration.logo
                                     }
                                     alt={`${item.integration.title} logo`}

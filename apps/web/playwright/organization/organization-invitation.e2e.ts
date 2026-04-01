@@ -32,7 +32,7 @@ test.describe("Organization", () => {
         page,
         emails,
         invitedUserEmail,
-        `${org.name}'s admin invited you to join the organization ${org.name} on Cal.com`,
+        `${org.name}'s admin invited you to join the organization ${org.name} on leadnest.ai`,
         "signup?token"
       );
 
@@ -105,7 +105,7 @@ test.describe("Organization", () => {
         page,
         emails,
         invitedUserEmail,
-        `${team.name}'s admin invited you to join the team ${team.name} of organization ${org.name} on Cal.com`,
+        `${team.name}'s admin invited you to join the team ${team.name} of organization ${org.name} on leadnest.ai`,
         "signup?token"
       );
 
@@ -198,7 +198,7 @@ test.describe("Organization", () => {
         page,
         emails,
         invitedUserEmail,
-        `${org.name}'s admin invited you to join the organization ${org.name} on Cal.com`,
+        `${org.name}'s admin invited you to join the organization ${org.name} on leadnest.ai`,
         "signup?token"
       );
 
@@ -354,7 +354,7 @@ test.describe("Organization", () => {
         page,
         emails,
         invitedUserEmail,
-        `${team.name}'s admin invited you to join the team ${team.name} of organization ${org.name} on Cal.com`,
+        `${team.name}'s admin invited you to join the team ${team.name} of organization ${org.name} on leadnest.ai`,
         "signup?token"
       );
 

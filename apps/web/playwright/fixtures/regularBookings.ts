@@ -89,7 +89,7 @@ export function createBookingPageFixture(page: Page) {
       await expect(redirectSwitch).toBeVisible();
       await redirectSwitch.click();
       await expect(page.getByTestId("external-redirect-url")).toBeVisible();
-      await page.getByTestId("external-redirect-url").fill("https://cal.com");
+      await page.getByTestId("external-redirect-url").fill("https://leadnest.ai");
       await expect(page.getByTestId("redirect-url-warning")).toBeVisible();
     },
     checkEnablePrivateUrl: async () => {

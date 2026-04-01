@@ -1,15 +1,32 @@
-import { decodeHTML } from "entities";
-import { z } from "zod";
-
+import process from "node:process";
 import dayjs from "@calcom/dayjs";
 import { FeaturesRepository } from "@calcom/features/flags/features.repository";
 import isSmsCalEmail from "@calcom/lib/isSmsCalEmail";
-import { serverConfig } from "@calcom/lib/serverConfig";
 import { getServerErrorFromUnknown } from "@calcom/lib/server/getServerErrorFromUnknown";
+import { serverConfig } from "@calcom/lib/serverConfig";
 import { setTestEmail } from "@calcom/lib/testEmails";
 import { prisma } from "@calcom/prisma";
-
+import { decodeHTML } from "entities";
+import { z } from "zod";
 import { sanitizeDisplayName } from "../lib/sanitizeDisplayName";
+
+const hasValidRecipients = (value: unknown): boolean => {
+  if (typeof value === "string") {
+    return value.trim().length > 0;
+  }
+
+  if (Array.isArray(value)) {
+    return value.some((item) => hasValidRecipients(item));
+  }
+
+  if (value && typeof value === "object") {
+    if ("address" in value && typeof value.address === "string") {
+      return value.address.trim().length > 0;
+    }
+  }
+
+  return false;
+};
 
 export default class BaseEmail {
   name = "";
@@ -51,15 +68,22 @@ export default class BaseEmail {
     const payload = await this.getNodeMailerPayload();
 
     const from = "from" in payload ? (payload.from as string) : "";
-    const to = "to" in payload ? (payload.to as string) : "";
+    const to = "to" in payload ? payload.to : "";
+    const cc = "cc" in payload ? payload.cc : "";
+    const bcc = "bcc" in payload ? payload.bcc : "";
 
-    if (isSmsCalEmail(to)) {
+    if (!hasValidRecipients(to) && !hasValidRecipients(cc) && !hasValidRecipients(bcc)) {
+      console.warn(`${this.name}_SKIPPED`, "Email skipped because payload has no recipients");
+      return new Promise((r) => r("Skipped Sending Email due to missing recipients"));
+    }
+
+    if (typeof to === "string" && isSmsCalEmail(to)) {
       console.log(`Skipped Sending Email to faux email: ${to}`);
       return new Promise((r) => r(`Skipped Sending Email to faux email: ${to}`));
     }
 
     const sanitizedFrom = sanitizeDisplayName(from);
-    const sanitizedTo = sanitizeDisplayName(to);
+    const sanitizedTo = typeof to === "string" ? sanitizeDisplayName(to) : to;
 
     const parseSubject = z.string().safeParse(payload?.subject);
     const payloadWithUnEscapedSubject = {

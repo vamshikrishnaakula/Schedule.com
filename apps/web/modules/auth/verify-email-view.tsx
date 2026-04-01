@@ -27,7 +27,7 @@ const EMAIL_CLIENTS = [
   {
     name: "Yahoo",
     icon: "/email-clients/yahoo.svg",
-    href: "https://mail.yahoo.com/d/search?p=Cal.com",
+    href: "https://mail.yahoo.com/d/search?p=leadnest.ai",
   },
   {
     name: "Proton",

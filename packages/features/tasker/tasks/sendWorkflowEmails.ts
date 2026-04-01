@@ -1,13 +1,13 @@
-import { z } from "zod";
-
+import { normalizeEmailAddresses } from "@calcom/emails/lib/normalizeEmailAddresses";
 import { sendCustomWorkflowEmail } from "@calcom/emails/workflow-email-service";
-import { CalendarEventBuilder } from "@calcom/features/CalendarEventBuilder";
 import { BookingRepository } from "@calcom/features/bookings/repositories/BookingRepository";
 import { BookingSeatRepository } from "@calcom/features/bookings/repositories/BookingSeatRepository";
+import { CalendarEventBuilder } from "@calcom/features/CalendarEventBuilder";
 import { EmailWorkflowService } from "@calcom/features/ee/workflows/lib/service/EmailWorkflowService";
 import { WorkflowReminderRepository } from "@calcom/features/ee/workflows/repositories/WorkflowReminderRepository";
-import { bookingMetadataSchema } from "@calcom/prisma/zod-utils";
 import { prisma } from "@calcom/prisma";
+import { bookingMetadataSchema } from "@calcom/prisma/zod-utils";
+import { z } from "zod";
 
 export const ZSendWorkflowEmailsSchemaEager = z.object({
   to: z.array(z.string()),
@@ -58,10 +58,10 @@ export async function sendWorkflowEmails(payload: string): Promise<void> {
     // Check if videoCallUrl exists in booking metadata and add it to evt.metadata
     const bookingMetadata = bookingMetadataSchema.parse(booking.metadata || {});
     const metadata = bookingMetadata?.videoCallUrl
-    ? {
-      videoCallUrl: bookingMetadata.videoCallUrl,
-    }
-    : undefined;
+      ? {
+          videoCallUrl: bookingMetadata.videoCallUrl,
+        }
+      : undefined;
 
     const evtWithMetadata = { ...calendarEvent, metadata };
 
@@ -77,8 +77,15 @@ export async function sendWorkflowEmails(payload: string): Promise<void> {
     return;
   }
 
+  const normalizedRecipients = normalizeEmailAddresses(mailData.to);
+
+  if (normalizedRecipients.length === 0) {
+    console.warn("WORKFLOW_EMAIL_SKIPPED", "Queued workflow email had no valid recipients");
+    return;
+  }
+
   await Promise.all(
-    mailData.to.map((to) =>
+    normalizedRecipients.map((to) =>
       sendCustomWorkflowEmail({
         ...mailData,
         to,

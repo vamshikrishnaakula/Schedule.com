@@ -168,8 +168,8 @@ describe("Booker", () => {
   beforeEach(() => {
     constantsScenarios.set({
       PUBLIC_QUICK_AVAILABILITY_ROLLOUT: "100",
-      POWERED_BY_URL: "https://go.cal.com/booking",
-      APP_NAME: "Cal.com",
+      POWERED_BY_URL: "https://www.leadnest.ai/booking",
+      APP_NAME: "leadnest.ai",
     });
     vi.clearAllMocks();
   });

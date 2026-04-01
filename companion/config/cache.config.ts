@@ -1,5 +1,5 @@
 /**
- * Cache Configuration for Cal.com Companion App
+ * Cache Configuration for https://schedule.leadnest.ai/ Companion App
  *
  * This module provides centralized cache configuration with environment variable support.
  * All cache durations are configurable via EXPO_PUBLIC_ prefixed environment variables.

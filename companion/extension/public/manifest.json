@@ -1,23 +1,23 @@
 {
   "manifest_version": 3,
-  "name": "Cal.com Companion",
+  "name": "leadnest.ai Companion",
   "version": "1.7.0",
   "description": "Your calendar companion for quick booking and scheduling",
-  "permissions": ["activeTab", "https://companion.cal.com/*", "identity"],
+  "permissions": ["activeTab", "https://companion.leadnest.ai/*", "identity"],
   "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self'; frame-src 'self' https://companion.cal.com;"
+    "extension_pages": "script-src 'self'; object-src 'self'; frame-src 'self' https://companion.leadnest.ai;"
   },
   "data_collection_permissions": {
     "libraries": [
       {
-        "name": "cal.com",
+        "name": "leadnest.ai",
         "url": "https://www.leadnest.ai/privacy",
         "purpose": "Booking and scheduling"
       }
     ]
   },
   "action": {
-    "default_title": "Cal.com Companion"
+    "default_title": "leadnest.ai Companion"
   },
   "background": {
     "service_worker": "background.js"

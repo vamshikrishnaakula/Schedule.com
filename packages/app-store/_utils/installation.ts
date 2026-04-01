@@ -1,3 +1,4 @@
+import { ensureAppIsRegistered } from "@calcom/app-store/_utils/syncAppRegistryToDb";
 import { appStoreMetadata } from "@calcom/app-store/appStoreMetaData";
 import { CredentialRepository } from "@calcom/features/credentials/repositories/CredentialRepository";
 import { HttpError } from "@calcom/lib/http-error";
@@ -6,8 +7,8 @@ import type { Prisma } from "@calcom/prisma/client";
 import type { AppMeta } from "@calcom/types/App";
 import type { UserProfile } from "@calcom/types/UserProfile";
 
-const getKnownAppIdentifiers = ({ slug, dirName }: Pick<AppMeta, "slug" | "dirName">) => {
-  const identifiers = [slug, dirName];
+const getKnownAppIdentifiers = ({ slug, dirName }: Pick<AppMeta, "slug" | "dirName">): string[] => {
+  const identifiers = [slug, dirName].filter((identifier): identifier is string => Boolean(identifier));
 
   if (dirName === "leadnestvideo" || slug === "leadnest-video" || slug === "jitsi") {
     identifiers.push("jitsi", "leadnestvideo");
@@ -16,13 +17,18 @@ const getKnownAppIdentifiers = ({ slug, dirName }: Pick<AppMeta, "slug" | "dirNa
   return Array.from(new Set(identifiers.filter(Boolean)));
 };
 
-export async function resolveCredentialAppSlug({
+async function resolveCredentialAppSlug({
   slug,
   appType,
 }: {
   slug: string;
   appType: string;
 }): Promise<string> {
+  const registeredApp = await ensureAppIsRegistered({ slug, appType });
+  if (registeredApp) {
+    return registeredApp.slug;
+  }
+
   const matchingMetadata = Object.values(appStoreMetadata).find((metadata) => {
     const appMetadata = metadata as AppMeta;
     return (
@@ -33,7 +39,11 @@ export async function resolveCredentialAppSlug({
     );
   }) as AppMeta | undefined;
 
-  const appIdentifiers = matchingMetadata ? getKnownAppIdentifiers(matchingMetadata) : [slug];
+  let appIdentifiers = [slug];
+
+  if (matchingMetadata) {
+    appIdentifiers = getKnownAppIdentifiers(matchingMetadata);
+  }
 
   const existingApp = await prisma.app.findFirst({
     where: {
@@ -50,8 +60,13 @@ export async function resolveCredentialAppSlug({
   return existingApp?.slug ?? slug;
 }
 
-export async function checkInstalled(slug: string, userId: number, appType?: string) {
-  const resolvedAppSlug = appType ? await resolveCredentialAppSlug({ slug, appType }) : slug;
+async function checkInstalled(slug: string, userId: number, appType?: string): Promise<void> {
+  let resolvedAppSlug = slug;
+
+  if (appType) {
+    resolvedAppSlug = await resolveCredentialAppSlug({ slug, appType });
+  }
+
   const alreadyInstalled = await CredentialRepository.findByAppIdAndUserId({
     appId: resolvedAppSlug,
     userId,
@@ -61,7 +76,7 @@ export async function checkInstalled(slug: string, userId: number, appType?: str
   }
 }
 
-export async function isAppInstalled({ appId, userId }: { appId: string; userId: number }) {
+async function isAppInstalled({ appId, userId }: { appId: string; userId: number }): Promise<boolean> {
   const alreadyInstalled = await CredentialRepository.findByAppIdAndUserId({ appId, userId });
   return !!alreadyInstalled;
 }
@@ -89,13 +104,20 @@ export async function createDefaultInstallation({
   billingCycleStart,
   paymentStatus,
   subscriptionId,
-}: InstallationArgs) {
+}: InstallationArgs): Promise<Awaited<ReturnType<typeof prisma.credential.create>>> {
   const resolvedAppSlug = await resolveCredentialAppSlug({ slug, appType });
+  const installationOwner: { teamId?: number; userId?: number } = {};
+
+  if (teamId) {
+    installationOwner.teamId = teamId;
+  } else {
+    installationOwner.userId = user.id;
+  }
   const installation = await prisma.credential.create({
     data: {
       type: appType,
       key,
-      ...(teamId ? { teamId } : { userId: user.id }),
+      ...installationOwner,
       appId: resolvedAppSlug,
       subscriptionId,
       paymentStatus,
@@ -107,3 +129,5 @@ export async function createDefaultInstallation({
   }
   return installation;
 }
+
+export { checkInstalled, isAppInstalled, resolveCredentialAppSlug };

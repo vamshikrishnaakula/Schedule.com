@@ -1,12 +1,11 @@
+import { AppCategories } from "@calcom/prisma/enums";
 import z from "zod";
 
-import { AppCategories } from "@calcom/prisma/enums";
-
-const variantSchema = z.nativeEnum(AppCategories);
+const variantSchema: z.ZodNativeEnum<typeof AppCategories> = z.nativeEnum(AppCategories);
 
 export default function getInstalledAppPath(
   { variant, slug }: { variant?: string; slug?: string },
-  locationSearch = ""
+  locationSearch: string = ""
 ): string {
   if (!variant) return `/apps/installed${locationSearch}`;
 
@@ -16,5 +15,11 @@ export default function getInstalledAppPath(
 
   if (!slug) return `/apps/installed/${variant}${locationSearch}`;
 
-  return `/apps/installed/${variant}?hl=${slug}${locationSearch && locationSearch.slice(1)}`;
+  let searchSuffix = "";
+
+  if (locationSearch) {
+    searchSuffix = `&${locationSearch.replace(/^\?/, "")}`;
+  }
+
+  return `/apps/installed/${variant}?hl=${slug}${searchSuffix}`;
 }

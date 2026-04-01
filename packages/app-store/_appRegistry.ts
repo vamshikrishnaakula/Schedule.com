@@ -1,3 +1,4 @@
+import { syncAppRegistryToDb } from "@calcom/app-store/_utils/syncAppRegistryToDb";
 import { appStoreMetadata } from "@calcom/app-store/appStoreMetaData";
 import { getAllDelegationCredentialsForUser } from "@calcom/app-store/delegationCredential";
 import { getAppFromSlug, getAppIdentifiers } from "@calcom/app-store/utils";
@@ -8,21 +9,23 @@ import { userMetadata } from "@calcom/prisma/zod-utils";
 import type { AppFrontendPayload as App } from "@calcom/types/App";
 import type { CredentialFrontendPayload as Credential } from "@calcom/types/Credential";
 
-export type TDependencyData = {
+type TDependencyData = {
   name?: string;
   installed?: boolean;
 }[];
 
-const isLegacyLeadnestDbApp = (app: { slug: string; dirName: string }) =>
+const isLegacyLeadnestDbApp = (app: { slug: string; dirName: string }): boolean =>
   app.slug === "jitsi" || app.dirName === "leadnestvideo";
 
-const isPreferredLeadnestDbApp = (app: { slug: string; dirName: string }) =>
+const isPreferredLeadnestDbApp = (app: { slug: string; dirName: string }): boolean =>
   app.slug === "leadnest-video" || app.dirName === "meet-leadnest";
 
 /**
  * Get App metadata either using dirName or slug
  */
-export async function getAppWithMetadata(app: { dirName: string } | { slug: string }) {
+export async function getAppWithMetadata(
+  app: { dirName: string } | { slug: string }
+): Promise<Omit<App, "key"> | null> {
   let appMetadata: App | null;
 
   if ("dirName" in app) {
@@ -43,7 +46,9 @@ export async function getAppWithMetadata(app: { dirName: string } | { slug: stri
 }
 
 /** Mainly to use in listings for the frontend, use in getStaticProps or getServerSideProps */
-export async function getAppRegistry() {
+export async function getAppRegistry(): Promise<App[]> {
+  await syncAppRegistryToDb();
+
   const dbApps = await prisma.app.findMany({
     where: { enabled: true },
     select: { dirName: true, slug: true, categories: true, enabled: true, createdAt: true },
@@ -72,7 +77,17 @@ export async function getAppRegistry() {
   return apps;
 }
 
-export async function getAppRegistryWithCredentials(userId: number, userAdminTeams: UserAdminTeams = []) {
+export async function getAppRegistryWithCredentials(
+  userId: number,
+  userAdminTeams: UserAdminTeams = []
+): Promise<
+  (App & {
+    credentials: Credential[];
+    isDefault?: boolean;
+  })[]
+> {
+  await syncAppRegistryToDb();
+
   // Get teamIds to grab existing credentials
 
   const dbApps = await prisma.app.findMany({
@@ -102,9 +117,13 @@ export async function getAppRegistryWithCredentials(userId: number, userAdminTea
     },
   });
 
-  const delegationCredentials = user
-    ? await getAllDelegationCredentialsForUser({ user: { id: userId, email: user.email } })
-    : [];
+  let delegationCredentials: Awaited<ReturnType<typeof getAllDelegationCredentialsForUser>> = [];
+
+  if (user) {
+    delegationCredentials = await getAllDelegationCredentialsForUser({
+      user: { id: userId, email: user.email },
+    });
+  }
 
   const usersDefaultApp = userMetadata.parse(user?.metadata)?.defaultConferencingApp?.appSlug;
   const hasPreferredLeadnestApp = dbApps.some(isPreferredLeadnestDbApp);
@@ -154,3 +173,5 @@ export async function getAppRegistryWithCredentials(userId: number, userAdminTea
 
   return apps;
 }
+
+export type { TDependencyData };

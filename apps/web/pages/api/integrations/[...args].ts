@@ -1,3 +1,4 @@
+import { ensureAppIsRegistered } from "@calcom/app-store/_utils/syncAppRegistryToDb";
 import { throwIfNotHaveAdminAccessToTeam } from "@calcom/app-store/_utils/throwIfNotHaveAdminAccessToTeam";
 import { appStoreMetadata } from "@calcom/app-store/appStoreMetaData";
 import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
@@ -23,16 +24,23 @@ const defaultIntegrationAddHandler = async ({
   user?: Session["user"];
   teamId?: number;
   createCredential: AppDeclarativeHandler["createCredential"];
-}) => {
+}): Promise<void> => {
   if (!user?.id) {
     throw new HttpError({ statusCode: 401, message: "You must be logged in to do this" });
   }
   if (!supportsMultipleInstalls) {
-    const alreadyInstalled = await prisma.credential.findFirst({
-      where: {
+    const credentialWhere: { appId: string; userId?: number; AND?: { userId?: number; teamId?: number }[] } =
+      {
         appId: slug,
-        ...(teamId ? { AND: [{ userId: user.id }, { teamId }] } : { userId: user.id }),
-      },
+      };
+
+    if (teamId) {
+      credentialWhere.AND = [{ userId: user.id }, { teamId }];
+    } else {
+      credentialWhere.userId = user.id;
+    }
+    const alreadyInstalled = await prisma.credential.findFirst({
+      where: credentialWhere,
     });
     if (alreadyInstalled) {
       throw new Error("App is already installed");
@@ -44,7 +52,7 @@ const defaultIntegrationAddHandler = async ({
   await createCredential({ user: user, appType, slug, teamId });
 };
 
-const resolveHandlerKey = (appName: string, handlerMap: Record<string, unknown>) => {
+const resolveHandlerKey = (appName: string, handlerMap: Record<string, unknown>): string => {
   const derivedHandlerKey = deriveAppDictKeyFromType(appName, handlerMap);
   if (handlerMap[derivedHandlerKey]) {
     return derivedHandlerKey;
@@ -81,7 +89,10 @@ const resolveHandlerKey = (appName: string, handlerMap: Record<string, unknown>)
   return derivedHandlerKey;
 };
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+): Promise<NextApiResponse<{ message: string }> | undefined> => {
   // Check that user is authenticated
   req.session = await getServerSession({ req });
 
@@ -96,6 +107,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     /* Absolute path didn't work */
     const handlerMap = (await import("@calcom/app-store/apps.server.generated")).apiHandlers;
     const handlerKey = resolveHandlerKey(appName, handlerMap);
+    await ensureAppIsRegistered({ slug: appName });
     const handlers = await handlerMap[handlerKey as keyof typeof handlerMap];
     if (!handlers) throw new HttpError({ statusCode: 404, message: `No handlers found for ${handlerKey}` });
     const handler = handlers[apiEndpoint as keyof typeof handlers] as AppHandler;

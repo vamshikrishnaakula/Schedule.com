@@ -3,7 +3,7 @@
 set -e
 
 echo "=============================="
-echo "Starting Cal.com Deployment"
+echo "Starting Schedule.leadnest.ai Deployment"
 echo "=============================="
 
 cd ~/cal.com

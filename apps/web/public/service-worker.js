@@ -13,7 +13,7 @@ self.addEventListener("push", async (event) => {
     return;
   }
 
-  const title = notificationData.title || "New Cal.com Notification";
+  const title = notificationData.title || "New leadnest.ai Notification";
   const image = notificationData.icon || "https://www.leadnest.ai/api/logo?type=icon";
 
    event.waitUntil(

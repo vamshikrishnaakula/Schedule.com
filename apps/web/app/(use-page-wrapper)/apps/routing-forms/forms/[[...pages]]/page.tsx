@@ -6,7 +6,7 @@ export const generateMetadata = async ({ params }: { params: Promise<{ pages: st
   const pages = (await params).pages;
 
   return await _generateMetadata(
-    (t) => `${t("routing_forms")} | Cal.com Forms`,
+    (t) => `${t("routing_forms")} | leadnest.ai Forms`,
     () => "",
     undefined,
     undefined,

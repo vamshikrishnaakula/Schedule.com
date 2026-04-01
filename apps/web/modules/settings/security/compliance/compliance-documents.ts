@@ -23,7 +23,7 @@ export const COMPLIANCE_DOCUMENTS: ComplianceDocument[] = [
     id: "dpa",
     name: "data_protection_agreement",
     description: "dpa_description",
-    source: { type: "url", url: "https://go.cal.com/dpa" },
+    source: { type: "url", url: "https://www.leadnest.ai/dpa" },
     category: DOCUMENT_CATEGORIES.DPA,
     restricted: false,
   },

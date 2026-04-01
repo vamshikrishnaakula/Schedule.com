@@ -4,6 +4,7 @@ import { prisma } from "@calcom/prisma";
 import type { Prisma } from "@calcom/prisma/client";
 
 import getApps, { getAppIdentifiers } from "../utils";
+import { syncAppRegistryToDb } from "./syncAppRegistryToDb";
 
 type EnabledApp = ReturnType<typeof getApps>[number] & { enabled: boolean };
 
@@ -21,8 +22,10 @@ const getEnabledAppsFromCredentials = async (
     where?: Prisma.AppWhereInput;
     filterOnCredentials?: boolean;
   }
-) => {
+): Promise<EnabledApp[]> => {
   const { where: _where = {}, filterOnCredentials = false } = options || {};
+  await syncAppRegistryToDb();
+
   const filterOnIds = {
     credentials: {
       some: {

@@ -63,7 +63,7 @@ export const createBookingsFixture = (page: Page, workerInfo: WorkerInfo) => {
           rescheduled,
           paid,
           status,
-          iCalUID: `${uid}@cal.com`,
+          iCalUID: `${uid}@leadnest.ai`,
         },
       });
       const bookingFixture = createBookingFixture(booking, store.page);

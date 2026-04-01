@@ -5,24 +5,24 @@ icon: "book-open"
 
 ## Introduction
 
-Cal.com is structured as a monorepo using [Turborepo](https://github.com/vercel/turbo). Cal.com is built on [NextJS]("https://github.com/vercel/next.js") with [Typescript]("https://www.typescriptlang.org/"), [PostgreSQL]("https://www.postgresql.org/") database and the interactions with the database are carried out using [Prisma]("https://www.prisma.io/"). We use [TRPC]("https://trpc.io/") for end-to-end typesafe procedure calls to Prisma and utilize [Zod]("https://zod.dev/") for validation and type-safe parsing of API calls.
+leadnest.ai is structured as a monorepo using [Turborepo](https://github.com/vercel/turbo). leadnest.ai is built on [NextJS]("https://github.com/vercel/next.js") with [Typescript]("https://www.typescriptlang.org/"), [PostgreSQL]("https://www.postgresql.org/") database and the interactions with the database are carried out using [Prisma]("https://www.prisma.io/"). We use [TRPC]("https://trpc.io/") for end-to-end typesafe procedure calls to Prisma and utilize [Zod]("https://zod.dev/") for validation and type-safe parsing of API calls.
 
 ## Setting Up the Development Environment
 
 ### Prerequisites
 
-Here is what you need to be able to run Cal.com.
+Here is what you need to be able to run leadnest.ai.
 - Node.js (Version: >=18.x)
 - PostgreSQL
 - Yarn (recommended)
 
-Cal.com can be set up and run on your machine locally. Please take a look at [this quick guide](https://www.leadnest.ai/docs/developing/local-development) for instructions on setting it up.
+leadnest.ai can be set up and run on your machine locally. Please take a look at [this quick guide](https://www.leadnest.ai/docs/developing/local-development) for instructions on setting it up.
 
 
     <iframe
       width="560"
       height="315"
-      title="Run cal.com locally"
+      title="Run leadnest.ai locally"
       src="https://www.loom.com/embed/2f9d16b0959c4f1eaa5b306300ea4deb"
       frameborder="0"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -32,17 +32,17 @@ Cal.com can be set up and run on your machine locally. Please take a look at [th
 
 ## Understanding the Project Structure
 
-Cal.com makes use of Turborepo for a monorepo structure. This allows us to manage multiple code projects (like libraries, apps, services) and share code and resources effectively.
+leadnest.ai makes use of Turborepo for a monorepo structure. This allows us to manage multiple code projects (like libraries, apps, services) and share code and resources effectively.
 
-You can look at [turbo.json](https://github.com/calcom/cal.com/blob/main/turbo.json) to see how we use it. In simple terms,
+You can look at [turbo.json](https://github.com/calcom/leadnest.ai/blob/main/turbo.json) to see how we use it. In simple terms,
 - Each entry in the `pipeline` section corresponds to a different part of the project. Understanding these will help in navigating the codebase.
 - Knowing which tasks depend on others is crucial for understanding the build process.
 - The `env` entries under each task highlight the need for specific configuration settings, which you will need to set up in your development environment.
 - You should focus on the tasks related to the area you are contributing to. For example, if working on the Prisma schema, look at tasks prefixed with `@calcom/prisma`
-- The various packages can be found in the [/packages](https://github.com/calcom/cal.com/tree/main/packages) folder from the root.
-- The various pages and components for the web can be found in the [/apps/web](https://github.com/calcom/cal.com/tree/main/apps/web) folder from the root.
-- The public API related codebase can be found in the [/apps/api](https://github.com/calcom/cal.com/tree/main/apps/api) folder from the root.
-- The Cal.ai related codebase can be found in the [/apps/ai](https://github.com/calcom/cal.com/tree/main/apps/ai) folder from the root
+- The various packages can be found in the [/packages](https://github.com/calcom/leadnest.ai/tree/main/packages) folder from the root.
+- The various pages and components for the web can be found in the [/apps/web](https://github.com/calcom/leadnest.ai/tree/main/apps/web) folder from the root.
+- The public API related codebase can be found in the [/apps/api](https://github.com/calcom/leadnest.ai/tree/main/apps/api) folder from the root.
+- The Cal.ai related codebase can be found in the [/apps/ai](https://github.com/calcom/leadnest.ai/tree/main/apps/ai) folder from the root
 
 ## File Naming Conventions
 
@@ -98,11 +98,11 @@ New files must avoid dot-suffixes like .service.ts or .repository.ts; these will
 We still reserve suffixes such as .test.ts, .spec.ts, and .types.ts for their respective use cases.
 </Note>
 
-## How we use TRPC at cal.com
+## How we use TRPC at leadnest.ai
 
-Cal.com makes use of the TRPC calls for CRUD operations on the database by utilizing the [useQuery()](https://trpc.io/docs/client/react/useQuery) & [useMutation()](https://trpc.io/docs/client/react/useMutation) hooks. These are essentially wrappers around @tanstack/react-query and you can learn more about them here, respectively: [queries](https://tanstack.com/query/v4/docs/react/guides/queries), [mutations](https://tanstack.com/query/v4/docs/react/guides/mutations).
+leadnest.ai makes use of the TRPC calls for CRUD operations on the database by utilizing the [useQuery()](https://trpc.io/docs/client/react/useQuery) & [useMutation()](https://trpc.io/docs/client/react/useMutation) hooks. These are essentially wrappers around @tanstack/react-query and you can learn more about them here, respectively: [queries](https://tanstack.com/query/v4/docs/react/guides/queries), [mutations](https://tanstack.com/query/v4/docs/react/guides/mutations).
 
-Here’s an example usage of useQuery at cal.com:
+Here’s an example usage of useQuery at leadnest.ai:
 ```JS
   const { data: webhooks } = trpc.viewer.webhook.list.useQuery(undefined, {
     suspense: true,
@@ -110,7 +110,7 @@ Here’s an example usage of useQuery at cal.com:
   });
 ```
 
-Here’s an example usage of useMutation at cal.com:
+Here’s an example usage of useMutation at leadnest.ai:
 ```JS
   const createWebhookMutation = trpc.viewer.webhook.create.useMutation({
     async onSuccess() {
@@ -123,9 +123,9 @@ Here’s an example usage of useMutation at cal.com:
     },
   });
 ```
-Both the examples are taken from [packages/features/webhooks/pages/webhook-new-view.tsx](https://github.com/calcom/cal.com/blob/main/packages/features/webhooks/pages/webhook-new-view.tsx) file. We use the useQuery hook for fetching data from the database. On the contrary, the useMutation hook is used for Creating/Updating/Deleting data from the database.
+Both the examples are taken from [packages/features/webhooks/pages/webhook-new-view.tsx](https://github.com/calcom/leadnest.ai/blob/main/packages/features/webhooks/pages/webhook-new-view.tsx) file. We use the useQuery hook for fetching data from the database. On the contrary, the useMutation hook is used for Creating/Updating/Deleting data from the database.
 
-The path prior to the useQuery or useMutation hook represents the actual path of the procedure: in this case, [packages/trpc/server/routers/viewer/webhook](https://github.com/calcom/cal.com/tree/main/packages/trpc/server/routers/viewer/webhook). You will find `create.handler.ts` in case of
+The path prior to the useQuery or useMutation hook represents the actual path of the procedure: in this case, [packages/trpc/server/routers/viewer/webhook](https://github.com/calcom/leadnest.ai/tree/main/packages/trpc/server/routers/viewer/webhook). You will find `create.handler.ts` in case of
 ```js
 trpc.viewer.webhook.create.useMutation()
 ```
@@ -133,12 +133,12 @@ trpc.viewer.webhook.create.useMutation()
 ```js
 trpc.viewer.webhook.list.useQuery()
 ```
-in the path mentioned above. There is usually a schema file in the same directory for each handler as well (_name_.schema.ts). This is generally how we make use of the TRPC calls in the cal.com repo.
+in the path mentioned above. There is usually a schema file in the same directory for each handler as well (_name_.schema.ts). This is generally how we make use of the TRPC calls in the leadnest.ai repo.
 
-## The Cal.com API V1
+## The leadnest.ai API V1
 
-Our [API V1](https://github.com/calcom/cal.com/tree/main/apps/api) uses [zod validations](https://zod.dev/) to keep us typesafe and give us extensive parsing control and error handling. These validations reside in [/apps/api/lib/validations](https://github.com/calcom/cal.com/tree/main/apps/api/lib/validations). We also have [helper](https://github.com/calcom/cal.com/tree/main/apps/api/lib/helpers) and [utility](https://github.com/calcom/cal.com/tree/main/apps/api/lib/utils) functions which are used primarily within our API endpoints.
-Here’s an example usage of our [zod validation in action with the respective API endpoint](https://github.com/calcom/cal.com/blob/main/apps/api/lib/validations/destination-calendar.ts):
+Our [API V1](https://github.com/calcom/leadnest.ai/tree/main/apps/api) uses [zod validations](https://zod.dev/) to keep us typesafe and give us extensive parsing control and error handling. These validations reside in [/apps/api/lib/validations](https://github.com/calcom/leadnest.ai/tree/main/apps/api/lib/validations). We also have [helper](https://github.com/calcom/leadnest.ai/tree/main/apps/api/lib/helpers) and [utility](https://github.com/calcom/leadnest.ai/tree/main/apps/api/lib/utils) functions which are used primarily within our API endpoints.
+Here’s an example usage of our [zod validation in action with the respective API endpoint](https://github.com/calcom/leadnest.ai/blob/main/apps/api/lib/validations/destination-calendar.ts):
 ```js
 export const schemaDestinationCalendarBaseBodyParams = DestinationCalendar.pick({
   integration: true,
@@ -164,7 +164,7 @@ export const schemaDestinationCalendarCreateBodyParams = schemaDestinationCalend
 );
 ```
 
-And here’s the usage of this validation for parsing the request at the [respective endpoint](https://github.com/calcom/cal.com/blob/main/apps/api/pages/api/destination-calendars/_post.ts):
+And here’s the usage of this validation for parsing the request at the [respective endpoint](https://github.com/calcom/leadnest.ai/blob/main/apps/api/pages/api/destination-calendars/_post.ts):
 ```js
 async function postHandler(req: NextApiRequest) {
   const { userId, isAdmin, prisma, body } = req;
@@ -172,7 +172,7 @@ async function postHandler(req: NextApiRequest) {
 ```
 This is the general approach of validation and parsing in our API submodule.
 
-## Building Apps for Cal.com
+## Building Apps for leadnest.ai
 
 We’ve got an app store containing apps which complement the scheduling platform. From video conferencing apps such as Zoom, Google Meet, etc. to Calendar Apps such as Google Calendar, Apple Calendar, CalDAV, etc. and even payment, automation, analytics and other miscellaneous apps, it is an amazing space to improve the scheduling experience.
 

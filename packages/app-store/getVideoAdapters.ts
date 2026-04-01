@@ -1,3 +1,5 @@
+import { appStoreMetadata } from "@calcom/app-store/appStoreMetaData";
+import { doesAppIdMatch } from "@calcom/app-store/utils";
 import { VideoApiAdapterMap } from "@calcom/app-store/video.adapters.generated";
 import logger from "@calcom/lib/logger";
 import { getPiiFreeCredential } from "@calcom/lib/piiFreeData";
@@ -7,6 +9,26 @@ import type { VideoApiAdapter, VideoApiAdapterFactory } from "@calcom/types/Vide
 
 const log = logger.getSubLogger({ prefix: ["[app-store] getVideoAdapters"] });
 
+const getVideoAdapterImportForCredential = (cred: CredentialPayload) => {
+  const appName = cred.type.split("_").join("");
+  const appTypeVariant = cred.type.substring(0, cred.type.lastIndexOf("_"));
+  const matchedAppStoreEntryByAppId = cred.appId
+    ? Object.entries(appStoreMetadata).find(([, appMetadata]) => doesAppIdMatch(appMetadata, cred.appId))
+    : undefined;
+  const matchedAppStoreEntryByType = Object.entries(appStoreMetadata).find(
+    ([, appMetadata]) => appMetadata.type === cred.type
+  );
+  const matchedAppStoreEntry = matchedAppStoreEntryByAppId ?? matchedAppStoreEntryByType;
+
+  return (
+    VideoApiAdapterMap[appName as keyof typeof VideoApiAdapterMap] ||
+    VideoApiAdapterMap[appTypeVariant as keyof typeof VideoApiAdapterMap] ||
+    (matchedAppStoreEntry
+      ? VideoApiAdapterMap[matchedAppStoreEntry[0] as keyof typeof VideoApiAdapterMap]
+      : undefined)
+  );
+};
+
 // factory
 export const getVideoAdapters = async (withCredentials: CredentialPayload[]): Promise<VideoApiAdapter[]> => {
   const videoAdapters: VideoApiAdapter[] = [];
@@ -15,18 +37,10 @@ export const getVideoAdapters = async (withCredentials: CredentialPayload[]): Pr
     const appName = cred.type.split("_").join(""); // Transform `zoom_video` to `zoomvideo`;
     log.silly("Getting video adapter for", safeStringify({ appName, cred: getPiiFreeCredential(cred) }));
 
-    let videoAdapterImport = VideoApiAdapterMap[appName as keyof typeof VideoApiAdapterMap];
-
-    // fallback: transforms zoom_video to zoom
-    if (!videoAdapterImport) {
-      const appTypeVariant = cred.type.substring(0, cred.type.lastIndexOf("_"));
-      log.silly(`Adapter not found for ${appName}, trying fallback ${appTypeVariant}`);
-
-      videoAdapterImport = VideoApiAdapterMap[appTypeVariant as keyof typeof VideoApiAdapterMap];
-    }
+    const videoAdapterImport = getVideoAdapterImportForCredential(cred);
 
     if (!videoAdapterImport) {
-      log.error(`Couldn't get adapter for ${appName}`);
+      log.error(`Couldn't get adapter for ${appName}`, safeStringify({ appId: cred.appId, type: cred.type }));
       continue;
     }
 

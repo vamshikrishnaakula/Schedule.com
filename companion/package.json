@@ -1,6 +1,6 @@
 {
-  "name": "cal-companion",
-  "displayName": "Cal.com Companion",
+  "name": "schedule.leadnest",
+  "displayName": "www.leadnest.ai Companion",
   "version": "1.7.5",
   "main": "index.js",
   "scripts": {

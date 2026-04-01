@@ -2,15 +2,15 @@
   "openapi": "3.0.3",
   "servers": [
     {
-      "url": "https://api.cal.com/v1"
+      "url": "https://api.leadnest.ai/v1"
     }
   ],
   "externalDocs": {
-    "url": "https://docs.cal.com",
-    "description": "Find more info at our main docs: https://docs.cal.com/"
+    "url": "https://docs.leadnest.ai",
+    "description": "Find more info at our main docs: https://docs.leadnest.ai/"
   },
   "info": {
-    "title": "@calcom/api: Public API for Cal.com",
+    "title": "@calcom/api: Public API for leadnest.ai",
     "version": "1.0.0"
   },
   "components": {
@@ -125,7 +125,7 @@
                 "properties": {
                   "email": {
                     "type": "string",
-                    "example": "example@cal.com"
+                    "example": "example@leadnest.ai"
                   },
                   "name": {
                     "type": "string"
@@ -145,7 +145,7 @@
               "properties": {
                 "email": {
                   "type": "string",
-                  "example": "example@cal.com"
+                  "example": "example@leadnest.ai"
                 },
                 "name": {
                   "type": "string"
@@ -275,7 +275,7 @@
               "properties": {
                 "email": {
                   "type": "string",
-                  "example": "example@cal.com"
+                  "example": "example@leadnest.ai"
                 },
                 "name": {
                   "type": "string"
@@ -295,7 +295,7 @@
             "properties": {
               "email": {
                 "type": "string",
-                "example": "example@cal.com"
+                "example": "example@leadnest.ai"
               },
               "name": {
                 "type": "string"
@@ -861,7 +861,7 @@
         },
         "tags": ["Availabilities"],
         "externalDocs": {
-          "url": "https://docs.cal.com/docs/core-features/availability"
+          "url": "https://docs.leadnest.ai/docs/core-features/availability"
         },
         "responses": {
           "201": {
@@ -902,7 +902,7 @@
         ],
         "tags": ["Availabilities"],
         "externalDocs": {
-          "url": "https://docs.cal.com/docs/core-features/availability"
+          "url": "https://docs.leadnest.ai/docs/core-features/availability"
         },
         "responses": {
           "201": {
@@ -941,7 +941,7 @@
         ],
         "tags": ["Availabilities"],
         "externalDocs": {
-          "url": "https://docs.cal.com/docs/core-features/availability"
+          "url": "https://docs.leadnest.ai/docs/core-features/availability"
         },
         "responses": {
           "200": {
@@ -1024,7 +1024,7 @@
         },
         "tags": ["Availabilities"],
         "externalDocs": {
-          "url": "https://docs.cal.com/docs/core-features/availability"
+          "url": "https://docs.leadnest.ai/docs/core-features/availability"
         },
         "responses": {
           "201": {
@@ -1615,7 +1615,7 @@
                         "properties": {
                           "email": {
                             "type": "string",
-                            "example": "example@cal.com"
+                            "example": "example@leadnest.ai"
                           },
                           "name": {
                             "type": "string"
@@ -1635,7 +1635,7 @@
                       "properties": {
                         "email": {
                           "type": "string",
-                          "example": "example@cal.com"
+                          "example": "example@leadnest.ai"
                         },
                         "name": {
                           "type": "string"
@@ -2462,7 +2462,7 @@
         ],
         "tags": ["Event Types"],
         "externalDocs": {
-          "url": "https://docs.cal.com/docs/core-features/event-types"
+          "url": "https://docs.leadnest.ai/docs/core-features/event-types"
         },
         "responses": {
           "200": {
@@ -2787,7 +2787,7 @@
         },
         "tags": ["Event Types"],
         "externalDocs": {
-          "url": "https://docs.cal.com/docs/core-features/event-types"
+          "url": "https://docs.leadnest.ai/docs/core-features/event-types"
         },
         "responses": {
           "201": {
@@ -2828,7 +2828,7 @@
         ],
         "tags": ["Event Types"],
         "externalDocs": {
-          "url": "https://docs.cal.com/docs/core-features/event-types"
+          "url": "https://docs.leadnest.ai/docs/core-features/event-types"
         },
         "responses": {
           "201": {
@@ -2868,7 +2868,7 @@
         ],
         "tags": ["Event Types"],
         "externalDocs": {
-          "url": "https://docs.cal.com/docs/core-features/event-types"
+          "url": "https://docs.leadnest.ai/docs/core-features/event-types"
         },
         "responses": {
           "200": {
@@ -3135,7 +3135,7 @@
         },
         "tags": ["Event Types"],
         "externalDocs": {
-          "url": "https://docs.cal.com/docs/core-features/event-types"
+          "url": "https://docs.leadnest.ai/docs/core-features/event-types"
         },
         "responses": {
           "201": {
@@ -4349,7 +4349,7 @@
         ],
         "tags": ["Event Types"],
         "externalDocs": {
-          "url": "https://docs.cal.com/docs/core-features/event-types"
+          "url": "https://docs.leadnest.ai/docs/core-features/event-types"
         },
         "responses": {
           "200": {
@@ -4717,7 +4717,7 @@
         ],
         "tags": ["Webhooks"],
         "externalDocs": {
-          "url": "https://docs.cal.com/docs/core-features/webhooks"
+          "url": "https://docs.leadnest.ai/docs/core-features/webhooks"
         },
         "responses": {
           "200": {
@@ -4787,7 +4787,7 @@
         },
         "tags": ["Webhooks"],
         "externalDocs": {
-          "url": "https://docs.cal.com/docs/core-features/webhooks"
+          "url": "https://docs.leadnest.ai/docs/core-features/webhooks"
         },
         "responses": {
           "201": {
@@ -4828,7 +4828,7 @@
         ],
         "tags": ["Webhooks"],
         "externalDocs": {
-          "url": "https://docs.cal.com/docs/core-features/webhooks"
+          "url": "https://docs.leadnest.ai/docs/core-features/webhooks"
         },
         "responses": {
           "201": {
@@ -4867,7 +4867,7 @@
         ],
         "tags": ["Webhooks"],
         "externalDocs": {
-          "url": "https://docs.cal.com/docs/core-features/webhooks"
+          "url": "https://docs.leadnest.ai/docs/core-features/webhooks"
         },
         "responses": {
           "200": {
@@ -4945,7 +4945,7 @@
         },
         "tags": ["Webhooks"],
         "externalDocs": {
-          "url": "https://docs.cal.com/docs/core-features/webhooks"
+          "url": "https://docs.leadnest.ai/docs/core-features/webhooks"
         },
         "responses": {
           "201": {

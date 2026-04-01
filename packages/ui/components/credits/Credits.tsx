@@ -25,12 +25,12 @@ export default function Credits() {
       </Link>{" "}
       {hasMounted && (
         <>
-          {/* <Link href="https://go.cal.com/releases" target="_blank" className="hover:underline">
+          {/* <Link href="https://go.leadnest.ai/releases" target="_blank" className="hover:underline">
             {CalComVersion}
           </Link> */}
           {/* {vercelCommitHash && IS_CALCOM ? (
             <Link
-              href={`https://github.com/calcom/cal.com/commit/${vercelCommitHash}`}
+              href={`https://github.com/calcom/leadnest.ai/commit/${vercelCommitHash}`}
               target="_blank"
               className="hover:underline">
             </Link>

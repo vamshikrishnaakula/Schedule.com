@@ -194,6 +194,14 @@ export function getAppFromSlug(slug: string | undefined): AppMeta | undefined {
   return ALL_APPS.find((app) => getAppIdentifiers(app).includes(slug ?? ""));
 }
 
+export function getSystemDefaultConferencingApp(): AppMeta | undefined {
+  return getAppFromSlug("leadnest-video") ?? getAppFromSlug("jitsi") ?? getAppFromSlug("daily-video");
+}
+
+export function getSystemDefaultConferencingLocationType(): string {
+  return getSystemDefaultConferencingApp()?.appData?.location?.type ?? "integrations:daily";
+}
+
 export function getAppFromLocationValue(type: string): AppMeta | undefined {
   return ALL_APPS.find((app) => app?.appData?.location?.type === type);
 }

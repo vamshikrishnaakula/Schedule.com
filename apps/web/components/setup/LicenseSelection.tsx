@@ -144,7 +144,7 @@ const LicenseSelection = (
             <p className="text-subtle text-xs">
               {t("need_a_license")}{" "}
               <Link
-                href="https://go.cal.com/self-hosted"
+                href="https://www.leadnest.ai/acceptable-policy"
                 target="_blank"
                 rel="noreferrer noopener"
                 className="text-blue-600 hover:underline">

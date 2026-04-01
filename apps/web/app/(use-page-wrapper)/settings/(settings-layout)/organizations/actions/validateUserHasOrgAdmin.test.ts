@@ -51,8 +51,8 @@ describe("validateUserHasOrgAdmin", () => {
         name: "Test Org",
         slug: "test-org",
         logoUrl: null,
-        fullDomain: "test-org.cal.com",
-        domainSuffix: "cal.com",
+        fullDomain: "test-org.leadnest.ai",
+        domainSuffix: "leadnest.ai",
         role: MembershipRole.ADMIN,
       },
       profile: {
@@ -103,8 +103,8 @@ describe("validateUserHasOrgAdmin", () => {
             name: "Test Org",
             slug: "test-org",
             logoUrl: null,
-            fullDomain: "test-org.cal.com",
-            domainSuffix: "cal.com",
+            fullDomain: "test-org.leadnest.ai",
+            domainSuffix: "leadnest.ai",
             role: MembershipRole.OWNER,
           },
           profile: {
@@ -227,8 +227,8 @@ describe("validateUserHasOrgAdmin", () => {
             name: "Test Org",
             slug: "test-org",
             logoUrl: null,
-            fullDomain: "test-org.cal.com",
-            domainSuffix: "cal.com",
+            fullDomain: "test-org.leadnest.ai",
+            domainSuffix: "leadnest.ai",
             role: MembershipRole.MEMBER,
           },
           profile: {
@@ -337,8 +337,8 @@ describe("validateUserHasOrgAdmin", () => {
             name: "Test Org",
             slug: "test-org",
             logoUrl: null,
-            fullDomain: "test-org.cal.com",
-            domainSuffix: "cal.com",
+            fullDomain: "test-org.leadnest.ai",
+            domainSuffix: "leadnest.ai",
             role: MembershipRole.OWNER, // This should be preferred
           },
           profile: {

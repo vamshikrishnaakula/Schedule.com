@@ -1,6 +1,3 @@
-import short from "short-uuid";
-import { v5 as uuidv5 } from "uuid";
-
 import { DailyLocationType } from "@calcom/app-store/constants";
 import { getDailyAppKeys } from "@calcom/app-store/dailyvideo/lib/getDailyAppKeys";
 import { getVideoAdapters } from "@calcom/app-store/getVideoAdapters";
@@ -11,11 +8,13 @@ import logger from "@calcom/lib/logger";
 import { getPiiFreeCalendarEvent, getPiiFreeCredential } from "@calcom/lib/piiFreeData";
 import { safeStringify } from "@calcom/lib/safeStringify";
 import { prisma } from "@calcom/prisma";
-import type { GetRecordingsResponseSchema, GetAccessLinkResponseSchema } from "@calcom/prisma/zod-utils";
+import type { GetAccessLinkResponseSchema, GetRecordingsResponseSchema } from "@calcom/prisma/zod-utils";
 import type { CalendarEvent, EventBusyDate } from "@calcom/types/Calendar";
-import type { CredentialPayload, CredentialForCalendarService } from "@calcom/types/Credential";
+import type { CredentialForCalendarService, CredentialPayload } from "@calcom/types/Credential";
 import type { EventResult, PartialReference } from "@calcom/types/EventManager";
 import type { VideoCallData } from "@calcom/types/VideoApiAdapter";
+import short from "short-uuid";
+import { v5 as uuidv5 } from "uuid";
 
 const log = logger.getSubLogger({ prefix: ["[features/conferencing/lib] videoClient"] });
 
@@ -79,7 +78,19 @@ const createMeeting = async (
     if (!enabledApp?.enabled)
       throw `Location app ${credential.appId} is either disabled or not seeded at all`;
 
-    createdMeeting = await firstVideoAdapter?.createMeeting(calEvent);
+    if (!firstVideoAdapter) {
+      throw new Error(
+        `Couldn't get video adapter for appId=${credential.appId ?? ""} type=${credential.type}`
+      );
+    }
+
+    createdMeeting = await firstVideoAdapter.createMeeting(calEvent);
+
+    if (!createdMeeting?.id || !createdMeeting?.url) {
+      throw new Error(
+        `Video adapter returned incomplete meeting details for appId=${credential.appId ?? ""} type=${credential.type}`
+      );
+    }
 
     returnObject = { ...returnObject, createdEvent: createdMeeting, success: true };
     log.debug("created Meeting", safeStringify(returnObject));

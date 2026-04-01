@@ -11,7 +11,7 @@ import {
   MeetLocationType,
   OrganizerDefaultConferencingAppType,
 } from "@calcom/app-store/locations";
-import { getAppFromSlug } from "@calcom/app-store/utils";
+import { getAppFromSlug, getSystemDefaultConferencingLocationType } from "@calcom/app-store/utils";
 import {
   eventTypeAppMetadataOptionalSchema,
   eventTypeMetaDataSchemaWithTypedApps,
@@ -1327,7 +1327,7 @@ async function handler(
     } else if (organizationDefaultLocation) {
       locationBodyString = organizationDefaultLocation;
     } else {
-      locationBodyString = "integrations:daily";
+      locationBodyString = getSystemDefaultConferencingLocationType();
     }
   }
 

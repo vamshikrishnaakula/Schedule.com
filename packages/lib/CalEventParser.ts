@@ -1,9 +1,8 @@
+import getLabelValueMapFromResponses from "@calcom/lib/bookings/getLabelValueMapFromResponses";
+import type { CalendarEvent, Person } from "@calcom/types/Calendar";
 import type { TFunction } from "i18next";
 import short from "short-uuid";
 import { v5 as uuidv5 } from "uuid";
-
-import getLabelValueMapFromResponses from "@calcom/lib/bookings/getLabelValueMapFromResponses";
-import type { CalendarEvent, Person } from "@calcom/types/Calendar";
 
 import { WEBAPP_URL } from "./constants";
 import isSmsCalEmail from "./isSmsCalEmail";
@@ -459,7 +458,7 @@ export const getPublicVideoCallUrl = (calEvent: Pick<CalendarEvent, "uid">): str
 
 export const getVideoCallUrlFromCalEvent = (
   calEvent: Parameters<typeof getPublicVideoCallUrl>[0] &
-    Pick<CalendarEvent, "videoCallData" | "additionalInformation" | "location">
+    Pick<CalendarEvent, "videoCallData" | "additionalInformation" | "location" | "metadata">
 ): string => {
   if (calEvent.videoCallData) {
     if (isDailyVideoCall(calEvent)) {
@@ -470,6 +469,10 @@ export const getVideoCallUrlFromCalEvent = (
   if (calEvent.additionalInformation?.hangoutLink) {
     return calEvent.additionalInformation.hangoutLink;
   }
+  const metadataVideoCallUrl = calEvent.metadata?.videoCallUrl;
+  if (typeof metadataVideoCallUrl === "string" && metadataVideoCallUrl.length > 0) {
+    return metadataVideoCallUrl;
+  }
   if (calEvent.location?.startsWith("http")) {
     return calEvent.location;
   }
@@ -477,5 +480,5 @@ export const getVideoCallUrlFromCalEvent = (
 };
 
 export const getVideoCallPassword = (calEvent: CalendarEvent): string => {
-  return isDailyVideoCall(calEvent) ? "" : calEvent?.videoCallData?.password ?? "";
+  return isDailyVideoCall(calEvent) ? "" : (calEvent?.videoCallData?.password ?? "");
 };

@@ -122,7 +122,7 @@ async function getHandler(req: NextApiRequest, res: NextApiResponse) {
 
   // Generate the callback URL with token
   const params = new URLSearchParams({
-    callbackUrl: WEBAPP_URL || "https://app.cal.com",
+    callbackUrl: WEBAPP_URL || "https://www.schedule.leadnest.ai",
     token,
     email,
   });

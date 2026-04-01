@@ -1,12 +1,12 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Cal.com Docs",
+  "name": "leadnest.ai Docs",
   "logo": {
     "dark": "https://www.leadnest.ai/calcom-docs-light.svg",
     "light": "https://www.leadnest.ai/calcom-docs.svg"
   },
   "api": {
-    "baseUrl": "https://api.cal.com",
+    "baseUrl": "https://api.leadnest.ai",
     "auth": {
       "method": "bearer"
     }
@@ -24,12 +24,12 @@
   "topbarLinks": [
     {
       "name": "Support",
-      "url": "https://go.cal.com/support"
+      "url": "https://go.leadnest.ai/support"
     }
   ],
   "topbarCtaButton": {
     "name": "Dashboard",
-    "url": "https://app.cal.com"
+    "url": "https://app.leadnest.ai"
   },
   "tabs": [
     {

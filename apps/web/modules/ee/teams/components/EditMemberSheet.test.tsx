@@ -146,7 +146,7 @@ describe("EditMemberSheet", () => {
     role: MembershipRole.MEMBER,
     accepted: true,
     avatarUrl: "",
-    bookerUrl: "https://cal.com",
+    bookerUrl: "https://leadnest.ai",
     lastActiveAt: "2024-01-01",
     customRoleId: null,
   } as User;

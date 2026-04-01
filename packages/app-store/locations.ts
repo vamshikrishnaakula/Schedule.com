@@ -524,7 +524,7 @@ export function getConferencingUrlForMeetingId({
     return null;
   }
 
-  return new URL(`/cal/${encodeURIComponent(meetingId)}`, appMetadata.url).toString();
+  return new URL(`/${encodeURIComponent(meetingId)}`, appMetadata.url).toString();
 }
 
 export const getTranslatedLocation = (

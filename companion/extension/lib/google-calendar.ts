@@ -267,7 +267,7 @@ function injectStyles(): void {
 
 /**
  * Extract booking UID from event description
- * Looks for patterns like: https://www.leadnest.ai/booking/{uid} or https://app.cal.com/booking/{uid}
+ * Looks for patterns like: https://www.leadnest.ai/booking/{uid} or https://app.leadnest.ai/booking/{uid}
  */
 function extractBookingUid(text: string): string | null {
   const regex = /https:\/\/(?:app\.)?cal\.com\/booking\/([a-zA-Z0-9]+)/;
@@ -729,7 +729,7 @@ async function handleMarkNoShow(
 
   // If no booking UID, show error
   if (!bookingUid) {
-    showAlert("Not a Cal.com booking", "info");
+    showAlert("Not a leadnest.ai booking", "info");
     return;
   }
 
@@ -825,7 +825,7 @@ async function handleMarkNoShow(
           } else if (response.error?.includes("403") || response.error?.includes("permission")) {
             errorMessage = "You don't have permission to modify this booking.";
           } else if (response.error?.includes("404") || response.error?.includes("not found")) {
-            errorMessage = "Booking not found in Cal.com.";
+            errorMessage = "Booking not found in leadnest.ai.";
           } else if (response.error?.includes("Network") || response.error?.includes("network")) {
             errorMessage = "Network error. Please check your connection and try again.";
           }
@@ -961,7 +961,7 @@ async function injectNoShowButtons(eventPopup: Element): Promise<void> {
     return;
   }
 
-  // Per requirements: Show button even for non-Cal.com events, but it will show error on click
+  // Per requirements: Show button even for non-leadnest.ai events, but it will show error on click
   // This allows users to see the feature is available
 
   const existingButtonContainers = Array.from(
@@ -1199,10 +1199,10 @@ function observeEventPopups(): void {
     }
 
     const text = element.textContent || "";
-    // Check if this looks like a Cal.com event
+    // Check if this looks like a leadnest.ai event
     const isCalComEvent =
-      text.includes("cal.com") ||
-      text.includes("Cal.com") ||
+      text.includes("leadnest.ai") ||
+      text.includes("leadnest.ai") ||
       text.includes("booking") ||
       extractBookingUid(text) !== null;
 
@@ -1354,11 +1354,11 @@ function observeEventPopups(): void {
         return;
       }
 
-      // Check if this is a Cal.com event
+      // Check if this is a leadnest.ai event
       const text = popup.textContent || "";
       const isCalComEvent =
-        text.includes("cal.com") ||
-        text.includes("Cal.com") ||
+        text.includes("leadnest.ai") ||
+        text.includes("leadnest.ai") ||
         text.includes("booking") ||
         extractBookingUid(text) !== null;
 

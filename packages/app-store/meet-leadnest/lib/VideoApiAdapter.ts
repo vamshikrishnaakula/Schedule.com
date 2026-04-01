@@ -1,11 +1,12 @@
-import { v4 as uuidv4 } from "uuid";
-
 import type { CalendarEvent } from "@calcom/types/Calendar";
 import type { PartialReference } from "@calcom/types/EventManager";
 import type { VideoApiAdapter, VideoCallData } from "@calcom/types/VideoApiAdapter";
 
-import getAppKeysFromSlug from "../../_utils/getAppKeysFromSlug";
 import { metadata } from "../_metadata";
+
+function buildLeadnestMeetingUrl(uid: string) {
+  return new URL(`/${encodeURIComponent(uid)}`, metadata.url).toString();
+}
 
 const JitsiVideoApiAdapter = (): VideoApiAdapter => {
   return {
@@ -13,27 +14,15 @@ const JitsiVideoApiAdapter = (): VideoApiAdapter => {
       return Promise.resolve([]);
     },
     createMeeting: async (eventData: CalendarEvent): Promise<VideoCallData> => {
-      const appKeys = await getAppKeysFromSlug(metadata.slug);
-
-      const meetingPattern = (appKeys.jitsiPathPattern as string) || "{uuid}";
-      const hostUrl = (appKeys.jitsiHost as string) || "https://meet.leadnest.ai/cal";
-
-      //Allows "/{Type}-with-{Attendees}" slug
-      const meetingID = meetingPattern
-        .replaceAll("{uuid}", uuidv4())
-        .replaceAll("{Title}", eventData.title)
-        .replaceAll("{Event Type Title}", eventData.type)
-        .replaceAll("{Scheduler}", eventData.attendees.map((a) => a.name).join("-"))
-        .replaceAll("{Organizer}", eventData.organizer.name)
-        .replaceAll("{Location}", eventData.location || "")
-        .replaceAll("{Team}", eventData.team?.name || "")
-        .replaceAll(" ", "-"); //Last Rule! - Replace all blanks (%20) with dashes;
+      if (!eventData.uid) {
+        throw new Error("Leadnest Video requires the booking uid to create a meeting");
+      }
 
       return Promise.resolve({
         type: metadata.type,
-        id: meetingID,
+        id: eventData.uid,
         password: "",
-        url: `${hostUrl}/${encodeURIComponent(meetingID)}`,
+        url: buildLeadnestMeetingUrl(eventData.uid),
       });
     },
     deleteMeeting: async (): Promise<void> => {
@@ -51,3 +40,4 @@ const JitsiVideoApiAdapter = (): VideoApiAdapter => {
 };
 
 export default JitsiVideoApiAdapter;
+export { buildLeadnestMeetingUrl };

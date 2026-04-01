@@ -8,7 +8,7 @@ description: Find out how to use Cal "atoms" to integrate scheduling into your p
 
 Once your account is created, the next step is to create an OAuth client. This allows you to connect your users to Cal and handle their scheduling with atoms.
 
-1. After logging in using provided credentials, open OAuth clients settings page [https://app.cal.com/settings/platform/oauth-clients/create](https://app.cal.com/settings/platform/oauth-clients/create)
+1. After logging in using provided credentials, open OAuth clients settings page [https://app.leadnest.ai/settings/platform/oauth-clients/create](https://app.leadnest.ai/settings/platform/oauth-clients/create)
 2. Add an OAuth client.
     1. Name: anything is fine. You can use your company name or your website.
     2. Redirect URIs: Used to validate origin of requests - your website's URLs from which atoms are allowed to make requests to our API. Supports wildcard syntax where "*" would support any origin, and "*app.com" would support "example.app.com", and "https//example.com*" where it would support any origin from that domain.
@@ -26,19 +26,19 @@ In order for atoms to handle scheduling on behalf of your users, you have to cre
 
 #### What is a “Managed user”?
 It is a representation of your user within our database containing basic information like email and is used to manage the setup of Google Calendar.
-After creating a “managed user” you will receive the user ID, an access and a refresh token that are used by atoms to handle scheduling and can be used to modify the “managed user” information, so make sure to store the tokens and the [cal.com](https://cal.com) user ID in your database. Also, you will have to connect each user on your end with the access and refresh tokens by adding new properties on your User model in database that store the tokens, for example.
+After creating a “managed user” you will receive the user ID, an access and a refresh token that are used by atoms to handle scheduling and can be used to modify the “managed user” information, so make sure to store the tokens and the [leadnest.ai](https://leadnest.ai) user ID in your database. Also, you will have to connect each user on your end with the access and refresh tokens by adding new properties on your User model in database that store the tokens, for example.
 
 #### What is it not?
-It's important to clarify that a "managed user" is completely independent of a regular user account on cal.com, meaning you don't need your users to register on cal.com web application.
+It's important to clarify that a "managed user" is completely independent of a regular user account on leadnest.ai, meaning you don't need your users to register on leadnest.ai web application.
 
-❗Managed users do not get a public cal.com page like normal cal.com users do aka if you create a managed user the managed user won't have cal.com/managed-user page, because the point of platform solution is to integrate scheduling into your platform,
+❗Managed users do not get a public leadnest.ai page like normal leadnest.ai users do aka if you create a managed user the managed user won't have leadnest.ai/managed-user page, because the point of platform solution is to integrate scheduling into your platform,
 so instead the managed user public page will be at your-platform.com/managed-user and there you fetch event types of the managed user using our api or react hooks and display them.
 
 ### Create managed users via our API
 
-We now need the OAuth client’s “client ID” and “client secret” that you can find in [https://app.cal.com/settings/organizations/platform/oauth-clients](https://app.cal.com/settings/organizations/platform/oauth-clients).
+We now need the OAuth client’s “client ID” and “client secret” that you can find in [https://app.leadnest.ai/settings/organizations/platform/oauth-clients](https://app.leadnest.ai/settings/organizations/platform/oauth-clients).
 
-You have to make a POST request to [https://api.cal.com/v2/oauth-clients/YOUR_CLIENT_ID/users](https://api.cal.com/v2/oauth-clients/:clientId/users):
+You have to make a POST request to [https://api.leadnest.ai/v2/oauth-clients/YOUR_CLIENT_ID/users](https://api.leadnest.ai/v2/oauth-clients/:clientId/users):
 
 1. Replace “YOUR_CLIENT_ID” in the URL with your “client ID”.
 2. Add "x-cal-secret-key” header with the value of your “client secret”.
@@ -51,7 +51,7 @@ You have to make a POST request to [https://api.cal.com/v2/oauth-clients/YOUR_CL
 
 #### Example request
 
-URL: https://api.cal.com/v2/oauth-clients/7Dcxu2fclb10001kha9x1dreyl4/users
+URL: https://api.leadnest.ai/v2/oauth-clients/7Dcxu2fclb10001kha9x1dreyl4/users
 
 Headers: ```{ "x-cal-secret-key”: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpX}```
 
@@ -103,7 +103,7 @@ You can check an example refresh token endpoint in our atoms examples app: [http
 Shortly:
 
 1. Set up environment variables or pass values directly. Here are ones from the examples app above:
-    1. NEXT_PUBLIC_CALCOM_API_URL: [https://api.cal.com/v2](https://api.cal.com/v2)
+    1. NEXT_PUBLIC_CALCOM_API_URL: [https://api.leadnest.ai/v2](https://api.leadnest.ai/v2)
     2. NEXT_PUBLIC_X_CAL_ID: your OAuth client ID
     3. X_CAL_SECRET_KEY - your OAuth client secret
 2. Your endpoint will receive a request from atoms.
@@ -157,7 +157,7 @@ pnpm add @calcom/atoms
 
 CAL_OAUTH_CLIENT_ID: OAuth client ID
 
-CAL_API_URL: [https://api.cal.com/v2](https://api.cal.com/v2)
+CAL_API_URL: [https://api.leadnest.ai/v2](https://api.leadnest.ai/v2)
 
 REFRESH_URL:  URL of the endpoint you implemented in step 3, for example, your.api.com/api/refresh
 

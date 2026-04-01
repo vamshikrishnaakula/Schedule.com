@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("CSP Headers", () => {
   test("Login page should have CSP header with nonce", async ({ page }) => {
-    const targetUrl = process.env.ENVIRONMENT_URL || "https://app.cal.com";
+    const targetUrl = process.env.ENVIRONMENT_URL || "https://schedule.leadnest.ai/";
 
     const response = await page.goto(`${targetUrl}/auth/login`);
 

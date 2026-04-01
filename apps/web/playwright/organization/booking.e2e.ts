@@ -290,7 +290,7 @@ test.describe("Bookings", () => {
       const teamSlugUpperCase = team.slug?.toUpperCase();
       const teamEventSlugUpperCase = teamEventSlug.toUpperCase();
 
-      // This is the most closest to the actual user flow as org1.cal.com maps to /org/orgSlug
+      // This is the most closest to the actual user flow as org1.leadnest.ai maps to /org/orgSlug
       await page.goto(`/org/${org.slug}/${teamSlugUpperCase}/${teamEventSlugUpperCase}`);
       await page.waitForSelector("[data-testid=day]");
     });

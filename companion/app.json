@@ -16,7 +16,7 @@
     "ios": {
       "supportsTablet": false,
       "deploymentTarget": "18.0",
-      "bundleIdentifier": "com.cal.companion",
+      "bundleIdentifier": "leadnest.ai.companion",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       },

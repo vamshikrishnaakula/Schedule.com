@@ -10,7 +10,7 @@ import { IS_STRIPE_ENABLED, submitAndWaitForResponse } from "./lib/testUtils";
 test.describe.configure({ mode: "parallel" });
 
 const IS_SELF_HOSTED = !(
-  new URL(WEBAPP_URL).hostname.endsWith(".cal.dev") || !!new URL(WEBAPP_URL).hostname.endsWith(".cal.com")
+  new URL(WEBAPP_URL).hostname.endsWith(".leadnest.ai") || !!new URL(WEBAPP_URL).hostname.endsWith(".cal.com")
 );
 
 const TESTING_USERNAMES = [

@@ -268,7 +268,7 @@ export async function authorizeCredentials(
 
 export const CalComCredentialsProvider = CredentialsProvider({
   id: "credentials",
-  name: "Cal.com",
+  name: "Leadnest.ai",
   type: "credentials",
   credentials: {
     email: { label: "Email Address", type: "email", placeholder: "john.doe@example.com" },

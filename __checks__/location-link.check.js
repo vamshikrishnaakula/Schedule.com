@@ -10,7 +10,7 @@ const { chromium } = require("playwright");
 async function run() {
   const browser = await chromium.launch();
   const page = await browser.newPage();
-  const targetUrl = process.env.ENVIRONMENT_URL || "https://cal.com";
+  const targetUrl = process.env.ENVIRONMENT_URL || "https://schedule.leadnest.ai/";
   await page.goto(`${targetUrl}/rick/test-location-link`);
 
   await page.waitForSelector('[data-testid="day"][data-disabled="false"]');

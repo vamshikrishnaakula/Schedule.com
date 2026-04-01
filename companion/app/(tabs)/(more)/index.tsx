@@ -55,31 +55,31 @@ export default function More() {
       name: "Apps",
       icon: "grid-outline",
       isExternal: true,
-      onPress: () => openInAppBrowser("https://app.cal.com/apps", "Apps page"),
+      onPress: () => openInAppBrowser("https://schedule.leadnest.ai/apps", "Apps page"),
     },
     {
       name: "Routing",
       icon: "git-branch-outline",
       isExternal: true,
-      onPress: () => openInAppBrowser("https://app.cal.com/routing", "Routing page"),
+      onPress: () => openInAppBrowser("https://schedule.leadnest.ai", "Routing page"),
     },
     {
       name: "Workflows",
       icon: "flash-outline",
       isExternal: true,
-      onPress: () => openInAppBrowser("https://app.cal.com/workflows", "Workflows page"),
+      onPress: () => openInAppBrowser("https://schedule.leadnest.ai", "Workflows page"),
     },
     {
       name: "Insights",
       icon: "bar-chart-outline",
       isExternal: true,
-      onPress: () => openInAppBrowser("https://app.cal.com/insights", "Insights page"),
+      onPress: () => openInAppBrowser("https://schedule.leadnest.ai/", "Insights page"),
     },
     {
       name: "Support",
       icon: "help-circle-outline",
       isExternal: true,
-      onPress: () => openInAppBrowser("https://go.cal.com/support", "Support"),
+      onPress: () => openInAppBrowser("https://www.leadnest.ai/support", "Support"),
     },
   ];
 
@@ -116,7 +116,7 @@ export default function More() {
         <View className="mt-6 overflow-hidden rounded-lg border border-[#E5E5EA] bg-white">
           <TouchableOpacity
             onPress={() =>
-              openInAppBrowser("https://app.cal.com/settings/my-account/profile", "Delete Account")
+              openInAppBrowser("https://schedule.leadnest.ai//settings/my-account/profile", "Delete Account")
             }
             className="flex-row items-center justify-between bg-white px-5 py-4 active:bg-red-50"
           >
@@ -145,9 +145,9 @@ export default function More() {
           For advanced features, visit{" "}
           <Text
             className="text-gray-800"
-            onPress={() => openInAppBrowser("https://app.cal.com", "Cal.com")}
+            onPress={() => openInAppBrowser("https://schedule.leadnest.ai", "Leadnest")}
           >
-            app.cal.com
+            Schedule.leadnest
           </Text>
         </Text>
       </ScrollView>

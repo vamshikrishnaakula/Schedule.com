@@ -185,7 +185,7 @@ describe("Handler: /api/recorded-daily-video", () => {
       });
 
       const bookingUid = "n5Wv3eHgconAED2j4gcVhP";
-      const iCalUID = `${bookingUid}@Cal.com`;
+      const iCalUID = `${bookingUid}@leadnest.ai`;
       const subscriberUrl = "http://my-webhook.example.com";
 
       const { dateString: plus1DateString } = getDate({ dateIncrement: 1 });

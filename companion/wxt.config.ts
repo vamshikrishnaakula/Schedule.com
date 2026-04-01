@@ -1,7 +1,7 @@
 import { defineConfig } from "wxt";
 
 // BUILD_FOR_STORE=true is set by ext:build-prod, ext:zip-prod, etc.
-// Forces production URL (https://companion.cal.com) and excludes localhost permissions
+// Forces production URL (https://www.leadnest.ai) and excludes localhost permissions
 const isBuildForStore = process.env.BUILD_FOR_STORE === "true";
 
 // BROWSER_TARGET is set during build to determine which OAuth credentials to use
@@ -48,7 +48,7 @@ export default defineConfig({
       manifest.browser_specific_settings.gecko ??= {};
       // Stable extension ID for Firefox development - ensures consistent OAuth redirect URL
       // This must be an email-like string for Firefox to accept it
-      manifest.browser_specific_settings.gecko.id = "companion@cal.com";
+      manifest.browser_specific_settings.gecko.id = "support@leadnest.ai";
       manifest.browser_specific_settings.gecko.data_collection_permissions = {
         required: ["none"],
       };
@@ -69,7 +69,7 @@ export default defineConfig({
       ...(browserTarget !== "safari" ? ["identity"] : []),
     ],
     host_permissions: [
-      "https://companion.cal.com/*",
+      "https://www.leadnest.ai/*",
       "https://api.cal.com/*",
       "https://app.cal.com/*",
       "https://mail.google.com/*",
@@ -79,8 +79,8 @@ export default defineConfig({
     ],
     content_security_policy: {
       extension_pages: !isBuildForStore
-        ? "script-src 'self'; object-src 'self'; frame-src 'self' https://companion.cal.com http://localhost:*"
-        : "script-src 'self'; object-src 'self'; frame-src 'self' https://companion.cal.com",
+        ? "script-src 'self'; object-src 'self'; frame-src 'self' https://www.leadnest.ai http://localhost:*"
+        : "script-src 'self'; object-src 'self'; frame-src 'self' https://www.leadnest.ai",
     },
     action: {
       default_title: "Cal.com Companion",
@@ -106,7 +106,7 @@ export default defineConfig({
 
     // Log build mode for clarity
     if (isBuildForStore) {
-      console.log("\n🏪 STORE BUILD: Using https://companion.cal.com\n");
+      console.log("\n🏪 STORE BUILD: Using https://www.leadnest.ai\n");
     } else if (isLocalDev) {
       console.log(`\n🔧 DEV BUILD: Using ${devUrl}\n`);
     }

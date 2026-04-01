@@ -30,8 +30,8 @@ export const seoConfig: {
   },
   defaultNextSeo: {
     twitter: {
-      handle: "@calcom",
-      site: "@calcom",
+      handle: "@leadnest",
+      site: "@schedule.leadnest.ai",
       cardType: "summary_large_image",
     },
   },

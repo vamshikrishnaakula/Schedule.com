@@ -45,8 +45,8 @@ describe("validateUserHasOrg", () => {
         name: "Test Org",
         slug: "test-org",
         logoUrl: null,
-        fullDomain: "test-org.cal.com",
-        domainSuffix: "cal.com",
+        fullDomain: "test-org.leadnest.ai",
+        domainSuffix: "leadnest.ai",
         role: MembershipRole.ADMIN,
       },
       profile: {
@@ -169,8 +169,8 @@ describe("validateUserHasOrg", () => {
             name: "Test Org",
             slug: "test-org",
             logoUrl: null,
-            fullDomain: "test-org.cal.com",
-            domainSuffix: "cal.com",
+            fullDomain: "test-org.leadnest.ai",
+            domainSuffix: "leadnest.ai",
             role: MembershipRole.ADMIN,
           },
           profile: {

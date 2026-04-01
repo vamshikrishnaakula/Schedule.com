@@ -93,7 +93,7 @@ const EnterpriseLicense = (
           <Button
             className="w-full justify-center text-lg"
             EndIcon="external-link"
-            href="https://go.cal.com/get-license"
+            href="https://www.leadnest.ai/acceptable-policy"
             target="_blank">
             {t("purchase_license")}
           </Button>

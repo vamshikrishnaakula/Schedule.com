@@ -10,13 +10,13 @@ export const metadata = {
   categories: ["automation"],
   // If using static next public folder, can then be referenced from the base URL (/).
   logo: "icon-dark.svg",
-  publisher: "Cal.com",
+  publisher: "leadnest.ai",
   slug: "wipe-my-cal",
   title: "Wipe my cal",
   type: "wipemycal_other",
   url: "https://www.leadnest.ai/apps/wipe-my-cal",
   variant: "other",
-  email: "help@cal.com",
+  email: "help@leadnest.ai",
   dirName: "wipemycalother",
   isOAuth: false,
 } as AppMeta;

@@ -170,7 +170,7 @@ export const TeamInviteEmailView = ({ userEmail }: TeamInviteEmailViewProps) => 
                   append={append}
                   remove={remove}
                   defaultRole={inviteRole}
-                  emailPlaceholder="rick@cal.com"
+                  emailPlaceholder="rick@leadnest.ai"
                 />
 
                 <RoleSelector

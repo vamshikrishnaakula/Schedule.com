@@ -36,7 +36,7 @@ describe("getVideoCallDetails", () => {
         originalEvent: baseCalendarEvent,
         createdEvent: {
           type: "leadnest_video",
-          url: "https://meet.leadnest.ai/cal/test-room",
+          url: "https://meet.leadnest.ai/test-room",
           id: "test-room",
           password: "",
         },
@@ -45,7 +45,7 @@ describe("getVideoCallDetails", () => {
 
     const { videoCallUrl } = getVideoCallDetails({ results });
 
-    expect(videoCallUrl).toBe("https://meet.leadnest.ai/cal/test-room");
+    expect(videoCallUrl).toBe("https://meet.leadnest.ai/test-room");
   });
 
   it("still supports updated video integrations", () => {
@@ -58,7 +58,7 @@ describe("getVideoCallDetails", () => {
         originalEvent: baseCalendarEvent,
         updatedEvent: {
           type: "leadnest_video",
-          url: "https://meet.leadnest.ai/cal/updated-room",
+          url: "https://meet.leadnest.ai/updated-room",
           id: "updated-room",
           password: "",
         },
@@ -67,6 +67,6 @@ describe("getVideoCallDetails", () => {
 
     const { videoCallUrl } = getVideoCallDetails({ results });
 
-    expect(videoCallUrl).toBe("https://meet.leadnest.ai/cal/updated-room");
+    expect(videoCallUrl).toBe("https://meet.leadnest.ai/updated-room");
   });
 });

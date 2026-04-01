@@ -1,10 +1,6 @@
-/**
- * @deprecated
- * This file is deprecated. The only use of this file is to seed the database for E2E tests. Each test should take care of seeding it's own data going forward.
- */
-
 import path from "node:path";
 import process from "node:process";
+import { syncAppRegistryToDb } from "@calcom/app-store/_utils/syncAppRegistryToDb";
 import { appStoreMetadata } from "@calcom/app-store/appStoreMetaData";
 import prisma from "@calcom/prisma";
 import type { Prisma } from "@calcom/prisma/client";
@@ -23,8 +19,8 @@ async function createApp(
   /** This is used so credentials gets linked to the correct app */
   type: Prisma.CredentialCreateInput["type"],
   keys?: Prisma.AppCreateInput["keys"],
-  isTemplate?: boolean
-) {
+  _isTemplate?: boolean
+): Promise<void> {
   try {
     const foundApp = await prisma.app.findFirst({
       /**
@@ -56,7 +52,7 @@ async function createApp(
       await prisma.app.create({
         data,
       });
-      console.log(`📲 Created ${isTemplate ? "template" : "app"}: '${slug}'`);
+      console.log(`📲 Created '${slug}'`);
     } else {
       // We know that the app exists, so either it would have the same slug or dirName
       // Because update query can't have both slug and dirName, try to find the app to update by slug and dirName one by one
@@ -69,7 +65,7 @@ async function createApp(
         where: { dirName: foundApp.dirName },
         data,
       });
-      console.log(`📲 Updated ${isTemplate ? "template" : "app"}: '${slug}'`);
+      console.log(`📲 Updated '${slug}'`);
     }
 
     await prisma.credential.updateMany({
@@ -83,7 +79,9 @@ async function createApp(
   }
 }
 
-export default async function main() {
+async function main(): Promise<void> {
+  await syncAppRegistryToDb({ force: true });
+
   // Calendar apps
   await createApp("apple-calendar", "applecalendar", ["calendar"], "apple_calendar");
   if (
@@ -286,3 +284,5 @@ if (require.main === module) {
       await prisma.$disconnect();
     });
 }
+
+export default main;

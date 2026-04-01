@@ -19,7 +19,7 @@ export const OAuthClientsList = ({ oauthClients, isDeleting, handleDelete }: OAu
             OAuth Clients
           </h1>
           <p className="text-default text-sm ltr:mr-4 rtl:ml-4">
-            Connect your platform to cal.com with OAuth
+            Connect your platform to leadnest.ai with OAuth
           </p>
         </div>
         <div>
@@ -56,7 +56,7 @@ export const OAuthClientsList = ({ oauthClients, isDeleting, handleDelete }: OAu
       ) : (
         <EmptyScreen
           headline="Create your first OAuth client"
-          description="OAuth clients facilitate access to Cal.com on behalf of users"
+          description="OAuth clients facilitate access to leadnest.ai on behalf of users"
           Icon="plus"
           className=""
           buttonRaw={<NewOAuthClientButton redirectLink="/settings/platform/oauth-clients/create" />}

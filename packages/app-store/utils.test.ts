@@ -2,7 +2,7 @@ import { BookingStatus } from "@calcom/prisma/enums";
 import type { App } from "@calcom/types/App";
 import type { TFunction } from "i18next";
 import { describe, expect, it } from "vitest";
-import { getSuccessPageLocationMessage } from "./locations";
+import { getConferencingUrlForMeetingId, getSuccessPageLocationMessage } from "./locations";
 import type { CredentialDataWithTeamName, LocationOption } from "./utils";
 import getApps, { sanitizeAppForViewer } from "./utils";
 
@@ -105,11 +105,20 @@ describe("sanitizeAppForViewer", () => {
   });
 
   it("should keep a URL location value on success page", () => {
-    const location = "https://meet.leadnest.ai/cal/abc123";
+    const location = "https://meet.leadnest.ai/abc123";
     const t = ((s: string) => s) as unknown as TFunction;
     const result = getSuccessPageLocationMessage(location, t, BookingStatus.ACCEPTED);
 
     expect(result).toBe(location);
+  });
+
+  it("should build a Leadnest fallback meeting url from a stored meeting id", () => {
+    const meetingUrl = getConferencingUrlForMeetingId({
+      locationType: "integrations:leadnestvideo",
+      meetingId: "booking-uid-123",
+    });
+
+    expect(meetingUrl).toBe("https://meet.leadnest.ai/booking-uid-123");
   });
 
   it("should preserve all non-sensitive properties", () => {

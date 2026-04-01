@@ -88,7 +88,7 @@ function AlbySetupPage(props: IAlbySetupProps) {
       client_secret: props.clientSecret,
       callback: `${process.env.NEXT_PUBLIC_WEBAPP_URL}/apps/alby/setup?callback=true`,
       scopes: ["invoices:read", "account:read"],
-      user_agent: "cal.com",
+      user_agent: "leadnest.ai",
     });
 
     const weblnOAuthProvider = new webln.OauthWeblnProvider({
@@ -102,7 +102,7 @@ function AlbySetupPage(props: IAlbySetupProps) {
     const webhookEndpoint = await client.createWebhookEndpoint({
       filter_types: ["invoice.incoming.settled"],
       url: `${process.env.NEXT_PUBLIC_WEBAPP_URL}/api/integrations/alby/webhook`,
-      description: "Cal.com",
+      description: "leadnest.ai",
     });
 
     saveKeysMutation.mutate({

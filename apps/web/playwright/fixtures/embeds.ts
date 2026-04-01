@@ -27,7 +27,7 @@ export const createEmbedsFixture = (page: Page) => {
             //@ts-expect-error
             window.postMessageListenerAdded = true;
             window.addEventListener("message", (event) => {
-              // Filter for Cal.com embed messages
+              // Filter for leadnest.ai embed messages
               if (
                 event.data &&
                 typeof event.data === "object" &&
@@ -75,8 +75,6 @@ export const createEmbedsFixture = (page: Page) => {
               return;
             }
 
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            //@ts-expect-error
             let api = window.Cal;
 
             if (!api) {

@@ -468,7 +468,7 @@ class StripePaymentService implements IAbstractPaymentService {
     bookingTitle: string;
   }) {
     return {
-      identifier: "cal.com",
+      identifier: "leadnest.ai",
       bookingId,
       calAccountId: userId ?? null,
       calUsername: username ?? null,

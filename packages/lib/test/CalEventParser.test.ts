@@ -58,6 +58,18 @@ describe("getVideoCallUrl", () => {
 
     expect(getVideoCallUrlFromCalEvent(calEvent)).toEqual(getPublicVideoCallUrl(calEvent));
   });
+
+  it("should return metadata videoCallUrl when videoCallData is not present", () => {
+    const calEvent = buildCalendarEvent({
+      videoCallData: undefined,
+      metadata: {
+        videoCallUrl: "https://meet.leadnest.ai/booking-uid-123",
+      },
+      location: "integrations:leadnestvideo",
+    });
+
+    expect(getVideoCallUrlFromCalEvent(calEvent)).toEqual("https://meet.leadnest.ai/booking-uid-123");
+  });
 });
 
 describe("getVideoCallPassword", () => {

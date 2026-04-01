@@ -184,6 +184,7 @@ export interface CalendarEvent {
   conferenceCredentialId?: number;
   conferenceData?: ConferenceData;
   additionalInformation?: AdditionalInformation;
+  metadata?: Prisma.JsonObject | null;
   uid?: string | null;
   existingRecurringEvent?: ExistingRecurringEvent | null;
   bookingId?: number;

@@ -1,5 +1,5 @@
 // Timezone constants for the companion app
-// Source: cal.com/packages/lib/timeZones.ts
+// Source: https://schedule.leadnest.ai//packages/lib/timeZones.ts
 
 export const TIMEZONES = [
   "Africa/Abidjan",

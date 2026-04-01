@@ -13,7 +13,7 @@ import { NextResponse } from "next/server";
 import z from "zod";
 
 const appCredentialWebhookRequestBodySchema = z.object({
-  // UserId of the cal.com user
+  // UserId of the leadnest.ai user
   userId: z.number().int(),
   appSlug: z.string(),
   // Keys should be AES256 encrypted with the CALCOM_APP_CREDENTIAL_ENCRYPTION_KEY

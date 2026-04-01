@@ -30,9 +30,9 @@ test.describe("Booking with Seats", () => {
 
   test(`Prevent attendees from cancel when having invalid URL params`, async ({ page, users, bookings }) => {
     const { booking } = await createUserWithSeatedEventAndAttendees({ users, bookings }, [
-      { name: "John First", email: "first+seats@cal.com", timeZone: "Europe/Berlin" },
-      { name: "Jane Second", email: "second+seats@cal.com", timeZone: "Europe/Berlin" },
-      { name: "John Third", email: "third+seats@cal.com", timeZone: "Europe/Berlin" },
+      { name: "John First", email: "first+seats@leadnest.ai", timeZone: "Europe/Berlin" },
+      { name: "Jane Second", email: "second+seats@leadnest.ai", timeZone: "Europe/Berlin" },
+      { name: "John Third", email: "third+seats@leadnest.ai", timeZone: "Europe/Berlin" },
     ]);
 
     const bookingAttendees = await prisma.attendee.findMany({
@@ -76,9 +76,9 @@ test.describe("Booking with Seats", () => {
 
   test("Owner shouldn't be able to cancel booking without login in", async ({ page, bookings, users }) => {
     const { booking, user } = await createUserWithSeatedEventAndAttendees({ users, bookings }, [
-      { name: "John First", email: "first+seats@cal.com", timeZone: "Europe/Berlin" },
-      { name: "Jane Second", email: "second+seats@cal.com", timeZone: "Europe/Berlin" },
-      { name: "John Third", email: "third+seats@cal.com", timeZone: "Europe/Berlin" },
+      { name: "John First", email: "first+seats@leadnest.ai", timeZone: "Europe/Berlin" },
+      { name: "Jane Second", email: "second+seats@leadnest.ai", timeZone: "Europe/Berlin" },
+      { name: "John Third", email: "third+seats@leadnest.ai", timeZone: "Europe/Berlin" },
     ]);
     await page.goto(`/booking/${booking.uid}?cancel=true`);
     await expect(page.locator("[text=Cancel]")).toHaveCount(0, { timeout: 0 });
@@ -124,8 +124,8 @@ test.describe("Reschedule for booking with seats", () => {
     bookings,
   }) => {
     const { booking } = await createUserWithSeatedEventAndAttendees({ users, bookings }, [
-      { name: "John First", email: "first+seats@cal.com", timeZone: "Europe/Berlin" },
-      { name: "Jane Second", email: "second+seats@cal.com", timeZone: "Europe/Berlin" },
+      { name: "John First", email: "first+seats@leadnest.ai", timeZone: "Europe/Berlin" },
+      { name: "Jane Second", email: "second+seats@leadnest.ai", timeZone: "Europe/Berlin" },
     ]);
 
     const bookingAttendees = await prisma.attendee.findMany({
@@ -191,8 +191,8 @@ test.describe("Reschedule for booking with seats", () => {
     bookings,
   }) => {
     const { booking } = await createUserWithSeatedEventAndAttendees({ users, bookings }, [
-      { name: "John First", email: "first+seats@cal.com", timeZone: "Europe/Berlin" },
-      { name: "Jane Second", email: "second+seats@cal.com", timeZone: "Europe/Berlin" },
+      { name: "John First", email: "first+seats@leadnest.ai", timeZone: "Europe/Berlin" },
+      { name: "Jane Second", email: "second+seats@leadnest.ai", timeZone: "Europe/Berlin" },
     ]);
 
     const bookingAttendees = await prisma.attendee.findMany({
@@ -253,8 +253,8 @@ test.describe("Reschedule for booking with seats", () => {
     bookings,
   }) => {
     const { user, booking } = await createUserWithSeatedEventAndAttendees({ users, bookings }, [
-      { name: "John First", email: "first+seats@cal.com", timeZone: "Europe/Berlin" },
-      { name: "Jane Second", email: "second+seats@cal.com", timeZone: "Europe/Berlin" },
+      { name: "John First", email: "first+seats@leadnest.ai", timeZone: "Europe/Berlin" },
+      { name: "Jane Second", email: "second+seats@leadnest.ai", timeZone: "Europe/Berlin" },
     ]);
     await user.apiLogin();
     const bookingWithEventType = await prisma.booking.findFirst({
@@ -303,11 +303,11 @@ test.describe("Reschedule for booking with seats", () => {
     await page.goto(`/booking/${booking.uid}?cancel=true&allRemainingBookings=false`);
 
     const foundFirstAttendeeAsOwner = await page.locator(
-      'p[data-testid="attendee-email-first+seats@cal.com"]'
+      'p[data-testid="attendee-email-first+seats@leadnest.ai"]'
     );
     await expect(foundFirstAttendeeAsOwner).toHaveCount(1);
     const foundSecondAttendeeAsOwner = await page.locator(
-      'p[data-testid="attendee-email-second+seats@cal.com"]'
+      'p[data-testid="attendee-email-second+seats@leadnest.ai"]'
     );
     await expect(foundSecondAttendeeAsOwner).toHaveCount(1);
 
@@ -322,10 +322,10 @@ test.describe("Reschedule for booking with seats", () => {
     );
 
     // No attendees should be displayed only the one that it's cancelling
-    const notFoundSecondAttendee = await page.locator('p[data-testid="attendee-email-second+seats@cal.com"]');
+    const notFoundSecondAttendee = await page.locator('p[data-testid="attendee-email-second+seats@leadnest.ai"]');
 
     await expect(notFoundSecondAttendee).toHaveCount(0, { timeout: 0 });
-    const foundFirstAttendee = await page.locator('p[data-testid="attendee-email-first+seats@cal.com"]');
+    const foundFirstAttendee = await page.locator('p[data-testid="attendee-email-first+seats@leadnest.ai"]');
     await expect(foundFirstAttendee).toHaveCount(1);
 
     await prisma.eventType.update({
@@ -342,11 +342,11 @@ test.describe("Reschedule for booking with seats", () => {
     );
 
     // Now attendees should be displayed
-    const foundSecondAttendee = await page.locator('p[data-testid="attendee-email-second+seats@cal.com"]');
+    const foundSecondAttendee = await page.locator('p[data-testid="attendee-email-second+seats@leadnest.ai"]');
 
     await expect(foundSecondAttendee).toHaveCount(1);
     const foundFirstAttendeeAgain = await page
-      .locator('p[data-testid="attendee-email-first+seats@cal.com"]')
+      .locator('p[data-testid="attendee-email-first+seats@leadnest.ai"]')
       .first();
     await expect(foundFirstAttendeeAgain).toHaveCount(1);
   });
@@ -357,9 +357,9 @@ test.describe("Reschedule for booking with seats", () => {
     users,
   }) => {
     const { booking, user } = await createUserWithSeatedEventAndAttendees({ users, bookings }, [
-      { name: "John First", email: "first+seats@cal.com", timeZone: "Europe/Berlin" },
-      { name: "Jane Second", email: "second+seats@cal.com", timeZone: "Europe/Berlin" },
-      { name: "John Third", email: "third+seats@cal.com", timeZone: "Europe/Berlin" },
+      { name: "John First", email: "first+seats@leadnest.ai", timeZone: "Europe/Berlin" },
+      { name: "Jane Second", email: "second+seats@leadnest.ai", timeZone: "Europe/Berlin" },
+      { name: "John Third", email: "third+seats@leadnest.ai", timeZone: "Europe/Berlin" },
     ]);
     const getBooking = await booking.self();
 
@@ -426,9 +426,9 @@ test.describe("Reschedule for booking with seats", () => {
     users,
   }) => {
     const { booking, user } = await createUserWithSeatedEventAndAttendees({ users, bookings }, [
-      { name: "John First", email: "first+seats@cal.com", timeZone: "Europe/Berlin" },
-      { name: "Jane Second", email: "second+seats@cal.com", timeZone: "Europe/Berlin" },
-      { name: "John Third", email: "third+seats@cal.com", timeZone: "Europe/Berlin" },
+      { name: "John First", email: "first+seats@leadnest.ai", timeZone: "Europe/Berlin" },
+      { name: "Jane Second", email: "second+seats@leadnest.ai", timeZone: "Europe/Berlin" },
+      { name: "John Third", email: "third+seats@leadnest.ai", timeZone: "Europe/Berlin" },
     ]);
     const getBooking = await booking.self();
 
@@ -462,8 +462,8 @@ test.describe("Reschedule for booking with seats", () => {
     bookings,
   }) => {
     const { user, booking } = await createUserWithSeatedEventAndAttendees({ users, bookings }, [
-      { name: "John First", email: "first+seats@cal.com", timeZone: "Europe/Berlin" },
-      { name: "Jane Second", email: "second+seats@cal.com", timeZone: "Europe/Berlin" },
+      { name: "John First", email: "first+seats@leadnest.ai", timeZone: "Europe/Berlin" },
+      { name: "Jane Second", email: "second+seats@leadnest.ai", timeZone: "Europe/Berlin" },
     ]);
     await user.apiLogin();
 
@@ -510,8 +510,8 @@ test.describe("Reschedule for booking with seats", () => {
     bookings,
   }) => {
     const { booking } = await createUserWithSeatedEventAndAttendees({ users, bookings }, [
-      { name: "John First", email: "first+seats@cal.com", timeZone: "Europe/Berlin" },
-      { name: "Jane Second", email: "second+seats@cal.com", timeZone: "Europe/Berlin" },
+      { name: "John First", email: "first+seats@leadnest.ai", timeZone: "Europe/Berlin" },
+      { name: "Jane Second", email: "second+seats@leadnest.ai", timeZone: "Europe/Berlin" },
     ]);
 
     const bookingAttendees = await prisma.attendee.findMany({
@@ -546,7 +546,7 @@ test.describe("Reschedule for booking with seats", () => {
 
     const secondUser = await users.create({
       name: "Jane Second",
-      email: "second+seats@cal.com",
+      email: "second+seats@leadnest.ai",
     });
     await secondUser.apiLogin();
 
@@ -586,7 +586,7 @@ test.describe("Reschedule for booking with seats", () => {
 
     const emailElement = page.locator("input[name=email]");
     const email = await emailElement.inputValue();
-    expect(email).toBe("second+seats@cal.com");
+    expect(email).toBe("second+seats@leadnest.ai");
 
     // Complete the reschedule
     await confirmReschedule(page);

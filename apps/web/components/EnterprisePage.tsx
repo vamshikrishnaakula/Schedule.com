@@ -55,7 +55,7 @@ export default function EnterprisePage() {
           buttons={
             <div className="stack-y-2 rtl:space-x-reverse sm:space-x-2">
               <ButtonGroup>
-                <Button color="primary" href="https://go.cal.com/quote" target="_blank">
+                <Button color="primary" href="https://www.leadnest.ai/contact-us" target="_blank">
                   {t("contact_sales")}
                 </Button>
                 <Button color="minimal" href="https://www.leadnest.ai" target="_blank">

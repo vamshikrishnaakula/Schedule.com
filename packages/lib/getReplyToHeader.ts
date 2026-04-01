@@ -1,3 +1,4 @@
+import { normalizeEmailAddresses } from "@calcom/emails/lib/normalizeEmailAddresses";
 import type { CalendarEvent } from "@calcom/types/Calendar";
 
 import { getReplyToEmail } from "./getReplyToEmail";
@@ -24,10 +25,12 @@ export function getReplyToHeader(
     emailArray.push(replyToEmail);
   }
 
-  if (emailArray.length === 0) {
+  const normalizedEmails = normalizeEmailAddresses(emailArray);
+
+  if (normalizedEmails.length === 0) {
     return {};
   }
 
-  const replyTo = emailArray.length === 1 ? emailArray[0] : emailArray;
+  const replyTo = normalizedEmails.length === 1 ? normalizedEmails[0] : normalizedEmails;
   return { replyTo };
 }
